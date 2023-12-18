@@ -78,7 +78,10 @@ section {
     padding: 0 2em;
     margin-bottom: 20px;
 }
-
+p a {
+    color: var(--dark);
+    text-decoration: none;
+}
 ul {
     list-style-type: none;
     padding: 0;
