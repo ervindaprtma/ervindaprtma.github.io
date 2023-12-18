@@ -12,6 +12,14 @@ header {
     text-align: center;
     padding: 1em;
 }
+nav {
+    margin-top: 10px;
+}
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 15px;
+}
 
 section {
     margin: 2em 0;
