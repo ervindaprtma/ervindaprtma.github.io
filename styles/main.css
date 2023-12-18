@@ -89,7 +89,7 @@ footer {
     color: #fff;
     text-align: center;
     padding: 1em;
-    position: relative;
+    position: fixed;
     bottom: 0;
     width: 100%;
 }
