@@ -23,7 +23,13 @@
         <p>Website : ervindaprtma.github.io</p>
         <p>Linkedin : <a href="https://www.linkedin.com/in/ervinda-pratama-0309a4131/">Ervinda Pratama</a></p>
     </section>
-
+    <script>
+        // JavaScript untuk menangani klik pada hamburger icon
+        document.getElementById('toggle-btn').addEventListener('click', function() {
+            var navLinks = document.querySelector('nav');
+            navLinks.style.display = (navLinks.style.display === 'flex') ? 'none' : 'flex';
+        });
+    </script>
     <footer>
         <p>&copy; 2023 - by Ervinda Pratama</p>
     </footer>

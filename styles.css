@@ -35,6 +35,10 @@ nav a {
         margin: 5px 0;
     }
 }
+#toggle-btn {
+    display: block;
+    cursor: pointer;
+}
 
 section {
     margin: 2em 0;

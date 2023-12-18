@@ -40,7 +40,13 @@
             <!-- Tambahkan baris sesuai sertifikasi Anda -->
         </ul>
     </section>
-
+    <script>
+        // JavaScript untuk menangani klik pada hamburger icon
+        document.getElementById('toggle-btn').addEventListener('click', function() {
+            var navLinks = document.querySelector('nav');
+            navLinks.style.display = (navLinks.style.display === 'flex') ? 'none' : 'flex';
+        });
+    </script>
     <footer>
         <p>&copy; 2023 - by Ervinda Pratama</p>
     </footer>
