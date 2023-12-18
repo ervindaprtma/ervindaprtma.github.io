@@ -12,8 +12,9 @@ header {
     text-align: center;
     padding: 1em;
 }
-header a{
+h1 a{
     color: #fff;
+    text-decoration: none;
 }
 nav {
     margin-top: 10px;
