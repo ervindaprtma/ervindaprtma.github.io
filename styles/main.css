@@ -10990,14 +10990,20 @@
  
  .page-content .page-portfolio .component-portfolio .portfolio-text {
    font-weight: normal;
-   font-size: 18px;
+   font-size: 14px;
+   text-align: center;
    color: #0c0d36;
    margin-top: 12px;
+ }
+ .portfolio-text a {
+  color: #0c0d36;
+  text-align: center;
  }
  
  .page-content .page-portfolio .component-portfolio .portfolio-price {
    font-weight: 200;
    font-size: 12px;
+   text-align: center;
    font-style: italic;
    color: #70757a;
  }
