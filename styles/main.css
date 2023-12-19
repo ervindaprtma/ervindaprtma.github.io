@@ -10907,23 +10907,42 @@
    }
  }
  
- .page-content .page-profile .profile-item i {
+ .page-content .page-profile {
    width: 5%;
    margin-right: 15px;
    float: left;
  }
  
- .page-content .page-profile .profile-item i .icon {
+  .profile-item {
+    display: flex;
+    align-items: center;
+  }
+
+ .profile-item i {
+    font-size: 14px;
+    display: flex;
+    margin-bottom: 5px;
+    vertical-align: middle;
+ }
+
+ .profile-item p {
+    font-size: 15px;
+    margin-left: 10px;
+    color: black;
+    vertical-align: middle;
+ }
+
+ .page-content .page-profile  {
    float: left;
  }
  
- .page-content .page-profile .profile-item i .fa {
+ .page-content .page-profile  {
    font-size: 20px;
    color: black;
  }
  
  @media (max-width: 991.98px) {
-   .page-content .page-profile .profile-item p {
+   .page-content .page-profile {
      font-size: 13px;
    }
  }

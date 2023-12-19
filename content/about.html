@@ -8,7 +8,8 @@
         <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
         <title>Network Engineer - Ervinda Pratama</title>
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+
 
     </head>
 <body>
@@ -70,8 +71,8 @@
                         <hr class="mt-5" data-aos="fade-up" data-aos-delay="500" />
                         <div
                             class="col-lg-8 col-md-6 justify-content-left text-left">
-                            <div class="header-title mt-4">
-                                <h2 data-aos="fade-up" data-aos-delay="700">
+                            <div class="header-title mt-4" data-aos="fade-up" data-aos-delay="700">
+                                <h2>
                                     <b>About Me</b>
                                 </h2>
                                 <br>
@@ -80,23 +81,53 @@
                                     <p><b>Ervinda Pratama</b></p>
                                 </div>
                                 <div class="profile-item">
-                                    <i class="fa fa-send icon"></i>
-                                    <p><b>ervinda.prtma@gmail.com</b>
-                                    <br>ervindaterate22@gmail.com</p>
+                                    <i class="fa fa-envelope icon"></i>
+                                    <p><a href="mailto:ervindaterate22@gmail.com">ervindaterate22@gmail.com</a>
+                                    <br><a href="mailto:ervinda.prtma@gmail.com">ervinda.prtma@gmail.com</a></p>
                                 </div>
                                 <div class="profile-item">
                                     <i class="fa fa-phone icon"></i>
-                                    <p><b>+6281233559901</b></p>
+                                    <p><a href="tel:+6281233559901">+6281233559901</a></p>
                                 </div>
                                 <div class="profile-item">
                                     <i class="fa fa-globe icon"></i>
-                                    <p><b><a href="https://humaninternetwork.blogspot.com/">Human Network Blogspot</a></b></p>
+                                    <p><a href="https://humaninternetwork.blogspot.com/">My Blogger</a>
+                                    <br><a href="https://ervindaprtma.github.io">My Website Github.io</a></p>
+                                </div>
+                                <div class="profile-item">
+                                    <i class="fa fa-facebook"></i>
+                                    <p><a href="https://www.facebook.com/ervindapratama.22/">My Facebook : Mas Vin</a></p>
+                                </div>
+                                <div class="profile-item">
+                                    <i class="fa fa-instagram"></i>
+                                    <p><a href="https://www.instagram.com/ervinda.prtma22/">My Instagram : ervinda.prtma22</a></p>
+                                </div>
+                                <div class="profile-item">
+                                    <i class="fa fa-linkedin"></i>
+                                    <p><a href="https://www.linkedin.com/in/ervinda-pratama-0309a4131/">My Linkedin : Ervinda Pratama</a></p>
+                                </div>
+                                <div class="profile-item">
+                                    <i class="fa fa-github"></i>
+                                    <p><a href="https://github.com/ervindaprtma">My GitHub Account : Ervinda Pratama</a></p>
                                 </div>
                                 <div class="profile-item">
                                     <i class="fa fa fa-map icon"></i>
-                                    <p><b>Dsn. Dawuhan, RT/RW 001/001, Ds. Gadungan, Kec. Gandusari, Kab. Blitar, 66187</b></p>
+                                    <p>Dsn. Dawuhan, RT/RW 001/001, Ds. Gadungan, Kec. Gandusari, Kab. Blitar, Jawa Timur. 66187</p>
                                 </div>
-                            </div>                            
+                                <div class="map">
+                                    <iframe
+                                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3950.7404403672317!2d112.30682531477969!3d-8.025676994220655!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwMDEnMzIuNCJTIDExMsKwMTgnMzIuNSJF!5e0!3m2!1sen!2sid!4v1606122144320!5m2!1sen!2sid"
+                                      width="100%"
+                                      height="450"
+                                      frameborder="0"
+                                      style="border: 0"
+                                      allowfullscreen=""
+                                      aria-hidden="false"
+                                      tabindex="0"
+                                    ></iframe>
+                                    <p>Created by Google Maps</p>
+                                </div>
+                            </div>                    
                         </div>
                     </div>
                 </div>
@@ -122,7 +153,21 @@
         </div>
     </footer>
     
-
+    <!---Maps Feature-->
+    <script>
+        function initialize() {
+          var propertiPeta = {
+            center: new google.maps.LatLng(-8.0216062, 112.2957212),
+            zoom: 15,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+          };
+  
+          var peta = new google.maps.Map(
+            document.getElementById("googleMap"),
+            propertiPeta
+          );
+        }
+      </script>
     <!--Inisialisasi AOS JavaScript-->
     <script>
         AOS.init()
