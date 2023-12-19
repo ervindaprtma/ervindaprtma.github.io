@@ -4679,6 +4679,17 @@
    padding-right: 0;
    padding-left: 0;
  }
+ .navbar-url {
+  color: #007bff;
+  background-color: white;
+ }
+ .navbar-url-active {
+  color: black;
+  background-color: white;
+ }
+ .navtab-active {
+  color: #007bff;
+ }
  
  .navbar-nav .dropdown-menu {
    position: static;
