@@ -43,6 +43,11 @@
            box-sizing: border-box;
  }
  
+ .pdf-slide {
+  margin-bottom: 10px;
+}
+
+
  html {
    font-family: sans-serif;
    line-height: 1.15;
@@ -10950,21 +10955,25 @@
  
   .profile-item {
     display: flex;
-    align-items: center;
+    align-items: left;
+    margin-bottom: 10px;
   }
 
  .profile-item i {
     font-size: 14px;
     display: flex;
-    margin-bottom: 5px;
+    margin-right: 10px;
     vertical-align: middle;
  }
-
  .profile-item p {
-    font-size: 15px;
-    margin-left: 10px;
+  font-size: 14;
+  color: black;
+  text-align: center;
+ }
+ .profile-item p a {
+    font-size: 14px;
     color: black;
-    vertical-align: middle;
+    text-align: center;
  }
 
  .page-content .page-profile  {
