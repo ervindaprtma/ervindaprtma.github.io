@@ -625,6 +625,41 @@
   flex-wrap: wrap;
  }
 
+ .page-container {
+  display: flex;
+  justify-content: space-between;
+ }
+ 
+ .blog-content {
+  flex: 1;
+ }
+
+ .blog-list-sidebar {
+  width: 25%; /* Atur lebar sidebar sesuai kebutuhan */
+  background-color: #f8f8f8;
+  padding: 20px;
+}
+
+.blog-list-sidebar h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.blog-list-sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.blog-list-sidebar ul li {
+  margin-bottom: 10px;
+}
+
+.blog-list-sidebar ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
   p .overlay-text {
   position: absolute;
   top: 0;
