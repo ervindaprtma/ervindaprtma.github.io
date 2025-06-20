@@ -268,11 +268,14 @@
    word-wrap: normal;
  }
  
- button,
- [type="button"],
- [type="reset"],
- [type="submit"] {-webkit-appearance: button;
- }
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  appearance: button;
+  -webkit-appearance: button;
+  -moz-appearance: button;
+}
  
  button:not(:disabled),
  [type="button"]:not(:disabled),
@@ -330,9 +333,10 @@
  }
  
  [type="search"] {
-   outline-offset: -2px;
-   -webkit-appearance: none;
- }
+  appearance: none;
+  -webkit-appearance: none;
+  outline-offset: -2px; /* hati-hati dengan ini */
+}
  
  [type="search"]::-webkit-search-decoration {
    -webkit-appearance: none;
