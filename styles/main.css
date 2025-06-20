@@ -343,6 +343,38 @@
    -webkit-appearance: button;
  }
  
+ .experience-item {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f9f9f9;
+  border-left: 4px solid #0077cc;
+  border-radius: 8px;
+}
+
+.experience-item h3 {
+  color: #003366;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.experience-item p {
+  margin: 0.2rem 0;
+  font-size: 15px;
+}
+
+.experience-item ul {
+  margin-top: 0.5rem;
+  padding-left: 1.5rem;
+}
+
+
+table td, table th {
+  padding: 0.5rem 1rem;
+  vertical-align: top;
+  text-align: left;
+}
+
+
  output {
    display: inline-block;
  }
