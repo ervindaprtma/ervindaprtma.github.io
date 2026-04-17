@@ -1,9 +1,12 @@
 .navbar-library {
     padding-top: 8px;
     box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease, backdrop-filter 0.3s ease;
   
     @include media-breakpoint-down(md) {
-      background-color: #ffffff !important;
+      background-color: rgba(255, 255, 255, 0.8) !important;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
   
     .nav-item {
@@ -17,5 +20,38 @@
   }
   
   .navbar-fixed-top.scrolled {
-    background-color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  /* Dark mode overrides for navbar */
+  body.dark-mode .navbar-library {
+    background-color: transparent !important; /* Glassmorphism start */
+    
+    @include media-breakpoint-down(md) {
+        background-color: rgba(18, 18, 18, 0.9) !important;
+    }
+
+    .navbar-url-active {
+        color: #e0e0e0;
+    }
+    
+    .navtab-active {
+        color: #00f2fe;
+        font-weight: 600;
+    }
+    
+    #darkModeToggle {
+        color: #00f2fe;
+        border-color: #00f2fe;
+    }
+  }
+
+  body.dark-mode .navbar-fixed-top.scrolled {
+     background: rgba(18, 18, 18, 0.8) !important;
+     backdrop-filter: blur(16px);
+     -webkit-backdrop-filter: blur(16px);
+     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }

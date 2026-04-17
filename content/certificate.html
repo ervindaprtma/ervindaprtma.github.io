@@ -1,8 +1,8 @@
-<html lang="en">
+<html lang="en" data-bs-theme="light">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
-        <meta name="Desc" content="Noting">
+        <meta name="Desc" content="Ervinda Pratama - Network & Security Engineer Portfolio. Experience in NOC, ISP, Cybersecurity L2, AI, and Blockchain.">
         <meta name="Author" content="MasVin22">
         <link rel="stylesheet" href="../styles/main.css">
         <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
@@ -10,57 +10,16 @@
         <title>Network Engineer L2 - Ervinda Pratama</title>
 
         <link rel="icon" href="../images_cert/profil.jpg" sizes="32x32" class="rounded-circle">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light navbar-library fixed-top navbar-fixed-top">
-            <div class="container">
-                <button
-                    class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle Navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="../index.html">Home</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="about.html">About Me</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="experience_skill.html">Experience & Skills</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active  navtab-active" href="certificate.html">My Certificate</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="project_homelab.html">Project & Home Lab</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="learning_roadmap.html">Learning Roadmap</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="article_research.html">Article & Research</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <app-navbar></app-navbar>
     <section class="page-content">
         <div class="container">
             <div id="home">
@@ -74,7 +33,7 @@
                         <br>
                         <div class="col-lg-12 col-md-6 justify-content-center text-center">
                             <h4>Ervinda Pratama</h4>
-                            <p><i>Network Engineer L2 | Fortinet & MikroTik Certified<br>
+                            <p><i>Network Engineer L2 | Transitioning into Security Engineering | Hackviser CAPT & CWSE | Fortinet FCA | MikroTik MTCNA & MTCTCE<br>
                             Cybersecurity, AI, and Blockchain Enthusiast</i></p>
                         </div>
                         <div class="col-lg-12 col-md-6 justify-content-center text-center">
@@ -100,15 +59,13 @@
                                             data-aos-delay="100">
                                                 <div class="col-12">
                                                     <h3>
-                                                        <b>Sertifikasi Keahlian</b>
+                                                        <b>Professional Certifications</b>
                                                     </h3>
-                                                    <p>Di bawah ini adalah beberapa sertifikasi yang saya peroleh saat saya lulus uji kompetensi 
-                                                        dari masing-masing vendor besar khususnya di dunia jaringan seperti MikroTik. Serta sertifikasi
-                                                        saat saya lulus uji kompetensi dari beberapa kursus dan saat saya mengikuti kegiatan tertentu.
+                                                    <p>Below are some of the certifications I have obtained after passing competency exams from major vendors in the networking industry, such as MikroTik. This also includes certificates achieved from completing various courses and participating in specialized activities.
                                                     </p>
                                                 </div>
                                                 <div class="col-11">
-                                                    <p>Berikut untuk koleksi sertifikasi resmi lain yang dapat diverifikasi melalui platform Credly di <a href="https://credly.com/users/ervinda-pratama">Profile Credly</a> saya. </p>
+                                                    <p>Other official certification badges can be verified directly via the Credly platform on my <a href="https://credly.com/users/ervinda-pratama">Credly Profile</a>.</p>
                                                 </div>
                                         </div>
                                         <div class="row mt-4 justify-content-center">
@@ -166,8 +123,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row mt-4 justify-content-center">
+
                                             <div
                                                 class="col-12 col-md-6 col-lg-4 mb-3"
                                                 data-aos="fade-up"
@@ -194,8 +150,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row mt-4 justify-content-center">
+
                                             <div
                                                 class="col-12 col-md-6 col-lg-4 mb-3"
                                                 data-aos="fade-up"
@@ -222,8 +177,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row mt-4 justify-content-center">
+
                                             <div
                                                 class="col-12 col-md-6 col-lg-4 mb-3"
                                                 data-aos="fade-up"
@@ -250,8 +204,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row mt-4 justify-content-center">
+
                                             <div
                                                 class="col-12 col-md-6 col-lg-4 mb-3"
                                                 data-aos="fade-up"
@@ -278,8 +231,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row mt-4 justify-content-center">
+
                                             <div
                                                 class="col-12 col-md-6 col-lg-4 mb-3"
                                                 data-aos="fade-up"
@@ -304,8 +256,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row mt-4 justify-content-center">
+
                                             <div
                                                 class="col-12 col-md-6 col-lg-4 mb-3"
                                                 data-aos="fade-up"
@@ -332,8 +283,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row mt-4 justify-content-center">
+
                                             <div
                                                 class="col-12 col-md-6 col-lg-4 mb-3"
                                                 data-aos="fade-up"
@@ -360,8 +310,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row mt-4 justify-content-center">
+
                                             <div
                                                 class="col-12 col-md-6 col-lg-4 mb-3"
                                                 data-aos="fade-up"
@@ -388,8 +337,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row mt-4 justify-content-center">
+
                                             <div
                                                 class="col-12 col-md-6 col-lg-4 mb-3"
                                                 data-aos="fade-up"
@@ -416,8 +364,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row mt-4 justify-content-center">
+
                                             <div
                                                 class="col-12 col-md-6 col-lg-4 mb-3"
                                                 data-aos="fade-up"
@@ -444,8 +391,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row mt-4 justify-content-center">
+
                                             <div
                                                 class="col-12 col-md-6 col-lg-4 mb-3"
                                                 data-aos="fade-up"
@@ -472,8 +418,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row mt-4 justify-content-center">
+
                                             <div
                                                 class="col-12 col-md-6 col-lg-4 mb-3"
                                                 data-aos="fade-up"
@@ -500,8 +445,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row mt-4 justify-content-center">
+
                                             <div
                                                 class="col-12 col-md-6 col-lg-4 mb-3"
                                                 data-aos="fade-up"
@@ -528,8 +472,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row mt-4 justify-content-center">
+
                                             <div
                                                 class="col-12 col-md-6 col-lg-4 mb-3"
                                                 data-aos="fade-up"
@@ -556,8 +499,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row mt-4 justify-content-center">
+
                                             <div
                                                 class="col-12 col-md-6 col-lg-4 mb-3"
                                                 data-aos="fade-up"
@@ -584,8 +526,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row mt-4 justify-content-center">
+
                                             <div
                                                 class="col-12 col-md-6 col-lg-4 mb-3"
                                                 data-aos="fade-up"
@@ -610,8 +551,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row mt-4 justify-content-center">
+
                                             <div
                                                 class="col-12 col-md-6 col-lg-4 mb-3"
                                                 data-aos="fade-up"
@@ -655,25 +595,25 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>
-                                            MikroTik Certified Network Associate (MTCNA) adalah sertifikasi yang dikeluarkan oleh perusahaan
-                                            MikroTik untuk membuktikan bahwa seseorang memiliki pengetahuan dasar dan keterampilan dalam mengelola
-                                            perangkat dan jaringan menggunakan perangkat keras dan perangkat lunak MikroTik.
+                                            MikroTik Certified Network Associate (MTCNA) is a certification issued by MikroTik
+                                            validating that an individual possesses fundamental knowledge and skills in managing
+                                            network devices using MikroTik hardware and software (RouterOS).
                                         </p>
                                         <br>
                                         <p>
-                                            Berikut ini adalah penjelasan rinci mengenai sertifikasi MTCNA, termasuk materi dan keterampilan yang akan dikuasai:
+                                            Below is a detailed breakdown of the MTCNA certification, including the topics and skills covered:
                                         </p>
                                         <ol>
-                                            <li>MikroTik RouterOS Introduction</li>
-                                            <li>Configuration DHCP</li>
-                                            <li>Configuration Bridging</li>
-                                            <li>Configuration Routing</li>
-                                            <li>Configuration Wireless</li>
-                                            <li>Configuration Firewall</li>
-                                            <li>Configuration QoS</li>
-                                            <li>Configuration tunnels</li>
+                                            <li>Introduction to MikroTik RouterOS</li>
+                                            <li>DHCP Configuration</li>
+                                            <li>Bridging Concepts & Config</li>
+                                            <li>Static & Dynamic Routing</li>
+                                            <li>Wireless Networking</li>
+                                            <li>Firewall Filters & NAT</li>
+                                            <li>Quality of Service (QoS)</li>
+                                            <li>Tunneling Protocols</li>
                                         </ol>
-                                        <p>Lebih lengkapnya terkait materi MTCNA bisa anda lihat <a href="https://i.mt.lv/cdn/training_pdf/mtcna_outline_2019181161836.pdf">di sini.</a></p>
+                                        <p>For more details regarding the MTCNA curriculum, you can visit the official outline <a href="https://i.mt.lv/cdn/training_pdf/mtcna_outline_2019181161836.pdf">here.</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -689,22 +629,22 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>
-                                            MikroTik Certified Traffic Control Engineer (MTCTCE) adalah sertifikasi tingkat lanjut yang dikeluarkan oleh MikroTik.
-                                            Sertifikasi ini menekankan pada pengetahuan dan keterampilan yang diperlukan untuk mengelola lalu lintas jaringan dengan efisien
-                                            menggunakan perangkat MikroTik RouterOS.
+                                            MikroTik Certified Traffic Control Engineer (MTCTCE) is an advanced-level certification issued by MikroTik.
+                                            This certification emphasizes the deep knowledge and technical skills required to manage network traffic efficiently
+                                            using specialized MikroTik RouterOS tools.
                                         </p>
                                         <p>
-                                            Berikut adalah penjelasan rinci mengenai sertifikasi MTCTCE, termasuk materi dan keterampilan yang akan dikuasai:
+                                            Below is a detailed breakdown of the MTCTCE certification, including the advanced networking skills covered:
                                         </p>
                                         <ol>
-                                            <li>Packet Flow Diagram</li>
-                                            <li>Firewall Filter, NAT, Mangle</li>
-                                            <li>Quality of Service (QoS)</li>
-                                            <li>DNS Client, Cache</li>
-                                            <li>DHCP Client, Relay, Server</li>
-                                            <li>Web Proxy</li>
+                                            <li>Packet Flow Diagram (Deep Dive)</li>
+                                            <li>Firewall Filters, Mangle, and NAT Chain</li>
+                                            <li>Quality of Service (QoS / Queues)</li>
+                                            <li>DNS Client & Cache Optimization</li>
+                                            <li>DHCP Client, Relay, and Server Management</li>
+                                            <li>Web Proxy & Advanced Caching</li>
                                         </ol>
-                                        <p>Lebih lengkapnya terkait materi MTCTCE bisa anda lihat <a href="https://i.mt.lv/cdn/training_pdf/mtctce_outline_2020154113204.pdf">di sini.</a></p>
+                                        <p>For more details regarding the MTCTCE curriculum, you can visit the official outline <a href="https://i.mt.lv/cdn/training_pdf/mtctce_outline_2020154113204.pdf">here.</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -720,26 +660,26 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>
-                                            MikroTik Administration adalah sertifikasi dari kursus di website <a href="https://agunacourse.com/">AgunaCourse.com</a> dengan pembelajaran
-                                            tentang MikroTik basic mulai dari dasar jaringan, TCP/IP & OSI Layer, serta berbagai materi lainnya.
+                                            MikroTik Administration is a comprehensive course certification from <a href="https://agunacourse.com/">AgunaCourse.com</a> covering
+                                            essential MikroTik skills, network fundamentals, TCP/IP, and the OSI Model.
                                         </p>
                                         <p>
-                                            Berikut adalah penjelasan rinci mengenai sertifikasi MikroTik Administration dari <a href="https://agunacourse.com/">AgunaCourse.com</a> , termasuk materi dan keterampilan yang akan dikuasai:
+                                            Below is a detailed breakdown of the MikroTik Administration certification from <a href="https://agunacourse.com/">AgunaCourse.com</a>, including key competencies:
                                         </p>
                                         <ol>
-                                            <li>Network Fundamental</li>
-                                            <li>MikroTik Fundamental</li>
-                                            <li>Setup internet Gateway</li>
-                                            <li>Bridge</li>
-                                            <li>Routing</li>
-                                            <li>Firewall Filter, NAT</li>
-                                            <li>Tunnel & VPN</li>
-                                            <li>Bandwitdh Management</li>
-                                            <li>Routing Advanced</li>
-                                            <li>Dynamic Routing OSPF</li>
-                                            <li>Hotspot</li>
+                                            <li>Network Fundamentals</li>
+                                            <li>MikroTik Hardware & Software Overview</li>
+                                            <li>Internet Gateway Setup</li>
+                                            <li>Bridge & VLAN Layer 2</li>
+                                            <li>Static & Dynamic Routing</li>
+                                            <li>Firewall Filtering & NAT</li>
+                                            <li>Tunneling & VPN implementation</li>
+                                            <li>Bandwidth Management (Queue Simple/Tree)</li>
+                                            <li>Advanced Routing & Multi-Gateways</li>
+                                            <li>Dynamic Routing (OSPF Focus)</li>
+                                            <li>Hotspot & User Management</li>
                                         </ol>
-                                        <p>Lebih lengkapnya terkait kursus MikroTik Administration dari <a href="https://agunacourse.com/">AgunaCourse.com</a> bisa anda lihat <a href="https://www.agunacourse.com/kelas/mikrotik-administration">di sini.</a></p>
+                                        <p>More details regarding this course from <a href="https://agunacourse.com/">AgunaCourse.com</a> can be found <a href="https://www.agunacourse.com/kelas/mikrotik-administration">here.</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -755,21 +695,21 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>
-                                            MikroTik Routing Engineer adalah sertifikasi dari kursus MikroTik Advanced di website <a href="https://agunacourse.com/">AgunaCourse.com</a>
-                                            dengan pembelajaran yang lebih fokus terhadap routing protokol menggunakan device/perangkat MikroTik.
+                                            MikroTik Routing Engineer is an advanced MikroTik certification from <a href="https://agunacourse.com/">AgunaCourse.com</a> focusing on 
+                                            complex routing protocols and large-scale network architectures using MikroTik devices.
                                         </p>
                                         <p>
-                                            Berikut adalah penjelasan rinci mengenai sertifikasi MikroTik Administration dari <a href="https://agunacourse.com/">AgunaCourse.com</a> , termasuk materi dan keterampilan yang akan dikuasai:
+                                            Below is a detailed breakdown of the skills covered in the MTCRE course at <a href="https://agunacourse.com/">AgunaCourse.com</a>:
                                         </p>
                                         <ol>
-                                            <li>Apa itu routing</li>
-                                            <li>Static routing advanced</li>
-                                            <li>Dynamic routing advanced</li>
-                                            <li>VLAN</li>
-                                            <li>Fail Over & LoadBalance</li>
-                                            <li>VPN</li>
+                                            <li>Routing Concepts and Architecture</li>
+                                            <li>Advanced Static Routing</li>
+                                            <li>Advanced Dynamic Routing (OSPF Area Configuration)</li>
+                                            <li>VLAN Tagging & Trunking</li>
+                                            <li>Failover Strategies & Load Balancing</li>
+                                            <li>Advanced VPN Site-to-Site</li>
                                         </ol>
-                                        <p>Lebih lengkapnya terkait kursus advanced MikroTik - MTCRE dari <a href="https://agunacourse.com/">AgunaCourse.com</a> bisa anda lihat <a href="https://www.agunacourse.com/kelas/kursus-mikrotik-advanced-mtcre">di sini.</a></p>
+                                        <p>More details regarding the MTCRE course from <a href="https://agunacourse.com/">AgunaCourse.com</a> can be found <a href="https://www.agunacourse.com/kelas/kursus-mikrotik-advanced-mtcre">here.</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -785,33 +725,32 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>
-                                            Cisco CCNA 200-301 adalah sertifikasi dari kursus Cisco CCNA 200-301 di website <a href="https://agunacourse.com/">AgunaCourse.com</a>
-                                            dengan pembelajaran terkait Cisco Device Router & Switch, membahas terkait dasar-dasar jaringan hingga menjadi seorang Network Engineer.
+                                            Cisco CCNA 200-301 is a certification from the Cisco training track at <a href="https://agunacourse.com/">AgunaCourse.com</a>.
+                                            It covers networking fundamentals for Cisco routers and switches, preparing students for professional Network Engineer roles.
                                         </p>
                                         <p>
-                                            Berikut adalah penjelasan rinci mengenai sertifikasi Cisco CCNA 200-301 dari <a href="https://agunacourse.com/">AgunaCourse.com</a> , termasuk materi dan keterampilan yang akan dikuasai:
+                                            Below is a detailed breakdown of the CCNA 200-301 curriculum at <a href="https://agunacourse.com/">AgunaCourse.com</a>:
                                         </p>
                                         <ol>
-                                            <li>Network Fundamental</li>
-                                            <li>IP Address & Subnetting</li>
-                                            <li>Networking Model TCP/IP & OSI Layer</li>
-                                            <li>Pengenalan & Basic Cisco</li>
-                                            <li>VLAN & Trunking</li>
-                                            <li>Inter VLAN Routing</li>
-                                            <li>Remote Access SSH & Telnet</li>
-                                            <li>VLAN Trunking Protocol</li>
-                                            <li>Port Security</li>
-                                            <li>Spanning Tree Protocol (STP)</li>
-                                            <li>Etherchannel</li>
-                                            <li>Static Routing</li>
-                                            <li>Dynamic Routing EIGRP</li>
-                                            <li>Dynamic Routing OSPF</li>
-                                            <li>Dynamic Routing BGP</li>
-                                            <li>Access List</li>
-                                            <li>NAT</li>
-                                            <li>IPv6</li>
+                                            <li>Network Fundamentals & Architecture</li>
+                                            <li>IP Addressing & Variable Length Subnet Masking (VLSM)</li>
+                                            <li>TCP/IP & OSI Networking Models</li>
+                                            <li>Cisco Device Basics & Command Line Interface</li>
+                                            <li>VLANs, Trunking, and VTP</li>
+                                            <li>Inter-VLAN Routing (Router-on-a-Stick)</li>
+                                            <li>Remote Access Management (SSH & Telnet)</li>
+                                            <li>Port Security & Switch Security</li>
+                                            <li>Spanning Tree Protocol (STP) & Rapid STP</li>
+                                            <li>EtherChannel Bundle (LACP/PAgP)</li>
+                                            <li>Static Routing & Floating Static Routes</li>
+                                            <li>Dynamic Routing Protocols (EIGRP Focus)</li>
+                                            <li>OSPF Routing (Single Area & Multi-Area)</li>
+                                            <li>Border Gateway Protocol (BGP Basics)</li>
+                                            <li>Access Control Lists (ACLs) Standard & Extended</li>
+                                            <li>Network Address Translation (NAT) Concepts</li>
+                                            <li>IPv6 Fundamentals & Configuration</li>
                                         </ol>
-                                        <p>Lebih lengkapnya terkait kursus Cisco CCNA 200-301 dari <a href="https://agunacourse.com/">AgunaCourse.com</a> bisa anda lihat <a href="https://www.agunacourse.com/kelas/cisco-ccna-200-301">di sini.</a></p>
+                                        <p>More details regarding the Cisco CCNA 200-301 course at <a href="https://agunacourse.com/">AgunaCourse.com</a> can be found <a href="https://www.agunacourse.com/kelas/cisco-ccna-200-301">here.</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -827,25 +766,22 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>
-                                            FortiGate Firewall NSE4 Part 1 ini adalah awal bagi seorang Network Security Professional untuk mempelajari bagaimana cara 
-                                            mengamankan jaringan dengan menggunakan FortiGate Firewall.
+                                            FortiGate Firewall NSE4 Part 1 serves as the entry point for Network Security Professionals to master network defense using FortiGate appliances.
                                         </p>
                                         <p>
-                                            Berikut adalah penjelasan rinci mengenai kursus FortiGate Firewall NSE4 Part 1 <a href="https://www.udemy.com/">Udemy.com</a> , termasuk materi dan keterampilan yang akan dikuasai:
+                                            Below is a detailed breakdown of the FortiGate NSE4 Part 1 course from <a href="https://www.udemy.com/">Udemy.com</a>, including core competencies:
                                         </p>
                                         <ol>
-                                            <li>Configure and Manage FortiGate Firewall.</li>
-                                            <li>Understand FortiGate Firewalls Deployment Methods.</li>
-                                            <li>How to setup a Lab Environment.</li>
-                                            <li>Understand how to deploy FortiGate Firewalls in EVE NG.</li>
-                                            <li>Understand FortiGate Firewalls Security Policies.</li>
-                                            <li>Student will learn to administrate their Fortinet FortiGate firewall.</li>
-                                            <li>Configure and Run First Time Wizard for a new Fertigate Firewall.</li>
-                                            <li>Connect internal LAN users to Internet through NAT.</li>
-                                            <li>Configure Routing, VLAN Trunking and Static routes.</li>
-                                            <li>Learn different Scenarios for Network Address Translation (NAT).</li>
+                                            <li>Configure and Manage FortiGate Firewalls.</li>
+                                            <li>Understand FortiGate Firewall Deployment Methods.</li>
+                                            <li>Setting up Lab Environments and EVE-NG Integration.</li>
+                                            <li>Analyzing FortiGate Security Policies and Object Management.</li>
+                                            <li>Administration and First-Time Wizard Configuration.</li>
+                                            <li>LAN Traffic Management and Internet Connectivity through NAT.</li>
+                                            <li>Core Routing, VLAN Trunking, and Static Route Configuration.</li>
+                                            <li>Deep Dive into Network Address Translation (NAT) Scenarios.</li>
                                         </ol>
-                                        <p>Lebih lengkapnya terkait kursus FortiGate NSE4 Part 1 dari <a href="https://www.udemy.com/">Udemy.com</a> bisa anda lihat <a href="https://www.udemy.com/share/106wRC3@2xsaVQa-CvyJUysK3_95nvtY64l4DUvZDG4Sn64L6IMT4KcP-V6k0fidJ35yhdPvyg==/">di sini.</a></p>
+                                        <p>More details for the FortiGate NSE4 Part 1 course at <a href="https://www.udemy.com/">Udemy.com</a> can be found <a href="https://www.udemy.com/share/106wRC3@2xsaVQa-CvyJUysK3_95nvtY64l4DUvZDG4Sn64L6IMT4KcP-V6k0fidJ35yhdPvyg==/">here.</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -861,28 +797,25 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>
-                                            FortiGate Firewall NSE4 Part 2 ini adalah langkah awal kedua, lanjutan dari part 1 bagi seorang Network Security Professional untuk mempelajari bagaimana cara 
-                                            mengamankan jaringan dengan menggunakan FortiGate Firewall.
+                                            FortiGate Firewall NSE4 Part 2 is the advanced progression for Network Security Professionals looking to implement complex security features within the Fortinet ecosystem.
                                         </p>
                                         <p>
-                                            Berikut adalah penjelasan rinci mengenai kursus FortiGate Firewall NSE4 Part 2 <a href="https://www.udemy.com/">Udemy.com</a> , termasuk materi dan keterampilan yang akan dikuasai:
+                                            Below is a detailed breakdown of the FortiGate NSE4 Part 2 course from <a href="https://www.udemy.com/">Udemy.com</a>:
                                         </p>
                                         <ol>
-                                            <li>SD-WAN</li>
-                                            <li>Virtual Domains (VDOMs)</li>
-                                            <li>Intrusion Prevention and Denial of Service</li>
-                                            <li>IPsec VPN and SSL VPN</li>
-                                            <li>Establish an IPsec VPN tunnel between two FortiGate devices</li>
-                                            <li>Fortinet Single Sign-On (FSSO)</li>
-                                            <li>High Availability (HA)</li>
-                                            <li>Diagnostics and CLI</li>
-                                            <li>Certificate Operations</li>
-                                            <li>Logging and Monitoring</li>
-                                            <li>Firewall Authentication</li>
-                                            <li>Diagnose and correct common problems</li>
-                                            <li>Collect and interpret log entries</li>
+                                            <li>SD-WAN Architecture and Configuration</li>
+                                            <li>Virtual Domains (VDOMs) for multi-tenancy</li>
+                                            <li>Intrusion Prevention Systems (IPS) and DDoS Mitigation</li>
+                                            <li>Advanced IPsec VPN and SSL VPN Deployments</li>
+                                            <li>Site-to-Site VPN Tunneling between FortiGate clusters</li>
+                                            <li>Fortinet Single Sign-On (FSSO) Integration</li>
+                                            <li>High Availability (HA) Cluster configuration</li>
+                                            <li>Diagnostics, Troubleshooting, and CLI management</li>
+                                            <li>Certificate Operations and SSL Inspection</li>
+                                            <li>Logging, Monitoring, and Security Fabric Analytics</li>
+                                            <li>Diagnostics for complex network policy resolution</li>
                                         </ol>
-                                        <p>Lebih lengkapnya terkait kursus FortiGate NSE4 Part 2 dari <a href="https://www.udemy.com/">Udemy.com</a> bisa anda lihat <a href="https://www.udemy.com/share/106Fgk3@AZSuDpoMW-qr5ZsyW-XpuZrUMC0jYPotdnduYy_vOB0RqQlkd-YL0Puqxy95Zq5RSw==/">di sini.</a></p>
+                                        <p>More details for the FortiGate NSE4 Part 2 course at <a href="https://www.udemy.com/">Udemy.com</a> can be found <a href="https://www.udemy.com/share/106Fgk3@AZSuDpoMW-qr5ZsyW-XpuZrUMC0jYPotdnduYy_vOB0RqQlkd-YL0Puqxy95Zq5RSw==/">here.</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -898,19 +831,18 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>
-                                            IT Support by Coursera adalah kursus dari Google terkait IT Support di website <a href="https://coursera.org/">Coursera</a> yang menjelaskan terkait
-                                            materi dasar-dasar IT hingga menjadi seorang IT Support ahli.
-                                            
+                                            The IT Support Certificate by Google on <a href="https://coursera.org/">Coursera</a> is a professional training program covering 
+                                            all essential domains required to excel as an expert IT Support specialist.
                                         </p>
-                                        <p>Berikut adalah penjelasan rinci mengenai sertifikasi IT Support Google dari <a href="https://coursera.org/">Coursera</a> , termasuk materi dan keterampilan yang akan dikuasai:</p>
+                                        <p>Below is a detailed breakdown of the Google IT Support curriculum on <a href="https://coursera.org/">Coursera</a>, including core modules:</p>
                                         <ol>
-                                            <li>Sistem Operasi dan dan Anda: Menjadi Pengguna yang Berdaya</li>
-                                            <li>Seluk Beluk Jaringan Komputer</li>
-                                            <li>Dasar-dasar Dukungan Teknis</li>
-                                            <li>Keamanan IT: Pertahanan terhadap Kejahatan Digital</li>
-                                            <li>Administrasi Sistem dan Layanan Infrastruktur TI</li>
+                                            <li>Operating Systems and You: Becoming a Power User</li>
+                                            <li>The Bits and Bytes of Computer Networking</li>
+                                            <li>Technical Support Fundamentals</li>
+                                            <li>IT Security: Defense Against the Digital Dark Arts</li>
+                                            <li>System Administration and IT Infrastructure Services</li>
                                         </ol>
-                                        <p>Lebih lengkapnya terkait kursus IT Support dari <a href="https://coursera.org/">Coursera</a> bisa anda lihat <a href="https://www.coursera.org/professional-certificates/google-it-support">di sini.</a></p>
+                                        <p>More information about the Google IT Support course on <a href="https://coursera.org/">Coursera</a> can be found <a href="https://www.coursera.org/professional-certificates/google-it-support">here.</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -926,9 +858,10 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>
-                                            Certified Developer adalah sertifikasi dari Alibaba Cloud Certification terkait pembelajaran cloud computing menggunakan ECS Cloud dari <a href="https://alibabacloud.com">Alibaba.Com</a> 
+                                            Alibaba Cloud Certified Developer is a professional cloud computing certification focused on building and 
+                                            scaling applications using Elastic Compute Service (ECS) and other Alibaba Cloud architectures.
                                         </p>
-                                        <p>Lebih lengkapnya terkait Certified Developer bisa anda lihat <a href="https://www.alibabacloud.com/developer/certified-developer">di sini.</a></p>
+                                        <p>For more details on the Certified Developer program, visit the official page <a href="https://www.alibabacloud.com/developer/certified-developer">here.</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -944,22 +877,21 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>
-                                            Certified Git & GitHub adalah sertifikasi dari kursus Git dan GitHub dari website <a href="https://myskill.id/">MySkill</a> yang termasuk dari salahsatu materi E-Learning tentang bagaimana
-                                            menjadi seorang Web Developer.
+                                            Certified Git & GitHub from <a href="https://myskill.id/">MySkill</a> is a professional credential verifying mastery of 
+                                            version control systems and collaborative workflows essential for modern Web Development.
                                         </p>
-                                        <p>Berikut adalah penjelasan rinci mengenai sertifikasi Git & GitHub dari <a href="https://myskill.id/">MySkill</a> , termasuk materi dan keterampilan yang akan dikuasai:</p>
+                                        <p>Below is a detailed breakdown of the Git & GitHub curriculum from <a href="https://myskill.id/">MySkill</a>, including core competencies:</p>
                                         <ol>
-                                            <li>Basic Command in Git & Github</li>
-                                            <li>Introduction to Git & GitHub</li>
-                                            <li>Git & GitHub repository</li>
-                                            <li>Understanding Workflow of Git & GitHub</li>
-                                            <li>Starting Using Git</li>
-                                            <li>Head & Branches</li>
-                                            <li>Going Back and Undo Changes</li>
-                                            <li>Git & Github Practice I</li>
-                                            <li>Git & GitHub Practice II</li>
+                                            <li>Basic Command Line in Git & GitHub</li>
+                                            <li>Introduction to Git Architecture</li>
+                                            <li>Managing Git & GitHub Repositories</li>
+                                            <li>Understanding Git Flow & Collaborative Workflows</li>
+                                            <li>Initializing and Staging in Git</li>
+                                            <li>Head Pointers and Branching Strategies</li>
+                                            <li>Undo Changes and Time Travel (Revert/Reset)</li>
+                                            <li>Advanced Git Practice Projects I & II</li>
                                         </ol>
-                                        <p>Lebih lengkapnya terkait kursus Git & GitHub dari <a href="https://myskill.id/">MySkill</a> bisa anda lihat <a href="https://myskill.id/topic/git-github">di sini.</a></p>
+                                        <p>More information about the Git & GitHub course on <a href="https://myskill.id/">MySkill</a> can be found <a href="https://myskill.id/topic/git-github">here.</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -975,17 +907,16 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>
-                                            Soft Skill sertifikasi adalah program training untuk kesiapan kerja dari Work in Tech Indonesia. Yang diharapkan bahwa 
-                                            partisipan akan mempelajari terkait alur personal potensial dalam bekerja, membuat CV, melamar pekerjaan, serta kesiapan Interview, membangun
-                                            profesional attitude, mempunyai literasi financial dan mempunyai hak yang sama terhadap sesama pekerja. 
+                                            The Soft Skills Certification is a professional training program by Work in Tech Indonesia, designed to enhance job readiness, 
+                                            career potential mapping, financial literacy, and professional workplace conduct.
                                         </p>
-                                        <p>Berikut adalah penjelasan rinci mengenai sertifikasi Soft Skill dari Work in Tech Indonesia, termasuk materi dan keterampilan yang akan dikuasai:</p>
+                                        <p>Below is a detailed breakdown of the Work Readiness program by Work in Tech Indonesia, including core skills:</p>
                                         <ol>
-                                            <li>Self Potential Mapping</li>
-                                            <li>Making Curriculum Vitae and Tricks in Applying for Jobs</li>
-                                            <li>Communication in Job Interviews</li>
-                                            <li>Professional Attitude and Personal Financial Literacy</li>
-                                            <li>Equal Rights of Women and Men Workers</li>
+                                            <li>Self-Potential and Career Mapping</li>
+                                            <li>Curriculum Vitae Building and Strategic Job Applications</li>
+                                            <li>Effective Communication and Interview Techniques</li>
+                                            <li>Professional Workplace Attitude and Financial Literacy</li>
+                                            <li>Gender Equality and Workers' Rights Literacy</li>
                                         </ol>
                                     </div>
                                 </div>
@@ -1002,29 +933,28 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>
-                                            Alibaba Cloud ACA (Alibaba Cloud Certified Associate) adalah sertifikasi dasar bagi para profesional di bidang cloud computing khususnya
-                                            untuk produk dari vendor Alibaba Cloud.
+                                            Alibaba Cloud Certified Associate (ACA) is a foundational certification validating a professional's expertise 
+                                            in core cloud products and architectures within the Alibaba Cloud ecosystem.
                                         </p>
-                                        <p>Berikut adalah penjelasan rinci mengenai sertifikasi Alibaba Cloud ACA, termasuk mengenai materi dan keterampilan yang akan dikuasai :</p>
+                                        <p>Below is a breakdown of the Alibaba Cloud ACA curriculum, including topics and skills covered:</p>
                                         <ol>
-                                            <li>Alibaba Cloud Introduction</li>
-                                            <li>Elastic Compute Service Overview</li>
-                                            <li>ECS : Image Import and Export </li>
-                                            <li>Introduction to Alibaba Cloud EIP and Premium EIP</li>
-                                            <li>Using ECS to Construct a Dynamic Website</li>
-                                            <li>How to Easily Migrate Your Linux Server to Alibaba Cloud</li>
-                                            <li>Quickly Build a Wordpress Website using Resource Template on The Cloud</li>
-                                            <li>How to Troubleshoot Web Hosting Service Issues</li>
-                                            <li>Sotrage Service Overview and Application</li>
-                                            <li>Alibaba Cloud Object Storage Service</li>
-                                            <li>Using OSS to Publish a Static Website</li>
-                                            <li>MySQL Database Basic Queries, Concepts and Operations</li>
-                                            <li>Cloud Database and Operation</li>
-                                            <li>Alibaba Cloud Network Solution</li>
-                                            <li>Internetworking with VPC</li>
-                                            <li>Service Load Balance Overview</li>
-                                            <li>Auto Scaling Concept</li>
-                                            <li>Cloud Platform Security Overview</li>
+                                            <li>Alibaba Cloud Ecosystem Introduction</li>
+                                            <li>Elastic Compute Service (ECS) Overview</li>
+                                            <li>Advanced ECS: Image Imports and Data Migrations</li>
+                                            <li>Introduction to Elastic IP (EIP) and Premium EIP</li>
+                                            <li>Building Dynamic Websites using ECS Architectures</li>
+                                            <li>Migrating Linux Servers to Cloud Environment</li>
+                                            <li>Deploying WordPress via Resource Orchestration</li>
+                                            <li>Cloud Hosting Troubleshooting and Web Maintenance</li>
+                                            <li>Cloud Storage Architecture Overview</li>
+                                            <li>Object Storage Service (OSS) Deep Dive</li>
+                                            <li>Hosting Static Websites using OSS</li>
+                                            <li>MySQL Fundamentals and Cloud Database Operations</li>
+                                            <li>Relational Database Service (RDS) Management</li>
+                                            <li>Network Solution Architecture (VPC and Internetworking)</li>
+                                            <li>Load Balancing (SLB) Concepts and Setup</li>
+                                            <li>Auto Scaling Configuration and Best Practices</li>
+                                            <li>Cloud Platform Security & Anti-DDoS Fundamentals</li>
                                         </ol>
                                     </div>
                                 </div>
@@ -1041,27 +971,26 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>
-                                            Fortinet Cybersecurity Associate adalah sertifikasi dari level kedua setelah Fundamental Level dari Training Fortinet Official. Anda bisa mengeceknya di website <a href="https://www.fortinet.com/training-certification">Fortinet.com</a>
+                                            The Fortinet Cybersecurity Associate certification is a level-two technical credential following the Fundamentals track 
+                                            provided by Fortinet's official Training Institute. Verify credentials at <a href="https://www.fortinet.com/training-certification">Fortinet.com</a>.
                                         </p>
-                                        <p>
-                                            Berikut adalah rincian materi yang dibahas pada sertifikasi ini :
-                                        </p>
+                                        <p>Below is a detailed breakdown of the technical curriculum for this certification:</p>
                                         <ol>
-                                            <li>Lesson 01 : Overview</li>
-                                            <li>Lesson 02 : Configuring Interface and Routing</li>
-                                            <li>Lesson 03 : Firewall Policies</li>
-                                            <li>Lesson 04 : Authenticating Network Users</li>
-                                            <li>Lesson 05 : Inspect SSL Traffic</li>
-                                            <li>Lesson 06 : Blocking Malware</li>
-                                            <li>Lesson 07 : Control Web Access Using Web Filtering</li>
-                                            <li>Lesson 08 : Configuring the FortiGate IPS</li>
-                                            <li>Lesson 09 : Controlling Applications Access</li>
-                                            <li>Lesson 10 : Creating IPsec VPN</li>
-                                            <li>Lesson 11 : Configuring FortiGate SSL VPN</li>
-                                            <li>Lesson 12 : FortiGate System Maintenance and Monitoring</li>
-                                            <li>Lesson 13 : Configuring the Fortinet Security Fabric</li>
+                                            <li>Lesson 01: Ecosystem Overview</li>
+                                            <li>Lesson 02: Interface and Dynamic Routing Configuration</li>
+                                            <li>Lesson 03: Designing Firewall Security Policies</li>
+                                            <li>Lesson 04: Advanced Network User Authentication</li>
+                                            <li>Lesson 05: Man-in-the-Middle SSL Traffic Inspection</li>
+                                            <li>Lesson 06: Antivirus and Malware Mitigation</li>
+                                            <li>Lesson 07: Web Filtering and Content Access Control</li>
+                                            <li>Lesson 08: Intrusion Prevention System (IPS) Guardrails</li>
+                                            <li>Lesson 09: Granular Application Control Policies</li>
+                                            <li>Lesson 10: Building Complex IPsec VPN Architectures</li>
+                                            <li>Lesson 11: Remote Access SSL VPN Deployment</li>
+                                            <li>Lesson 12: System Maintenance and Performance Monitoring</li>
+                                            <li>Lesson 13: Integrating the Fortinet Security Fabric</li>
                                         </ol>
-                                        <p>Lebih lengkapnya terkait sertifikasi dari <a href="https://fortinet.com">Fortinet</a> bisa anda lihat <a href="https://training.fortinet.com/course/view.php?id=39326">di sini.</a></p>
+                                        <p>More details regarding <a href="https://fortinet.com">Fortinet</a> certifications can be found <a href="https://training.fortinet.com/course/view.php?id=39326">here.</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -1077,20 +1006,18 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>
-                                            CompTIA Network+ N10-009 dari Udemy adalah kursus level Network Basic to Advanced berdasarkan konsep dan best practice yang dapat diaplikasikan
-                                            pada jaringan skala kecil hingga besar. Anda bisa mengeceknya di website <a href="https://www.udemy.com/share/10brF73@uIyWFvu0tf5lznpvo2870-m6SNvEil8FYUzc6BDjmA5NIW4ibHILN9EZlRJOMSbY4Q==/">CompTIA Network+ N10-009 By Jason Dion, Udemy.</a>
+                                            CompTIA Network+ N10-009 by Jason Dion (Udemy) is a comprehensive certification track covering vendor-neutral networking 
+                                            concepts and best practices, applicable to network architectures of all scales.
                                         </p>
-                                        <p>
-                                            Berikut adalah rincian materi yang dibahas pada kursus ini :
-                                        </p>
+                                        <p>Below is a breakdown of the core domains covered in this professional curriculum:</p>
                                         <ol>
-                                            <li>Domain 01 : Networking Concepts</li>
-                                            <li>Domain 02 : Network Implementation</li>
-                                            <li>Domain 03 : Network Operations</li>
-                                            <li>Domain 04 : Network Security</li>
-                                            <li>Domain 05 : Network troubleshooting</li>
+                                            <li>Domain 01: Networking Concepts and Models</li>
+                                            <li>Domain 02: Network Implementation & Hardware</li>
+                                            <li>Domain 03: Network Operations and Performance</li>
+                                            <li>Domain 04: Network Security & Defense Strategies</li>
+                                            <li>Domain 05: Advanced Network Troubleshooting</li>
                                         </ol>
-                                        <p>Lebih lengkapnya terkait sertifikasi dari <a href="https://www.comptia.org/">CompTIA</a> bisa anda lihat <a href="https://www.comptia.org/certifications/network">di sini.</a></p>
+                                        <p>More information about <a href="https://www.comptia.org/">CompTIA</a> certifications can be found <a href="https://www.comptia.org/certifications/network">here.</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -1106,11 +1033,11 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>
-                                            Cisco CCNA Introduction to Networks adalah course pertama sebagai langkah untuk mempelajari materi CCNA 200-301 dari Cisco.
+                                            Cisco CCNA: Introduction to Networks is the first course in the track to prepare for the Cisco 200-301 CCNA professional certification.
                                         </p>
                                         <br>
                                         <p>
-                                            Berikut ini adalah penjelasan rinci mengenai kursus CCNA ITN, termasuk materi dan keterampilan yang akan dikuasai:
+                                            Below is a detailed breakdown of the CCNA ITN course, including the core modules and technical skills covered:
                                         </p>
                                         <ol>
                                             <li>Module 1: Networking Today</li>
@@ -1131,7 +1058,7 @@
                                             <li>Module 16: Network Security Fundamentals</li>
                                             <li>Module 17: Build a Small Network</li>
                                         </ol>
-                                        <p>Lebih lengkapnya terkait materi CCNA ITN bisa anda lihat <a href="https://www.netacad.com/courses/ccna-introduction-networks?courseLang=en-US">di sini.</a></p>
+                                        <p>For more details regarding the CCNA ITN curriculum, visit the official page <a href="https://www.netacad.com/courses/ccna-introduction-networks?courseLang=en-US">here.</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -1147,11 +1074,11 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>
-                                            Cisco CCNA Switching, Routing, and Wireless Essentials adalah course kedua sebagai langkah untuk mempelajari materi CCNA 200-301 dari Cisco.
+                                            Cisco CCNA: Switching, Routing, and Wireless Essentials is the second course in the track to prepare for the Cisco 200-301 CCNA professional certification.
                                         </p>
                                         <br>
                                         <p>
-                                            Berikut ini adalah penjelasan rinci mengenai kursus CCNA SRWE, termasuk materi dan keterampilan yang akan dikuasai:
+                                            Below is a detailed breakdown of the CCNA SRWE course, including the core modules and technical skills covered:
                                         </p>
                                         <ol>
                                             <li>Module 1: Basic Device Configuration</li>
@@ -1171,7 +1098,7 @@
                                             <li>Module 15: IP Static Routing</li>
                                             <li>Module 16: Troubleshoot Static and Default Routes</li>
                                         </ol>
-                                        <p>Lebih lengkapnya terkait materi CCNA SRWE bisa anda lihat <a href="https://www.netacad.com/courses/ccna-switching-routing-wireless-essentials?courseLang=en-US">di sini.</a></p>
+                                        <p>For more details regarding the CCNA SRWE curriculum, visit the official page <a href="https://www.netacad.com/courses/ccna-switching-routing-wireless-essentials?courseLang=en-US">here.</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -1187,29 +1114,30 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>
-                                            Cisco CCNA Enterprise Networking, Security, and Automation adalah course terakhir sebagai langkah untuk mempelajari materi CCNA 200-301 dari Cisco.
+                                            Cisco CCNA: Enterprise Networking, Security, and Automation is the final foundational module in the preparation 
+                                            for Cisco's 200-301 CCNA professional networking exam.
                                         </p>
                                         <br>
                                         <p>
-                                            Berikut ini adalah penjelasan rinci mengenai kursus CCNA ENSA, termasuk materi dan keterampilan yang akan dikuasai:
+                                            Below is a breakdown of the advanced competencies covered in the CCNA ENSA curriculum:
                                         </p>
                                         <ol>
-                                            <li>Module 1: Single-Area OSPFv2 Concepts</li>
-                                            <li>Module 2: Single-Area OSPFv2 Configuration</li>
-                                            <li>Module 3: Network Security Concepts</li>
-                                            <li>Module 4: ACL Concepts</li>
-                                            <li>Module 5: ACLs for IPv4 Configuration</li>
-                                            <li>Module 6: NAT for IPv4</li>
-                                            <li>Module 7: WAN Concepts</li>
-                                            <li>Module 8: VPN and IPsec Concepts</li>
-                                            <li>Module 9: QoS Concepts</li>
-                                            <li>Module 10: Network Management</li>
-                                            <li>Module 11: Network Design</li>
-                                            <li>Module 12: Network Troubleshooting</li>
-                                            <li>Module 13: Network Virtualization</li>
-                                            <li>Module 14: Network Automation</li>
+                                            <li>Module 1: Single-Area OSPFv2 Concept and Operation</li>
+                                            <li>Module 2: Single-Area OSPFv2 Advanced Configuration</li>
+                                            <li>Module 3: Enterprise Network Security Principles</li>
+                                            <li>Module 4: Standard and Extended Access Control Lists (ACLs)</li>
+                                            <li>Module 5: Designing ACLs for IPv4 Traffic Management</li>
+                                            <li>Module 6: Static and Dynamic NAT for IPv4</li>
+                                            <li>Module 7: WAN Topologies and Connectivity Concepts</li>
+                                            <li>Module 8: VPN Architectures and IPsec Security</li>
+                                            <li>Module 9: Quality of Service (QoS / Prioritization)</li>
+                                            <li>Module 10: Network Management (SNMP/Syslog/NetFlow)</li>
+                                            <li>Module 11: Scalable Network Design Principles</li>
+                                            <li>Module 12: Complex Network Troubleshooting Methodology</li>
+                                            <li>Module 13: Network Virtualization and NFV</li>
+                                            <li>Module 14: Network Automation (SDN/JSON/Python Basics)</li>
                                         </ol>
-                                        <p>Lebih lengkapnya terkait materi CCNA ENSA bisa anda lihat <a href="https://www.netacad.com/courses/ccna-enterprise-networking-security-automation?courseLang=en-US">di sini.</a></p>
+                                        <p>More information regarding CCNA ENSA curriculum visit <a href="https://www.netacad.com/courses/ccna-enterprise-networking-security-automation?courseLang=en-US">here.</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -1227,21 +1155,13 @@
      <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
      <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-    <footer>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <p>&copy; 2023 - by Ervinda Pratama</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <app-footer></app-footer>
     
     <!--Inisialisasi AOS JavaScript-->
     <script>
         AOS.init()
     </script>
-    <!--Script for scroll animation-->
-    <script src="../script/navbar-scroll.js"></script>
+    <!-- Web Components -->
+    <script src="../script/components.js"></script>
 </body>
 </html>

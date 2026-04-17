@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+        <meta name="description" content="A deep-dive into MikroTik's three firewall tables — Filter, Mangle, and Raw — and when to use each one.">
+        <meta name="author" content="Ervinda Pratama">
+        <link rel="stylesheet" href="../../styles/main.css">
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32">
+        <title>MikroTik Firewall Deep Dive — Ervinda Pratama</title>
+        <style>
+            .article-header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid #e0e0e0; margin-bottom: 2rem; }
+            body.dark-mode .article-header { border-bottom-color: #333; }
+            .article-back { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; margin-bottom:1.5rem; }
+            .article-back:hover { color:#005fa3; }
+            body.dark-mode .article-back { color:#00f2fe; }
+            .article-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:1rem; }
+            .article-tag { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; padding:2px 10px; border-radius:20px; background:rgba(0,119,204,0.1); color:#0077cc; border:1px solid rgba(0,119,204,0.25); }
+            body.dark-mode .article-tag { background:rgba(0,242,254,0.1); color:#00f2fe; border-color:rgba(0,242,254,0.25); }
+            .article-title { font-size:2rem; font-weight:800; line-height:1.25; margin-bottom:0.9rem; }
+            body.dark-mode .article-title { color:#f0f0f0; }
+            .article-meta { font-size:13px; color:#888; display:flex; flex-wrap:wrap; gap:1rem; align-items:center; }
+            body.dark-mode .article-meta { color:#666; }
+            .article-content { max-width:780px; margin:0 auto; font-size:1rem; line-height:1.8; color:#333; }
+            body.dark-mode .article-content { color:#d0d0d0; }
+            .article-content h2 { font-size:1.35rem; font-weight:700; margin-top:2.2rem; margin-bottom:0.7rem; border-left:4px solid #0077cc; padding-left:0.7rem; color:#003366; }
+            body.dark-mode .article-content h2 { border-left-color:#00f2fe; color:#00f2fe; }
+            .article-content h3 { font-size:1.1rem; font-weight:700; margin-top:1.5rem; margin-bottom:0.5rem; color:#0077cc; }
+            body.dark-mode .article-content h3 { color:#7fffff; }
+            .article-content pre, .article-content code { background:#1e1e2e; color:#a8d8a8; border-radius:6px; font-size:0.875rem; font-family:'Courier New',monospace; }
+            .article-content pre { padding:1rem 1.2rem; overflow-x:auto; margin:1.2rem 0; }
+            .article-content code { padding:2px 6px; }
+            .article-content blockquote { border-left:4px solid #0077cc; background:rgba(0,119,204,0.06); margin:1.5rem 0; padding:0.8rem 1.2rem; border-radius:0 6px 6px 0; font-style:italic; color:#555; }
+            body.dark-mode .article-content blockquote { border-left-color:#00f2fe; background:rgba(0,242,254,0.05); color:#aaa; }
+            .article-content table { width:100%; border-collapse:collapse; margin:1.2rem 0; }
+            .article-content table th, .article-content table td { border:1px solid #ddd; padding:8px 12px; font-size:0.9rem; }
+            .article-content table th { background:#f0f5ff; font-weight:700; }
+            body.dark-mode .article-content table th { background:#1a1a2e; color:#e0e0e0; }
+            body.dark-mode .article-content table td { border-color:#333; color:#d0d0d0; }
+            .article-nav { display:flex; justify-content:space-between; margin-top:3rem; padding-top:1.5rem; border-top:1px solid #e0e0e0; gap:1rem; }
+            body.dark-mode .article-nav { border-top-color:#333; }
+            .article-nav a { font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; display:flex; align-items:center; gap:6px; }
+            body.dark-mode .article-nav a { color:#00f2fe; }
+        </style>
+    </head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <app-navbar></app-navbar>
+    <section class="page-content">
+        <div class="container">
+            <div class="article-content" data-aos="fade-up">
+
+                <div class="article-header">
+                    <a href="../article_research.html" class="article-back">
+                        <i class="fas fa-arrow-left"></i> Back to Articles &amp; Research
+                    </a>
+                    <div class="article-tags">
+                        <span class="article-tag">MikroTik</span>
+                        <span class="article-tag">Security</span>
+                        <span class="article-tag">Networking</span>
+                    </div>
+                    <h1 class="article-title">MikroTik Firewall Deep Dive: Filter, Mangle &amp; Raw</h1>
+                    <div class="article-meta">
+                        <span><i class="fas fa-user"></i>&nbsp; Ervinda Pratama</span>
+                        <span><i class="fas fa-calendar"></i>&nbsp; April 2025</span>
+                        <span><i class="fas fa-clock"></i>&nbsp; ~10 min read</span>
+                    </div>
+                </div>
+
+                <h2>Introduction</h2>
+                <p>
+                    When you start configuring a MikroTik router, you quickly encounter three firewall tables: <strong>Filter</strong>, <strong>Mangle</strong>, and <strong>Raw</strong>. Many engineers use only Filter by default, but understanding when and why to use each one is the difference between a functional firewall and a truly optimized one.
+                </p>
+                <p>
+                    This article is based on my hands-on experience managing MikroTik-based ISP networks and security deployments, combined with concepts reinforced during MTCNA and MTCTCE certification studies.
+                </p>
+
+                <blockquote>
+                    "A firewall is only as good as the engineer who configures it." — Every NOC engineer, ever.
+                </blockquote>
+
+                <h2>The Three Firewall Tables</h2>
+                <table>
+                    <tr><th>Table</th><th>Purpose</th><th>Works On</th><th>Connection Tracking</th></tr>
+                    <tr><td><strong>Filter</strong></td><td>Accept / Drop / Reject packets</td><td>Processed packets</td><td>Yes</td></tr>
+                    <tr><td><strong>Mangle</strong></td><td>Mark packets / routes / connections</td><td>Processed packets</td><td>Yes</td></tr>
+                    <tr><td><strong>Raw</strong></td><td>Drop before connection tracking</td><td>All packets (early)</td><td>No</td></tr>
+                </table>
+
+                <h2>Filter Table</h2>
+                <p>
+                    The <strong>Filter</strong> table is the primary tool for allowing or blocking traffic. It processes packets after connection tracking, which means you can make decisions based on connection state (new, established, related, invalid).
+                </p>
+                <h3>Common Chains</h3>
+                <ul>
+                    <li><code>input</code> — traffic <em>destined for the router itself</em></li>
+                    <li><code>forward</code> — traffic <em>passing through</em> the router</li>
+                    <li><code>output</code> — traffic <em>originated by</em> the router</li>
+                </ul>
+                <h3>Example: Allow established, block the rest on Input</h3>
+<pre><code>/ip firewall filter
+add chain=input connection-state=established,related action=accept comment="Allow established"
+add chain=input connection-state=invalid action=drop comment="Drop invalid"
+add chain=input action=drop comment="Drop everything else on input"</code></pre>
+
+                <h2>Mangle Table</h2>
+                <p>
+                    Mangle does not block or allow traffic — it <em>marks</em> it. These marks are used by other features like queues (QoS), routing policies (PBR), and ECMP.
+                </p>
+                <h3>Use Case: Mark HTTP/HTTPS for Separate Queue</h3>
+<pre><code>/ip firewall mangle
+add chain=forward protocol=tcp dst-port=80,443 action=mark-packet \
+    new-packet-mark=web-traffic passthrough=yes</code></pre>
+                <p>Then in a queue tree, you reference <code>web-traffic</code> to apply bandwidth limits independently.</p>
+
+                <h3>Use Case: Policy-Based Routing (PBR)</h3>
+<pre><code>/ip firewall mangle
+add chain=prerouting src-address=192.168.10.0/24 action=mark-routing \
+    new-routing-mark=isp2-route passthrough=no</code></pre>
+
+                <h2>Raw Table</h2>
+                <p>
+                    Raw is the earliest interception point — packets hit Raw <em>before</em> connection tracking even starts. This makes it extremely efficient for dropping large volumes of attack traffic (DDoS, port scans) without ever loading the connection table.
+                </p>
+                <blockquote>
+                    Use Raw for known-bad source IPs or bogon prefixes. It protects CPU far more effectively than Filter rules.
+                </blockquote>
+                <h3>Example: Drop Bogon Prefixes Early</h3>
+<pre><code>/ip firewall raw
+add chain=prerouting src-address-list=bogons action=drop comment="Drop bogon sources"</code></pre>
+
+                <h2>When to Use Which</h2>
+                <table>
+                    <tr><th>Scenario</th><th>Use</th></tr>
+                    <tr><td>Block unauthorized SSH access to the router</td><td>Filter — Input</td></tr>
+                    <tr><td>Limit bandwidth for a specific subnet</td><td>Mangle (mark) + Queue</td></tr>
+                    <tr><td>Route different traffic through different ISPs</td><td>Mangle (mark-routing) + Route</td></tr>
+                    <tr><td>Drop DDoS flood traffic as early as possible</td><td>Raw</td></tr>
+                    <tr><td>Block a forwarded traffic flow between VLANs</td><td>Filter — Forward</td></tr>
+                </table>
+
+                <h2>Summary / Takeaways</h2>
+                <ul>
+                    <li>Use <strong>Filter</strong> to make accept/drop decisions — it's connection-state aware.</li>
+                    <li>Use <strong>Mangle</strong> to mark traffic for queues, PBR, or ECMP — never to block.</li>
+                    <li>Use <strong>Raw</strong> to drop traffic at the earliest possible point, protecting CPU from connection tracking overhead.</li>
+                    <li>Order matters: Raw → (connection tracking) → Mangle/Filter. Keep your rules specific and ordered for performance.</li>
+                </ul>
+
+                <div class="article-nav">
+                    <span></span>
+                    <a href="bgp-enterprise-wan.html">
+                        Next: BGP for Enterprise WAN <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="../../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <app-footer></app-footer>
+    <script>AOS.init();</script>
+    <script src="../../script/components.js"></script>
+</body>
+</html>

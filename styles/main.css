@@ -4781,11 +4781,11 @@ table td, table th {
  }
  .navbar-url {
   color: #007bff;
-  background-color: white;
+  background-color: transparent;
  }
  .navbar-url-active {
   color: black;
-  background-color: white;
+  background-color: transparent;
  }
  .navtab-active {
   color: #007bff;
@@ -11026,7 +11026,7 @@ table td, table th {
  
   .profile-item {
     display: flex;
-    align-items: left;
+    align-items: center;
     margin-bottom: 10px;
   }
 
@@ -11036,14 +11036,14 @@ table td, table th {
     margin-right: 10px;
     vertical-align: middle;
  }
- .profile-item p {
-  font-size: 14;
-  color: black;
+   font-size: 14px;
+
+   color: inherit;
   text-align: center;
  }
- .profile-item p a {
-    font-size: 14px;
-    color: black;
+   font-size: 14px;
+   color: #0d6efd;
+
     text-align: center;
  }
 
@@ -11131,3 +11131,142 @@ table td, table th {
   font-size: 11px;
  }
  /*# sourceMappingURL=main.css.map */
+
+/* ADDED COMPILED CSS OVERRIDES FOR UI/UX MODERNIZATION */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;500;600;700&display=swap");
+
+body {
+    font-family: "Inter", sans-serif;
+    color: #333;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Outfit", sans-serif;
+}
+
+/* Dark Mode Extensibility */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4, body.dark-mode h5, body.dark-mode h6, body.dark-mode .header-title b, body.dark-mode b {
+    color: #ffffff;
+}
+body.dark-mode .bg-light {
+    background-color: #1e1e1e !important;
+    color: #e0e0e0 !important;
+}
+body.dark-mode .text-primary, body.dark-mode a {
+    color: #00f2fe !important;
+}
+body.dark-mode a:hover {
+    color: #4facfe !important;
+}
+body.dark-mode .component-portfolio {
+    border: 1px solid #333;
+    background-color: #1e1e1e;
+    color: #e0e0e0 !important;
+}
+body.dark-mode .experience-item {
+    background-color: #1e1e1e;
+    border-left: 4px solid #00f2fe;
+    color: #e0e0e0;
+}
+body.dark-mode .experience-item h3 {
+    color: #00f2fe;
+}
+body.dark-mode .experience-item p, body.dark-mode .experience-item ul {
+    color: #e0e0e0;
+}
+body.dark-mode .experience-item table {
+    color: #e0e0e0;
+}
+body.dark-mode .experience-item table th,
+body.dark-mode .experience-item table td {
+    border-color: #444;
+}
+body.dark-mode .experience-item .table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+body.dark-mode .portfolio-text a {
+    color: #ffffff !important;
+}
+body.dark-mode .portfolio-text a:hover {
+    color: #00f2fe !important;
+}
+body.dark-mode hr {
+    border-top: 1px solid #333;
+}
+body.dark-mode footer {
+    border-top-color: #333;
+}
+body.dark-mode footer p {
+    color: #888;
+}
+body.dark-mode blockquote {
+    color: #a0a0a0;
+    border-left: 4px solid #00f2fe;
+}
+body.dark-mode .form-control {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    border-color: #333;
+}
+body.dark-mode .profile-item i {
+    color: #00f2fe !important;
+}
+body.dark-mode .profile-item p,
+body.dark-mode .profile-item p a {
+    color: #e0e0e0 !important;
+}
+body.dark-mode .profile-item p a:hover {
+    color: #00f2fe !important;
+}
+
+/* Navbar Modifiers */
+.navbar-library {
+    padding-top: 8px;
+    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease, backdrop-filter 0.3s ease;
+}
+@media (max-width: 767.98px) {
+    .navbar-library {
+        background-color: rgba(255, 255, 255, 0.8) !important;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+}
+.navbar-fixed-top.scrolled {
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Dark mode overrides for navbar */
+body.dark-mode .navbar-library {
+    background-color: transparent !important;
+}
+@media (max-width: 767.98px) {
+    body.dark-mode .navbar-library {
+        background-color: rgba(18, 18, 18, 0.9) !important;
+    }
+}
+body.dark-mode .navbar-library .navbar-url-active {
+    color: #e0e0e0;
+}
+body.dark-mode .navbar-library .navtab-active {
+    color: #00f2fe;
+    font-weight: 600;
+}
+body.dark-mode .navbar-library #darkModeToggle {
+    color: #00f2fe;
+    border-color: #00f2fe;
+}
+body.dark-mode .navbar-fixed-top.scrolled {
+    background: rgba(18, 18, 18, 0.8) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}

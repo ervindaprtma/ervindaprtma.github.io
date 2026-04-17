@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+        <meta name="description" content="[ARTICLE DESCRIPTION]">
+        <meta name="author" content="Ervinda Pratama">
+        <link rel="stylesheet" href="../../styles/main.css">
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32">
+        <title>[ARTICLE TITLE] — Ervinda Pratama</title>
+        <style>
+            /* ── Article Body Styles ─────────────────────── */
+            .article-header {
+                padding: 2.5rem 0 1.5rem;
+                border-bottom: 1px solid #e0e0e0;
+                margin-bottom: 2rem;
+            }
+            body.dark-mode .article-header {
+                border-bottom-color: #333;
+            }
+
+            .article-back {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 13px;
+                font-weight: 600;
+                color: #0077cc;
+                text-decoration: none;
+                margin-bottom: 1.5rem;
+            }
+            .article-back:hover { color: #005fa3; }
+            body.dark-mode .article-back { color: #00f2fe; }
+            body.dark-mode .article-back:hover { color: #7fffff; }
+
+            .article-tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+                margin-bottom: 1rem;
+            }
+            .article-tag {
+                font-size: 11px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                padding: 2px 10px;
+                border-radius: 20px;
+                background: rgba(0, 119, 204, 0.1);
+                color: #0077cc;
+                border: 1px solid rgba(0, 119, 204, 0.25);
+            }
+            body.dark-mode .article-tag {
+                background: rgba(0, 242, 254, 0.1);
+                color: #00f2fe;
+                border-color: rgba(0, 242, 254, 0.25);
+            }
+
+            .article-title {
+                font-size: 2rem;
+                font-weight: 800;
+                line-height: 1.25;
+                margin-bottom: 0.9rem;
+            }
+            body.dark-mode .article-title { color: #f0f0f0; }
+
+            .article-meta {
+                font-size: 13px;
+                color: #888;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                align-items: center;
+            }
+            body.dark-mode .article-meta { color: #666; }
+
+            /* Content body */
+            .article-content {
+                max-width: 780px;
+                margin: 0 auto;
+                font-size: 1rem;
+                line-height: 1.8;
+                color: #333;
+            }
+            body.dark-mode .article-content { color: #d0d0d0; }
+
+            .article-content h2 {
+                font-size: 1.35rem;
+                font-weight: 700;
+                margin-top: 2.2rem;
+                margin-bottom: 0.7rem;
+                border-left: 4px solid #0077cc;
+                padding-left: 0.7rem;
+                color: #003366;
+            }
+            body.dark-mode .article-content h2 {
+                border-left-color: #00f2fe;
+                color: #00f2fe;
+            }
+
+            .article-content h3 {
+                font-size: 1.1rem;
+                font-weight: 700;
+                margin-top: 1.5rem;
+                margin-bottom: 0.5rem;
+                color: #0077cc;
+            }
+            body.dark-mode .article-content h3 { color: #7fffff; }
+
+            .article-content pre, .article-content code {
+                background: #1e1e2e;
+                color: #a8d8a8;
+                border-radius: 6px;
+                font-size: 0.875rem;
+                font-family: 'Courier New', monospace;
+            }
+            .article-content pre {
+                padding: 1rem 1.2rem;
+                overflow-x: auto;
+                margin: 1.2rem 0;
+            }
+            .article-content code {
+                padding: 2px 6px;
+            }
+            .article-content blockquote {
+                border-left: 4px solid #0077cc;
+                background: rgba(0, 119, 204, 0.06);
+                margin: 1.5rem 0;
+                padding: 0.8rem 1.2rem;
+                border-radius: 0 6px 6px 0;
+                font-style: italic;
+                color: #555;
+            }
+            body.dark-mode .article-content blockquote {
+                border-left-color: #00f2fe;
+                background: rgba(0, 242, 254, 0.05);
+                color: #aaa;
+            }
+
+            .article-content table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 1.2rem 0;
+            }
+            .article-content table th,
+            .article-content table td {
+                border: 1px solid #ddd;
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+            .article-content table th { background: #f0f5ff; font-weight: 700; }
+            body.dark-mode .article-content table th { background: #1a1a2e; color: #e0e0e0; }
+            body.dark-mode .article-content table td { border-color: #333; color: #d0d0d0; }
+
+            /* Navigation between articles */
+            .article-nav {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 3rem;
+                padding-top: 1.5rem;
+                border-top: 1px solid #e0e0e0;
+                gap: 1rem;
+            }
+            body.dark-mode .article-nav { border-top-color: #333; }
+
+            .article-nav a {
+                font-size: 13px;
+                font-weight: 600;
+                color: #0077cc;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .article-nav a:hover { text-decoration: underline; }
+            body.dark-mode .article-nav a { color: #00f2fe; }
+        </style>
+    </head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <app-navbar></app-navbar>
+    <section class="page-content">
+        <div class="container">
+            <div class="article-content" data-aos="fade-up">
+
+                <!-- Back link -->
+                <div class="article-header">
+                    <a href="../article_research.html" class="article-back">
+                        <i class="fas fa-arrow-left"></i> Back to Articles &amp; Research
+                    </a>
+
+                    <!-- Tags -->
+                    <div class="article-tags">
+                        <span class="article-tag">[TAG 1]</span>
+                        <span class="article-tag">[TAG 2]</span>
+                    </div>
+
+                    <!-- Title -->
+                    <h1 class="article-title">[ARTICLE TITLE]</h1>
+
+                    <!-- Meta -->
+                    <div class="article-meta">
+                        <span><i class="fas fa-user"></i>&nbsp; Ervinda Pratama</span>
+                        <span><i class="fas fa-calendar"></i>&nbsp; [DATE]</span>
+                        <span><i class="fas fa-clock"></i>&nbsp; [X] min read</span>
+                    </div>
+                </div>
+
+                <!-- ── ARTICLE BODY — write your content below ─── -->
+
+                <h2>Introduction</h2>
+                <p>
+                    Write your introduction here. Explain the problem, what you'll cover, and why it matters.
+                </p>
+
+                <h2>Section 1 Title</h2>
+                <p>Your content here.</p>
+
+                <h3>Sub-section</h3>
+                <p>Your content here.</p>
+
+                <!-- Code block example -->
+                <pre><code># Example command or config
+/ip firewall filter add chain=input action=drop</code></pre>
+
+                <!-- Blockquote example -->
+                <blockquote>
+                    A key insight or quote from the topic.
+                </blockquote>
+
+                <h2>Section 2 Title</h2>
+                <p>Your content here.</p>
+
+                <!-- Table example -->
+                <table>
+                    <tr><th>Column A</th><th>Column B</th></tr>
+                    <tr><td>Value 1</td><td>Value 2</td></tr>
+                </table>
+
+                <h2>Summary / Takeaways</h2>
+                <ul>
+                    <li>Key point one.</li>
+                    <li>Key point two.</li>
+                    <li>Key point three.</li>
+                </ul>
+
+                <!-- ── Article navigation footer ───────────────── -->
+                <div class="article-nav">
+                    <a href="#">
+                        <i class="fas fa-arrow-left"></i> Previous Article
+                    </a>
+                    <a href="#">
+                        Next Article <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="../../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <app-footer></app-footer>
+    <script>AOS.init();</script>
+    <script src="../../script/components.js"></script>
+</body>
+</html>

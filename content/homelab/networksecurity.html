@@ -1,490 +1,641 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
-        <meta name="Desc" content="Noting">
-        <meta name="Author" content="MasVin22">
+        <meta name="description" content="Technical labs and projects focused on Network Engineering, Security Infrastructure, and Performance Monitoring.">
+        <meta name="author" content="MasVin22">
+        
+        <!-- Stylesheets -->
         <link rel="stylesheet" href="../../styles/main.css">
         <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
         <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <title>Network Engineer L2 - Ervinda Pratama</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        
+        <title>Network & Security Labs | Ervinda Pratama</title>
 
         <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32" class="rounded-circle">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+        
         <style>
-            .thumbnail-img {
-                width: 100px;  /* Ukuran thumbnail */
-                height: auto;
-                border-radius: 8px;
-                cursor: pointer;
-                transition: transform 0.2s;
+            :root {
+                --card-bg: #ffffff;
+                --card-border: #e0e0e0;
+                --accent-color: #0077cc;
+                --text-muted: #666;
             }
-            .thumbnail-img:hover {
-                transform: scale(1.1);
+
+            [data-bs-theme="dark"] {
+                --card-bg: #1e1e1e;
+                --card-border: #333;
+                --accent-color: #00f2fe;
+                --text-muted: #aaa;
+            }
+
+            .article-back { 
+                display: inline-flex; 
+                align-items: center; 
+                gap: 8px; 
+                font-size: 14px; 
+                font-weight: 600; 
+                color: var(--accent-color); 
+                text-decoration: none; 
+                margin-bottom: 2rem;
+                transition: transform 0.2s ease;
+            }
+            .article-back:hover { 
+                transform: translateX(-5px);
+                color: var(--accent-color);
+            }
+
+            .premium-card {
+                background: var(--card-bg);
+                border: 1px solid var(--card-border);
+                border-radius: 16px;
+                transition: all 0.3s ease;
+                overflow: hidden;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                padding: 1.5rem;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            }
+
+            .premium-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+                border-color: var(--accent-color);
+            }
+
+            .card-header-flex {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .project-title {
+                font-size: 1.2rem;
+                font-weight: 700;
+                margin: 0;
+                line-height: 1.4;
+            }
+
+            .thumbnail-container {
+                flex-shrink: 0;
+                width: 70px;
+                height: 70px;
+                border-radius: 12px;
+                overflow: hidden;
+                border: 1px solid var(--card-border);
+                cursor: pointer;
+                transition: transform 0.3s ease;
+            }
+
+            .thumbnail-container:hover {
+                transform: scale(1.1) rotate(3deg);
+            }
+
+            .thumbnail-container img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .task-list {
+                list-style: none;
+                padding: 0;
+                margin-bottom: 1.5rem;
+                flex-grow: 1;
+            }
+
+            .task-list li {
+                font-size: 0.85rem;
+                margin-bottom: 0.6rem;
+                display: flex;
+                align-items: flex-start;
+                gap: 8px;
+                color: var(--text-muted);
+            }
+
+            .task-list li i {
+                color: var(--accent-color);
+                margin-top: 3px;
+                font-size: 0.8rem;
+            }
+
+            .details-btn {
+                background: rgba(0, 119, 204, 0.08);
+                border: 1px solid rgba(0, 119, 204, 0.15);
+                border-radius: 8px;
+                padding: 6px 14px;
+                font-weight: 600;
+                color: var(--accent-color);
+                text-decoration: none;
+                text-align: center;
+                transition: all 0.2s ease;
+                font-size: 0.85rem;
+            }
+
+            [data-bs-theme="dark"] .details-btn {
+                background: rgba(0, 242, 254, 0.08);
+                border-color: rgba(0, 242, 254, 0.15);
+            }
+
+            .details-btn:hover {
+                background: var(--accent-color);
+                color: white;
+            }
+            [data-bs-theme="dark"] .details-btn:hover {
+                color: #000;
+            }
+
+            /* Modal Styling */
+            .modal-content {
+                border-radius: 20px;
+                border: 1px solid var(--card-border);
+                background: var(--card-bg);
+            }
+            .modal-header {
+                border-bottom: 1px solid var(--card-border);
+                padding: 1.5rem;
+            }
+            .modal-body {
+                padding: 2rem;
+            }
+            .modal-body h6 {
+                font-weight: 700;
+                color: var(--accent-color);
+                margin-top: 1.5rem;
+                margin-bottom: 1rem;
+                text-transform: uppercase;
+                font-size: 0.85rem;
+                letter-spacing: 1px;
+            }
+            .modal-body p, .modal-body li {
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+            .modal-footer {
+                border-top: 1px solid var(--card-border);
+                padding: 1.2rem;
             }
         </style>
-
     </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light navbar-library fixed-top navbar-fixed-top">
-            <div class="container">
-                <button
-                    class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle Navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="../../index.html">Back to Home</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active navtab-active" href="#">Network & Security</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="cybersecurity.html">Cybersecurity Labs</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="artificial_intelligence.html">AI for Security</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="blockchain.html">Blockchain & Web3</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="../project_homelab.html">Back to Top</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <section class="page-content">
-        <div class="container">
-            <div id="home">
-                <div class="page-home">
-                    <div class="header">
-                        <div class="row align-items-center">
-                            <div class="col-lg-12 col-md-6 justify-content-left text-center">
-                                <img src="../../background/project_homelabs.jpg" class="w-25 rounded mx-auto d-block" width="200" alt="profil" data-aos="zoom-in">
-                            </div>
-                        </div>
-                        <br>
-                        <div class="col-lg-12 col-md-6 justify-content-center text-center">
-                            <br>
-                            <p><b>Project & Home Labs</b></p>
-                            <blockquote class="justify-content-center text-center">
-                                Eksplorasi Riset, eksperimen dan implementasi praktis dalam bidang
-                                Networking, Cybersecurity, Artificial Intelligence (AI), dan Blockchain.
-                            </blockquote>
-                            <p>~ Ervinda Pratama</p>
-                        </div>
-                        <hr class="mt-5" data-aos="fade-up" data-aos-delay="500" />
-                        <div class="col-lg-12 col-md-8 text-left">
-                            <div class="header-title mt-4" data-aos="fade-up" data-aos-delay="600">
-                                <h2>
-                                    <b>Network & Security Projects & Home Labs</b>
-                                </h2>
-                            </div>
-                            <!--Start Grid Layout-->
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mt-6" data-aos="fade-up" data-aos-delay="600">
-                                <div class="bg-light p-4 rounded shadow d-flex flex-column">
-                                    <!-- Judul dan Thumbnail -->
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <!-- Judul Proyek -->
-                                        <h3 class="fw-bold mb-0">📡 Wireless Distribution Outdoor di 22 BTS dengan MikroTik & Air Fiber</h3>
-                            
-                                        <!-- Thumbnail Image -->
-                                        <div class="ms-3">
-                                            <img src="images_thumbnail/project_wireless_distribution.jpg" 
-                                                 class="img-fluid rounded thumbnail-img" 
-                                                 data-bs-toggle="modal" data-bs-target="#wirelessprojectimage" 
-                                                 alt="Project BTS" style="max-width: 100px;">
-                                        </div>
-                                    </div>
-                                    <!-- List Deskripsi -->
-                                    <ul class="mt-3 mb-2 list-unstyled">
-                                        <li>🔹 Penentuan target pembangunan jaringan serta perencanaan sistem jaringan</li>
-                                        <li>🔹 Penyusunan topologi jaringan mulai dari Core Network (Router Backbone, Switch Distribution/Access, AP PtP, Switch on Site, dan AP PtMP)</li>
-                                        <li>🔹 Melakukan site planning dengan menggunakan Ubiquity Maps</li>
-                                        <li>🔹 Survey lokasi untuk setiap titik agar dapat diketahui medan yang ada</li>
-                                        <li>🔹 Dokumentasi dan pengujian kebijakan keamanan firewall</li>
-                                        <li>🔹 Penyusunan anggaran serta penentuan perangkat (type/merk)</li>
-                                        <li>🔹 Penyusunan timeline proyek dan penjadwalan tim lapangan</li>
-                                        <li>🔹 Instalasi perangkat jaringan indoor/outdoor sesuai dengan timeline</li>
-                                        <li>🔹 Konfigurasi serta optimalisasi link PtP antar site agar dapat sesuai dengan target</li>
-                                        <li>🔹 Pengujian dan evaluasi jaringan yang telah dibangun</li>
-                                        <li>🔹 Penyusunan dokumentasi proyek</li>
-                                    </ul>
-                                    <!-- Button Details -->
-                                    <div class="portfolio-price">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#wirelessdistribution">Details</a>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="bg-light p-4 rounded shadow d-flex flex-column">
-                                    <!-- Judul dan Thumbnail -->
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <!-- Judul Proyek -->
-                                        <h3 class="fw-bold mb-0">🖥️ Monitoring Jaringan dengan The Dude MikroTik</h3>
-                            
-                                        <!-- Thumbnail Image -->
-                                        <div class="ms-3">
-                                            <img src="images_thumbnail/project_thedude_mikrotik.jpg" 
-                                                 class="img-fluid rounded thumbnail-img" 
-                                                 data-bs-toggle="modal" data-bs-target="#thedudeprojectimg" 
-                                                 alt="TheDude" style="max-width: 100px;">
-                                        </div>
-                                    </div>
-                                    <!-- List Deskripsi -->
-                                    <ul class="mt-3 mb-2 list-unstyled">
-                                        <li>🔹Instalasi VMware sebagai wadah MikroTik CHR</li>
-                                        <li>🔹Instalasi MikroTik CHR dengan spesifikasi sesuai dengan kebutuhan</li>
-                                        <li>🔹Instalasi package The Dude pada MikroTik CHR</li>
-                                        <li>🔹Create Network Maps sesuai dengan topologi jaringan</li>
-                                        <li>🔹Create Topologi Tree pada Device (Parent & Child) sesuai dengan topologi</li>
-                                        <li>🔹Konfigurasi alert pada The Dude Notification (sound, pop-up, telegram)</li>
-                                        <li>🔹Konfigurasi SNMP OID sesuai kebutuhan</li>
-                                        <li>🔹Review sistem monitoring dan dokumentasi</li>
-                                    </ul>
-                                    <!-- Button Details -->
-                                    <div class="portfolio-price">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#thedudeproject">Details</a>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="bg-light p-4 rounded shadow d-flex flex-column">
-                                    <!-- Judul dan Thumbnail -->
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <!-- Judul Proyek -->
-                                        <h3 class="fw-bold mb-0">🌐 Routing Dynamic Multi-Area dengan OSPF</h3>
-                            
-                                        <!-- Thumbnail Image -->
-                                        <div class="ms-3">
-                                            <img src="images_thumbnail/project_home_ospf.png" 
-                                                 class="img-fluid rounded thumbnail-img" 
-                                                 data-bs-toggle="modal" data-bs-target="#ospfroutingimg" 
-                                                 alt="Routing Dynamic OSPF" style="max-width: 100px;">
-                                        </div>
-                                    </div>
-                                    <ul class="mt-3 mb-2 list-unstyled">
-                                        <li>🔹Konfigurasi jaringan routing dengan OSPF Multi Area</li>
-                                        <li>🔹Penerapan Virtual-Link sebagai penghubung area backbone dengan area yang tidak terhubung langsung dengan area backbone</li>
-                                        <li>🔹Pemantauan routing table dan optimalisasi menggunakan network summarization</li>
-                                        <li>🔹Pengujian koneksi melalui ping & traceroute</li>
-                                        <li>🔹Review & dokumentasi</li>
-                                    </ul>
-                                    <!-- Button Details -->
-                                    <div class="portfolio-price">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#ospfrouting">Details</a>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="bg-light p-4 rounded shadow d-flex flex-column">
-                                    <!-- Judul dan Thumbnail -->
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <!-- Judul Proyek -->
-                                        <h3 class="fw-bold mb-0">🖥️ Monitoring Jaringan dengan LibreNMS</h3>
-                            
-                                        <!-- Thumbnail Image -->
-                                        <div class="ms-3">
-                                            <img src="images_thumbnail/project_librenms.png" 
-                                                 class="img-fluid rounded thumbnail-img" 
-                                                 data-bs-toggle="modal" data-bs-target="#librenmsimg" 
-                                                 alt="LibreNMS" style="max-width: 100px;">
-                                        </div>
-                                    </div>
-                                    <ul class="mt-3 mb-2 list-unstyled">
-                                        <li>🔹Instalasi LibreNMS untuk memonitor jaringan RT/RW Net</li>
-                                        <li>🔹Penerapan location mapping dengan LibreNMS (weather map) dan coordiate GPS</li>
-                                        <li>🔹Penerapan alert Telegram sebagai alarm saat terjadinya error atau device down</li>
-                                        <li>🔹Membangun dashboard pemantauan log dan bandwidth usage</li>
-                                        <li>🔹Pengaturan PING Service agar dapat diketahui latency antar device yang ada di dalam jaringan melalui fitur plugin Nagios</li>
-                                    </ul>
-                                    <div class="portfolio-price">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#librenms">Details</a>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="bg-light p-4 rounded shadow d-flex flex-column">
-                                    <!-- Judul dan Thumbnail -->
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <!-- Judul Proyek -->
-                                        <h3 class="fw-bold mb-0">🛡️ Implementasi Firewall FortiGate</h3>
-                            
-                                        <!-- Thumbnail Image -->
-                                        <div class="ms-3">
-                                            <img src="images_thumbnail/fortigate_dashboard.jpg" 
-                                                 class="img-fluid rounded thumbnail-img" 
-                                                 data-bs-toggle="modal" data-bs-target="#fortigateimg" 
-                                                 alt="FortiGate Dashboard" style="max-width: 100px;">
-                                        </div>
-                                    </div>
-                                    <ul class="mt-3 mb-2 list-unstyled">
-                                        <li>🔹Konfigurasi Policy Firewall untuk pembatasan akses dan traffic server / internal</li>
-                                        <li>🔹Konfigurasi SD-WAN Internet dan SD-WAN + IPSec Tunneling</li>
-                                        <li>🔹Penerapan remote connection via VPN SSL Authentication</li>
-                                        <li>🔹Pemantauan dan analisa log firewall</li>
-                                        <li>🔹Dokumentasi dan pengujian kebijakan keamanan firewall</li>
-                                    </ul>
-                                    <div class="portfolio-price">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#fortigate">Details</a>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="bg-light p-4 rounded shadow d-flex flex-column">
-                                    <!-- Judul dan Thumbnail -->
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <!-- Judul Proyek -->
-                                        <h3 class="fw-bold mb-0">🖥️ Monitoring Perfomance SLA SD-WAN dengan Telegraf</h3>
-                            
-                                        <!-- Thumbnail Image -->
-                                        <div class="ms-3">
-                                            <img src="images_thumbnail/performance_sla.jpg" 
-                                                 class="img-fluid rounded thumbnail-img" 
-                                                 data-bs-toggle="modal" data-bs-target="#slatelegrafimg" 
-                                                 alt="Perfomance SLA" style="max-width: 100px;">
-                                        </div>
-                                    </div>
-                                    <ul class="mt-3 mb-2 list-unstyled">
-                                        <li>🔹Instalasi Plugin Telegraf dari InfluxDB</li>
-                                        <li>🔹Konfigurasi SNMP Query menuju ke perangkat FortiGate</li>
-                                        <li>🔹Integrasi Telegraf dengan Opensearch sebagai penyimpanan data index</li>
-                                        <li>🔹Integrasi Opensearch Index dengan Grafana sebagai dashboard monitoring</li>
-                                        <li>🔹Pembuatan dashboard monitoring menggunakan Grafana</li>
-                                        <li>🔹Implementasi alert pada Grafana menggunakan Telegram</li>
-                                        <li>🔹Backup data index telegraf secara rutin (weekly)</li>
-                                        <li>🔹Analisa log SNMP dari Performa SLA SD-WAN</li>
-                                        <li>🔹Reporting Daily History performa dari SLA SD-WAN FortiGate</li>
-                                    </ul>
-                                    <div class="portfolio-price">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#slatelegraf">Details</a>
-                                    </div>
-                                </div>
-                                <br>
-                            </div>
-                        </div>
-                    <!-- Started Pop-Up Page-->
-                    <!-- Project Wireless Distribution-->
-                        <!-- #pop up thumbanils-->
-                        <div class="modal fade" id="wirelessprojectimage" tabindex="-1" aria-labelledby="imageModalLabel">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="imageModalLabel">Project BTS</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body text-center">
-                                        <img src="images_thumbnail/project_wireless_distribution.jpg" class="img-fluid rounded" alt="Project Image">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal fade" id="wirelessdistribution" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h6 class="modal-title">Detail of Project Wireless Distribution Outdoor di 22 BTS dengan MikroTik & Air Fiber</h6>
-                                        <!-- Fix: Gunakan data-bs-dismiss="modal" untuk Bootstrap 5 -->
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>
-                                            Project ini sebenarnya dimulai secara bertahap, namun secara keseluruhan dapat disimpulkan seperti berikut ini:
-                                        </p>
-                                        <p>
-                                            Tujuan: Membangun sebuah jaringan berskala MAN sebagai jalur distribusi jaringan ke setiap rumah di desa-desa pada wilayah Kabupaten Lamongan.
-                                        </p>
-                                        <p>Langkah - langkah implementasi:</p>
-                                        <ol>
-                                            <li>Menentukan area yang ditargetkan</li>
-                                            <li>Melakukan site survey dan menganalisa area berdasarkan jarak, ketinggian tanah (kontur tanah), dan target bandwidth yang akan dikirimkan</li>
-                                            <li>Melakukan survey lokasi yang akan digunakan sebagai titik Base Station (Tower/Antena BTS)</li>
-                                            <li>Melakukan analisa link planner dari Tower Pusat menuju ke setiap site menggunakan titik koordinat BTS sebagai acuan lokasi antena</li>
-                                            <li>Melakukan analisa coverage area menggunakan titik koordinat BTS sebagai acuan penyebaran</li>
-                                            <li>Menentukan jenis antena yang digunakan sebagai PtP dan PtMP</li>
-                                            <li>Instalasi perangkat di setiap tower baik pusat dan BTS</li>
-                                            <li>Melakukan konfigurasi perangkat dan instalasi wireless link (pointing antena, config frequency, dan lain-lain)</li>
-                                            <li>Melakukan tunning pada setiap link menuju ke BTS dengan acuan target bandwidth serta kualitas link</li>
-                                            <li>Melakukan pengujian koneksi PtP</li>
-                                            <li>Melakukan konfigurasi pada perangkat distribusi (AP) di setiap BTS</li>
-                                            <li>Melakukan instalasi pada setiap client (home based) dengan station radio</li>
-                                            <li>Melakukan tunning pada setiap link user</li>
-                                            <li>Melakukan pengujian koneksi PtMP</li>
-                                            <li>Review dan dokumentasi</li>
-                                            <li>Monitoring & troubleshooting apabila ditemukan gangguan pada koneksi baik backbone & user</li>
-                                        </ol>
-                                        <p>Tools yang digunakan untuk Link Planner:</p>
-                                        <ol>
-                                            <li>Conota Camera: Sebagai photo sekaligus coordinate location</li>
-                                            <li>UISP Design Center: Sebagai link planner dan penentuan spesifikasi perangkat</li>
-                                            <li>Google Earth Pro: Sebagai link planner dan pengecekan kontur tanah</li>
-                                        </ol>
-                                    </div>
-                                    <!-- Fix: Tambahkan modal-footer dengan tombol Close -->
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>                          
-                    </div>
-                    <!-- Project The Dude MikroTik-->
-                        <!-- #pop up thumbanils-->
-                        <div class="modal fade" id="thedudeprojectimg" tabindex="-1" aria-labelledby="imageModalLabel">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="imageModalLabel">Project The Dude</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body text-center">
-                                        <img src="images_thumbnail/project_thedude_mikrotik.jpg" class="img-fluid rounded" alt="TheDude">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal fade" id="thedudeproject" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h6 class="modal-title">Detail of Project Monitoring Jaringan dengan The Dude MikroTik</h6>
-                                        <!-- Fix: Gunakan data-bs-dismiss="modal" untuk Bootstrap 5 -->
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>
-                                            Project ini dibuat atas dasar dibutuhkannya sebuah sistem monitoring namun berjalan secara lokal dengan detail seperti berikut ini:
-                                        </p>
-                                        <p>
-                                            Tujuan: Membangun sebuah sistem monitoring untuk seluruh jaringan yang telah dibangun menggunakan beberapa protokol seperti ICMP & SNMP.
-                                        </p>
-                                        <p>Langkah - langkah implementasi:</p>
-                                        <ol>
-                                            <li>Melakukan instalasi VMware Workstation</li>
-                                            <li>Melakukan instalasi CHR MikroTik</li>
-                                            <li>Aktivasi Lisensi MikroTik dengan level P1</li>
-                                            <li>Instalasi package The Dude</li>
-                                            <li>Proses pembuatan Map Network pada The Dude</li>
-                                            <li>Menambahkan device baru pada The Dude untuk dimonitoring</li>
-                                            <li>Proses pembuatan mapping device pada Map Network yang telah dibuat</li>
-                                            <li>Manajemen service yang dimonitoring</li>
-                                            <li>Penambahan integrasi SNMP & OID MikroTik</li>
-                                            <li>Manajemen Map Network agar lebih terstruktur dengan Device Tree</li>
-                                        </ol>
-                                        <p>Tools yang digunakan untuk Install Monitoring System :</p>
-                                        <ol>
-                                            <li>VMware Workstation 17 : Sebagai tempat instalasi Virtual Router MikroTik</li>
-                                            <li>File CHR MikroTik : Sebagai bahan instalasi Virtual Router MikroTik
-                                            <li>Package Installer The Dude : Sebagai service package yang wajib diinstall ke CHR MikroTik</li>
-                                        </ol>
-                                    </div>
-                                    <!-- Fix: Tambahkan modal-footer dengan tombol Close -->
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>                          
-                    </div>
-                    <!-- Project OSPF-->
-                        <!-- #pop up thumbanils-->
-                        <div class="modal fade" id="thedudeprojectimg" tabindex="-1" aria-labelledby="imageModalLabel">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="imageModalLabel">Project The Dude</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body text-center">
-                                        <img src="images_thumbnail/project_thedude_mikrotik.jpg" class="img-fluid rounded" alt="TheDude">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal fade" id="thedudeproject" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h6 class="modal-title">Detail of Project Monitoring Jaringan dengan The Dude MikroTik</h6>
-                                        <!-- Fix: Gunakan data-bs-dismiss="modal" untuk Bootstrap 5 -->
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>
-                                            Project ini dibuat atas dasar dibutuhkannya sebuah sistem monitoring namun berjalan secara lokal dengan detail seperti berikut ini:
-                                        </p>
-                                        <p>
-                                            Tujuan: Membangun sebuah sistem monitoring untuk seluruh jaringan yang telah dibangun menggunakan beberapa protokol seperti ICMP & SNMP.
-                                        </p>
-                                        <p>Langkah - langkah implementasi:</p>
-                                        <ol>
-                                            <li>Melakukan instalasi VMware Workstation</li>
-                                            <li>Melakukan instalasi CHR MikroTik</li>
-                                            <li>Aktivasi Lisensi MikroTik dengan level P1</li>
-                                            <li>Instalasi package The Dude</li>
-                                            <li>Proses pembuatan Map Network pada The Dude</li>
-                                            <li>Menambahkan device baru pada The Dude untuk dimonitoring</li>
-                                            <li>Proses pembuatan mapping device pada Map Network yang telah dibuat</li>
-                                            <li>Manajemen service yang dimonitoring</li>
-                                            <li>Penambahan integrasi SNMP & OID MikroTik</li>
-                                            <li>Manajemen Map Network agar lebih terstruktur dengan Device Tree</li>
-                                        </ol>
-                                        <p>Tools yang digunakan untuk Install Monitoring System :</p>
-                                        <ol>
-                                            <li>VMware Workstation 17 : Sebagai tempat instalasi Virtual Router MikroTik</li>
-                                            <li>File CHR MikroTik : Sebagai bahan instalasi Virtual Router MikroTik
-                                            <li>Package Installer The Dude : Sebagai service package yang wajib diinstall ke CHR MikroTik</li>
-                                        </ol>
-                                    </div>
-                                    <!-- Fix: Tambahkan modal-footer dengan tombol Close -->
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>                          
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>    
-
-     <!-- Java Script with Bootstrap-->
-     <script src="../../vendor/jquery/jquery.slim.min.js"></script>
-     <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
-    <footer>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <p>&copy; 2023 - by Ervinda Pratama</p>
-                </div>
-            </div>
-        </div>
-    </footer>
-    
-    <!--Inisialisasi AOS JavaScript-->
     <script>
-        AOS.init()
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
     </script>
-    <!--Script for scroll animation-->
-    <script src="../../script/navbar-scroll.js"></script>
-    <!--<script src="https://cdn.tailwindcss.com"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <app-navbar></app-navbar>
 
+    <section class="page-content py-5">
+        <div class="container container-content">
+            <!-- Back to Home Lab -->
+            <div data-aos="fade-right">
+                <a href="../project_homelab.html" class="article-back">
+                    <i class="fas fa-arrow-left"></i> Back to Home Lab
+                </a>
+            </div>
+
+            <div class="header-section text-center mb-5" data-aos="fade-up">
+                <div class="d-inline-block px-4 py-1 mb-3 rounded-pill bg-primary bg-opacity-10 text-primary fw-bold" style="font-size: 0.75rem; letter-spacing: 1px;">
+                    INFRASTRUCTURE LABS
+                </div>
+                <h1 class="display-5 fw-bold mb-4">Network & Security Projects</h1>
+                <p class="lead text-muted mx-auto" style="max-width: 800px; font-size: 1.1rem;">
+                    Practical exploration of enterprise-grade networking, high-performance monitoring stacks, and secure infrastructure deployments.
+                </p>
+            </div>
+
+            <div class="row g-4 justify-content-center">
+                <!-- Project 1: Wireless Distribution -->
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="premium-card">
+                        <div class="card-header-flex">
+                            <h3 class="project-title">📡 Outdoor Wireless Distribution at 22 BTS Sites with MikroTik & Air Fiber</h3>
+                            <div class="thumbnail-container" data-toggle="modal" data-target="#modalImgWireless">
+                                <img src="images_thumbnail/project_wireless_distribution.jpg" alt="BTS Project">
+                            </div>
+                        </div>
+                        <ul class="task-list">
+                            <li><i class="fas fa-check-circle"></i> Network construction targeting and system-wide planning.</li>
+                            <li><i class="fas fa-check-circle"></i> Topology design covering Core, Distribution, Access, and PtP/PtMP links.</li>
+                            <li><i class="fas fa-check-circle"></i> RF Site planning using Ubiquity Maps and Google Earth Pro.</li>
+                            <li><i class="fas fa-check-circle"></i> Budgeting, resource allocation, and hardware selection.</li>
+                            <li><i class="fas fa-check-circle"></i> Physical installation of high-gain antennas and outdoor gear.</li>
+                        </ul>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary">ISP Scale</span>
+                            <a href="#" class="details-btn" data-toggle="modal" data-target="#modalWireless">View Details</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2: The Dude -->
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="premium-card">
+                        <div class="card-header-flex">
+                            <h3 class="project-title">🖥️ Local Network Monitoring with MikroTik The Dude</h3>
+                            <div class="thumbnail-container" data-toggle="modal" data-target="#modalImgDude">
+                                <img src="images_thumbnail/project_thedude_mikrotik.jpg" alt="The Dude">
+                            </div>
+                        </div>
+                        <ul class="task-list">
+                            <li><i class="fas fa-check-circle"></i> VMware host setup for high-availability MikroTik CHR.</li>
+                            <li><i class="fas fa-check-circle"></i> Instance activation and "The Dude" package integration.</li>
+                            <li><i class="fas fa-check-circle"></i> Visual topology mapping with hierarchical device trees.</li>
+                            <li><i class="fas fa-check-circle"></i> Automated alert system via Telegram and Local Pop-ups.</li>
+                            <li><i class="fas fa-check-circle"></i> Custom SNMP OID monitoring for bandwidth and system health.</li>
+                        </ul>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary">NOC Tooling</span>
+                            <a href="#" class="details-btn" data-toggle="modal" data-target="#modalDude">View Details</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3: OSPF -->
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="premium-card">
+                        <div class="card-header-flex">
+                            <h3 class="project-title">🌐 Dynamic Multi-Area Routing with OSPF Virtual-Links</h3>
+                            <div class="thumbnail-container" data-toggle="modal" data-target="#modalImgOSPF">
+                                <img src="images_thumbnail/project_home_ospf.png" alt="OSPF Routing">
+                            </div>
+                        </div>
+                        <ul class="task-list">
+                            <li><i class="fas fa-check-circle"></i> Multi-Area OSPF architecture implementation.</li>
+                            <li><i class="fas fa-check-circle"></i> Virtual-Link deployment for non-backbone area convergence.</li>
+                            <li><i class="fas fa-check-circle"></i> Network summarization for routing table optimization.</li>
+                            <li><i class="fas fa-check-circle"></i> Convergence testing and failover scenario simulation.</li>
+                            <li><i class="fas fa-check-circle"></i> Documentation of Area configuration and LSDB status.</li>
+                        </ul>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary">Core Routing</span>
+                            <a href="#" class="details-btn" data-toggle="modal" data-target="#modalOSPF">View Details</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4: LibreNMS -->
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="premium-card">
+                        <div class="card-header-flex">
+                            <h3 class="project-title">📊 Visual ISP Monitoring Stack with LibreNMS</h3>
+                            <div class="thumbnail-container" data-toggle="modal" data-target="#modalImgLibre">
+                                <img src="images_thumbnail/project_librenms.png" alt="LibreNMS">
+                            </div>
+                        </div>
+                        <ul class="task-list">
+                            <li><i class="fas fa-check-circle"></i> LibreNMS deployment for RT/RW Net ISP monitoring (300+ nodes).</li>
+                            <li><i class="fas fa-check-circle"></i> Geographic Weather Maps integration with GPS coordinates.</li>
+                            <li><i class="fas fa-check-circle"></i> Instant Telegram alerting for hardware failures/downtime.</li>
+                            <li><i class="fas fa-check-circle"></i> Nagios Plugin integration for PING latency monitoring.</li>
+                            <li><i class="fas fa-check-circle"></i> Dashboard design for traffic analysis and SLA reporting.</li>
+                        </ul>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary">ISP NOC</span>
+                            <a href="#" class="details-btn" data-toggle="modal" data-target="#modalLibre">View Details</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 5: FortiGate -->
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="500">
+                    <div class="premium-card">
+                        <div class="card-header-flex">
+                            <h3 class="project-title">🛡️ FortiGate Next-Generation Firewall Implementation</h3>
+                            <div class="thumbnail-container" data-toggle="modal" data-target="#modalImgForti">
+                                <img src="images_thumbnail/fortigate_dashboard.jpg" alt="FortiGate">
+                            </div>
+                        </div>
+                        <ul class="task-list">
+                            <li><i class="fas fa-check-circle"></i> Security Policy configuration for server zone isolation.</li>
+                            <li><i class="fas fa-check-circle"></i> SD-WAN configuration with WAN load balancing.</li>
+                            <li><i class="fas fa-check-circle"></i> FortiGate SSL VPN deployment for secure remote access.</li>
+                            <li><i class="fas fa-check-circle"></i> Traffic analysis using FortiView and analytical logs.</li>
+                            <li><i class="fas fa-check-circle"></i> IPSec Site-to-Site Tunneling with SD-WAN optimization.</li>
+                        </ul>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary">SecOps</span>
+                            <a href="#" class="details-btn" data-toggle="modal" data-target="#modalForti">View Details</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 6: Telegraf SD-WAN -->
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="600">
+                    <div class="premium-card">
+                        <div class="card-header-flex">
+                            <h3 class="project-title">📈 Advanced SD-WAN SLA Monitoring via Telegraf & Grafana</h3>
+                            <div class="thumbnail-container" data-toggle="modal" data-target="#modalImgTelegraf">
+                                <img src="images_thumbnail/performance_sla.jpg" alt="Telegraf SLA">
+                            </div>
+                        </div>
+                        <ul class="task-list">
+                            <li><i class="fas fa-check-circle"></i> Telegraf SNMP agent setup targeting FortiGate clusters.</li>
+                            <li><i class="fas fa-check-circle"></i> Indexing SD-WAN metrics into OpenSearch for long-term data.</li>
+                            <li><i class="fas fa-check-circle"></i> Custom Grafana dashboard design with dynamic variables.</li>
+                            <li><i class="fas fa-check-circle"></i> Intelligent alerting on latency spikes via Telegram.</li>
+                            <li><i class="fas fa-check-circle"></i> Weekly performance reporting and capacity planning insights.</li>
+                        </ul>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary">Monitoring</span>
+                            <a href="#" class="details-btn" data-toggle="modal" data-target="#modalTelegraf">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modals (Images) -->
+    <div class="modal fade" id="modalImgWireless" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Outdoor Wireless Distribution BTS Gallery</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <img src="images_thumbnail/project_wireless_distribution.jpg" class="img-fluid rounded" alt="Wireless Distribution">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalImgDude" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">MikroTik The Dude Monitoring Dashboard</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <img src="images_thumbnail/project_thedude_mikrotik.jpg" class="img-fluid rounded" alt="Thinking Dude">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalImgOSPF" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">OSPF Multi-Area Topology Map</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <img src="images_thumbnail/project_home_ospf.png" class="img-fluid rounded" alt="OSPF Topology">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalImgLibre" tabindex="-1"><div class="modal-dialog modal-dialog-centered modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">LibreNMS Interface</h5><button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button></div><div class="modal-body text-center"><img src="images_thumbnail/project_librenms.png" class="img-fluid rounded" alt="Libre"></div></div></div></div>
+    <div class="modal fade" id="modalImgForti" tabindex="-1"><div class="modal-dialog modal-dialog-centered modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">FortiGate Status</h5><button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button></div><div class="modal-body text-center"><img src="images_thumbnail/fortigate_dashboard.jpg" class="img-fluid rounded" alt="Forti"></div></div></div></div>
+    <div class="modal fade" id="modalImgTelegraf" tabindex="-1"><div class="modal-dialog modal-dialog-centered modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Grafana SLA Dashboard</h5><button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button></div><div class="modal-body text-center"><img src="images_thumbnail/performance_sla.jpg" class="img-fluid rounded" alt="Telegraf"></div></div></div></div>
+
+    <!-- Modals (Detailed Content) -->
+    <!-- Wireless Project -->
+    <div class="modal fade" id="modalWireless" tabindex="-1" role="dialog" aria-labelledby="modalWirelessLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="modalWirelessLabel">Detail: Outdoor Wireless Distribution (22 BTS Sites) with MikroTik & AirFiber</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        This project was implemented in phases, but can be summarized as follows:
+                    </p>
+                    <h6>Objective</h6>
+                    <p>
+                        Establishing a MAN-scale network as a high-speed distribution backbone for residential clients across villages in the Lamongan Regency area.
+                    </p>
+                    <h6>Implementation Workflow</h6>
+                    <ol>
+                        <li>Defining the high-priority target coverage areas.</li>
+                        <li>Conducting comprehensive site surveys to analyze terrain elevation (contours), distances, and target bandwidth requirements.</li>
+                        <li>Surveying and selecting optimal geographical locations for Base Stations (Tower/BTS Antennas).</li>
+                        <li>Performing Link Planner analysis from the Central Tower to each site using GPS coordinates as the primary reference.</li>
+                        <li>Analyzing coverage area dynamics based on BTS coordinates and radio propagation patterns.</li>
+                        <li>Selecting specialized antenna hardware for Point-to-Point (PtP) and Point-to-Multipoint (PtMP) deployments.</li>
+                        <li>Physical hardware installation at the Main Tower and all 22 BTS branch sites.</li>
+                        <li>Configuring devices and establishing wireless links (antenna pointing, frequency scanning/selection, etc.).</li>
+                        <li>Fine-tuning every BTS backbone link to meet target bandwidth benchmarks and signal quality (CCQ/SNR).</li>
+                        <li>Conducting rigorous connectivity stress tests on all PtP links.</li>
+                        <li>Configuring Distribution Access Points (AP) at each BTS location.</li>
+                        <li>Performing on-site installations for residential clients using dedicated station radios.</li>
+                        <li>Individual tuning of client station links to ensure stable service delivery.</li>
+                        <li>Final end-to-end PtMP connectivity verification.</li>
+                        <li>Technical review and comprehensive project documentation.</li>
+                        <li>Implementing 24/7 monitoring and establishing troubleshooting protocols for backbone and user-level incidents.</li>
+                    </ol>
+                    <h6>Link Planning Tools</h6>
+                    <ul>
+                        <li><strong>Conota Camera:</strong> For photo-documentation with integrated GPS coordinate tagging.</li>
+                        <li><strong>UISP Design Center:</strong> For detailed link planning and hardware specification modeling.</li>
+                        <li><strong>Google Earth Pro:</strong> For terrain contour analysis and line-of-sight (LoS) verification.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Dude Project -->
+    <div class="modal fade" id="modalDude" tabindex="-1" role="dialog" aria-labelledby="modalDudeLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="modalDudeLabel">Detail: Local Network Monitoring System with MikroTik The Dude</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        This project was initiated to fulfill the requirement for a granular, locally-hosted network monitoring system.
+                    </p>
+                    <h6>Objective</h6>
+                    <p>
+                        Developing a centralized monitoring system for the entire network infrastructure using efficient protocols such as ICMP and SNMP.
+                    </p>
+                    <h6>Implementation Workflow</h6>
+                    <ol>
+                        <li>Installation and hardening of the VMware Workstation host environment.</li>
+                        <li>Deployment and basic configuration of MikroTik Cloud Hosted Router (CHR).</li>
+                        <li>Activation of MikroTik P1 Level license for high-throughput management.</li>
+                        <li>Installation and initialization of The Dude server package.</li>
+                        <li>Design and creation of the logical Network Maps within the platform.</li>
+                        <li>Onboarding network devices for active health and service monitoring.</li>
+                        <li>Detailed device mapping based on the logical and physical topology.</li>
+                        <li>Granular management of monitored services (HTTP, DNS, PING, etc.).</li>
+                        <li>Integration of custom SNMP Walk and OID targeting for MikroTik-specific metrics.</li>
+                        <li>Organizing the monitoring dashboard using hierarchical Device Trees for better scalability.</li>
+                    </ol>
+                    <h6>Architecture & Stack</h6>
+                    <ul>
+                        <li><strong>VMware Workstation 17:</strong> Virtualization platform for the MikroTik CHR instance.</li>
+                        <li><strong>MikroTik CHR File:</strong> Core operating system for the virtualized network controller.</li>
+                        <li><strong>The Dude Package:</strong> Primary service package for visual network management and alerting.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OSPF Project -->
+    <div class="modal fade" id="modalOSPF" tabindex="-1" role="dialog" aria-labelledby="modalOSPFLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="modalOSPFLabel">Detail: Dynamic Multi-Area Routing with OSPF Virtual-Links</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Designing and implementing a scalable, high-convergence interior gateway protocol (IGP) for complex enterprise environments.
+                    </p>
+                    <h6>Objective</h6>
+                    <p>
+                        Establishing a robust OSPF architecture that supports multi-area scalability and redundant paths without routing loops.
+                    </p>
+                    <h6>Implementation Workflow</h6>
+                    <ol>
+                        <li>Defining the OSPF Area hierarchy (Backbone Area 0 and Non-Backbone areas).</li>
+                        <li>Configuring Router IDs and Interface-specific OSPF parameters.</li>
+                        <li>Deploying OSPF Virtual-Links to bridge non-contiguous areas to the backbone instance.</li>
+                        <li>Implementing standard, stub, and NSSA (Not-So-Stubby Area) types for optimized LSA propagation.</li>
+                        <li>Configuring Inter-area route summarization (LSA Type 3) to reduce routing table size.</li>
+                        <li>Setting up MD5 authentication for secure routing adjacency between peers.</li>
+                        <li>Simulating link failures to test network convergence and DR/BDR election stability.</li>
+                    </ol>
+                    <h6>Core Technologies</h6>
+                    <ul>
+                        <li><strong>MikroTik RouterOS v7:</strong> High-performance routing engine with updated OSPF logic.</li>
+                        <li><strong>GNS3 / EVE-NG:</strong> Network emulation for large-scale multi-area topology validation.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LibreNMS Project -->
+    <div class="modal fade" id="modalLibre" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">LibreNMS ISP Monitoring Stack</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+                <div class="modal-body">
+                    <h6>Objective</h6>
+                    <p>Deploying a professional monitoring solution for an ISP network with over 300 active nodes, utilizing autodiscovery and geographic visualization.</p>
+                    <h6>Key Implementation Steps</h6>
+                    <ol>
+                        <li><strong>Server Setup:</strong> Ubuntu-based LibreNMS installation with MariaDB and NGINX performance tuning.</li>
+                        <li><strong>Autodiscovery:</strong> Configuring SNMP v2c/v3 communities for automated device onboarding and inventory.</li>
+                        <li><strong>Geo-Mapping:</strong> Integrating Google Maps API to visualize device health across a geographic region.</li>
+                        <li><strong>Weather Maps:</strong> Creating real-time traffic heatmaps for backbone fiber and wireless links.</li>
+                        <li><strong>SLA Monitoring:</strong> Configuring Nagios-style plugins for high-frequency ICMP polling and jitter analysis.</li>
+                    </ol>
+                    <h6>Stack</h6>
+                    <ul>
+                        <li><strong>LibreNMS:</strong> Core PHP-based monitoring framework.</li>
+                        <li><strong>SNMP:</strong> Primary protocol for hardware telemetry.</li>
+                        <li><strong>OpenSearch:</strong> (Optional) Long-term syslogs and flow data storage.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FortiGate Project -->
+    <div class="modal fade" id="modalForti" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">FortiGate Next-Generation Firewall</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+                <div class="modal-body">
+                    <h6>Objective</h6>
+                    <p>Implementing a comprehensive security perimeter using FortiGate NGFW, covering SD-WAN, SSL-VPN, and server zone isolation.</p>
+                    <h6>Key Implementation Steps</h6>
+                    <ol>
+                        <li><strong>Zone Isolation:</strong> Creating dedicated security zones (DMZ, Internal, Servers) with strict firewall policies.</li>
+                        <li><strong>SD-WAN:</strong> Configuring multi-WAN load balancing and SLA-based failover for critical business traffic.</li>
+                        <li><strong>Remote Access:</strong> Setting up FortiClient SSL-VPN with multi-factor authentication (MFA) for secure management.</li>
+                        <li><strong>IPS/IDS:</strong> Enabling Intrusion Prevention and Anti-Virus profiles to inspect encrypted traffic (Deep Inspection).</li>
+                        <li><strong>Logging:</strong> Integrating FortiAnalyzer for centralized security reporting and threat hunting.</li>
+                    </ol>
+                    <h6>Core Features</h6>
+                    <ul>
+                        <li><strong>Deep Packet Inspection (DPI):</strong> Inspecting SSL/TLS traffic for hidden threats.</li>
+                        <li><strong>Application Control:</strong> Granular control over web-based applications and services.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Telegraf Project -->
+    <div class="modal fade" id="modalTelegraf" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">Advanced SLA Monitoring Stack</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+                <div class="modal-body">
+                    <h6>Objective</h6>
+                    <p>Developing a high-fidelity monitoring dashboard for SD-WAN performance metrics using the TIG (Telegraf, InfluxDB, Grafana) stack.</p>
+                    <h6>Key Implementation Steps</h6>
+                    <ol>
+                        <li><strong>Agent Setup:</strong> Configuring Telegraf SNMP inputs to poll FortiGate performance OIDs every 10 seconds.</li>
+                        <li><strong>Data Storage:</strong> Indexing metrics into a time-series database (InfluxDB) for fast analytical queries.</li>
+                        <li><strong>Visualization:</strong> Designing custom Grafana dashboards for latency, jitter, and packet loss visualization.</li>
+                        <li><strong>Alerting:</strong> Setting up intelligent alert thresholds in Grafana to notify NOC teams via Telegram.</li>
+                        <li><strong>Compliance:</strong> Generating weekly SLA reports for uptime and bandwidth utilization trends.</li>
+                    </ol>
+                    <h6>Architecture</h6>
+                    <ul>
+                        <li><strong>Telegraf:</strong> Lightweight collection agent.</li>
+                        <li><strong>Grafana:</strong> Professional visualization and alerting platform.</li>
+                        <li><strong>InfluxDB:</strong> Performance-optimized time-series data storage.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="../../script/components.js"></script>
+    <script>
+        AOS.init({ duration: 800, once: true });
+    </script>
+    
+    <app-footer></app-footer>
 </body>
 </html>

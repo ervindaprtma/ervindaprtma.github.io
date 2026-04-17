@@ -1,229 +1,450 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
-        <meta name="Desc" content="Noting">
-        <meta name="Author" content="MasVin22">
+        <meta name="description" content="Technical labs and experiments focused on Cybersecurity, Vulnerability Management, and Threat Intelligence.">
+        <meta name="author" content="MasVin22">
+        
+        <!-- Stylesheets -->
         <link rel="stylesheet" href="../../styles/main.css">
         <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
         <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
-        <title>Network Engineer L2 - Ervinda Pratama</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         
+        <title>Cybersecurity Labs | Ervinda Pratama</title>
+
         <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32" class="rounded-circle">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+        
+        <style>
+            :root {
+                --card-bg: #ffffff;
+                --card-border: #e0e0e0;
+                --accent-color: #0077cc;
+                --text-muted: #666;
+            }
+
+            [data-bs-theme="dark"] {
+                --card-bg: #1e1e1e;
+                --card-border: #333;
+                --accent-color: #00f2fe;
+                --text-muted: #aaa;
+            }
+
+            .article-back { 
+                display: inline-flex; 
+                align-items: center; 
+                gap: 8px; 
+                font-size: 14px; 
+                font-weight: 600; 
+                color: var(--accent-color); 
+                text-decoration: none; 
+                margin-bottom: 2rem;
+                transition: transform 0.2s ease;
+            }
+            .article-back:hover { 
+                transform: translateX(-5px);
+                color: var(--accent-color);
+            }
+
+            .premium-card {
+                background: var(--card-bg);
+                border: 1px solid var(--card-border);
+                border-radius: 16px;
+                transition: all 0.3s ease;
+                overflow: hidden;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                padding: 1.5rem;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            }
+
+            .premium-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+                border-color: var(--accent-color);
+            }
+
+            .card-header-flex {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .project-title {
+                font-size: 1.2rem;
+                font-weight: 700;
+                margin: 0;
+                line-height: 1.4;
+            }
+
+            .thumbnail-container {
+                flex-shrink: 0;
+                width: 70px;
+                height: 70px;
+                border-radius: 12px;
+                overflow: hidden;
+                border: 1px solid var(--card-border);
+                cursor: pointer;
+                transition: transform 0.3s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: rgba(0,0,0,0.03);
+            }
+
+            .thumbnail-container:hover {
+                transform: scale(1.1) rotate(3deg);
+            }
+
+            .thumbnail-container img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .task-list {
+                list-style: none;
+                padding: 0;
+                margin-bottom: 1.5rem;
+                flex-grow: 1;
+            }
+
+            .task-list li {
+                font-size: 0.85rem;
+                margin-bottom: 0.6rem;
+                display: flex;
+                align-items: flex-start;
+                gap: 8px;
+                color: var(--text-muted);
+            }
+
+            .task-list li i {
+                color: var(--accent-color);
+                margin-top: 3px;
+                font-size: 0.8rem;
+            }
+
+            .details-btn {
+                background: rgba(0, 119, 204, 0.08);
+                border: 1px solid rgba(0, 119, 204, 0.15);
+                border-radius: 8px;
+                padding: 6px 14px;
+                font-weight: 600;
+                color: var(--accent-color);
+                text-decoration: none;
+                text-align: center;
+                transition: all 0.2s ease;
+                font-size: 0.85rem;
+            }
+
+            [data-bs-theme="dark"] .details-btn {
+                background: rgba(0, 242, 254, 0.08);
+                border-color: rgba(0, 242, 254, 0.15);
+            }
+
+            .details-btn:hover {
+                background: var(--accent-color);
+                color: white;
+            }
+            [data-bs-theme="dark"] .details-btn:hover {
+                color: #000;
+            }
+
+            /* Modal Styling */
+            .modal-content {
+                border-radius: 20px;
+                border: 1px solid var(--card-border);
+                background: var(--card-bg);
+            }
+            .modal-header {
+                border-bottom: 1px solid var(--card-border);
+                padding: 1.5rem;
+            }
+            .modal-body {
+                padding: 2rem;
+            }
+            .modal-body h6 {
+                font-weight: 700;
+                color: var(--accent-color);
+                margin-top: 1.5rem;
+                margin-bottom: 1rem;
+                text-transform: uppercase;
+                font-size: 0.85rem;
+                letter-spacing: 1px;
+            }
+            .modal-body p, .modal-body li {
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+            .modal-footer {
+                border-top: 1px solid var(--card-border);
+                padding: 1.2rem;
+            }
+        </style>
     </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light navbar-library fixed-top navbar-fixed-top">
-            <div class="container">
-                <button
-                    class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle Navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="../../index.html">Back to Home</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="networksecurity.html">Network & Security</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active navtab-active" href="#">Cybersecurity Labs</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="artificial_intelligence.html">AI for Security</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="blockchain.html">Blockchain & Web3</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="../project_homelab.html">Back to Top</a>
-                        </li>
-                    </ul>
-                </div>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    
+    <app-navbar></app-navbar>
+
+    <section class="page-content py-5">
+        <div class="container container-content">
+            <!-- Back to Home Lab -->
+            <div data-aos="fade-right">
+                <a href="../project_homelab.html" class="article-back">
+                    <i class="fas fa-arrow-left"></i> Back to Home Lab
+                </a>
             </div>
-        </nav>
-    </header>
-    <section class="page-content">
-        <div class="container">
-            <div id="home">
-                <div class="page-home">
-                    <div class="header">
-                        <div class="row align-items-center">
-                            <div class="col-lg-12 col-md-6 justify-content-left text-center">
-                                <img src="../../background/project_homelabs.jpg" class="w-25 rounded mx-auto d-block" width="200" alt="profil" data-aos="zoom-in">
+
+            <div class="header-section text-center mb-5" data-aos="fade-up">
+                <div class="d-inline-block px-4 py-1 mb-3 rounded-pill bg-danger bg-opacity-10 text-danger fw-bold" style="font-size: 0.75rem; letter-spacing: 1px;">
+                    DEFENSIVE & OFFENSIVE LABS
+                </div>
+                <h1 class="display-5 fw-bold mb-4">Cybersecurity Projects</h1>
+                <p class="lead text-muted mx-auto" style="max-width: 800px; font-size: 1.1rem;">
+                    Research and simulation mapping to vulnerability assessments, threat intelligence, and defensive architecture.
+                </p>
+            </div>
+
+            <div class="row g-4 justify-content-center">
+                <!-- Project 1: NMAP -->
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="premium-card">
+                        <div class="card-header-flex">
+                            <h3 class="project-title">🔍 Vulnerability Scanning with NMAP Script Engine (NSE)</h3>
+                            <div class="thumbnail-container">
+                                <i class="fas fa-search-plus fa-3x text-primary opacity-50"></i>
                             </div>
                         </div>
-                        <br>
-                        <div class="col-lg-12 col-md-6 justify-content-center text-center">
-                            <br>
-                            <p><b>Project & Home Labs</b></p>
-                            <blockquote class="justify-content-center text-center">
-                                Eksplorasi Riset, eksperimen dan implementasi praktis dalam bidang
-                                Networking, Cybersecurity, Artificial Intelligence (AI), dan Blockchain.
-                            </blockquote>
-                            <p>~ Ervinda Pratama</p>
+                        <ul class="task-list">
+                            <li><i class="fas fa-shield-virus"></i> Network surface scanning to identify security loopholes and exposures.</li>
+                            <li><i class="fas fa-shield-virus"></i> Automated auditing of open ports and services on internal servers.</li>
+                            <li><i class="fas fa-shield-virus"></i> Traffic policy recommendations based on discovered service vulnerabilities.</li>
+                            <li><i class="fas fa-shield-virus"></i> Documentation of finalized firewall rules and mitigation strategies.</li>
+                        </ul>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-danger bg-opacity-10 text-danger">Vuln Assessment</span>
+                            <a href="#" class="details-btn" data-toggle="modal" data-target="#modalNmap">View Details</a>
                         </div>
-                        <hr class="mt-5" data-aos="fade-up" data-aos-delay="500" />
-                        <div class="col-lg-12 col-md-8 text-left">
-                            <div class="header-title mt-4" data-aos="fade-up" data-aos-delay="600">
-                                <h2>
-                                    <b>Cybersecurity Project & Home Labs</b>
-                                </h2>
+                    </div>
+                </div>
+
+                <!-- Project 2: ElastiFlow -->
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="premium-card">
+                        <div class="card-header-flex">
+                            <h3 class="project-title">📈 Advanced Traffic Flow Monitoring with ElastiFlow</h3>
+                            <div class="thumbnail-container" data-toggle="modal" data-target="#modalImgElasti">
+                                <img src="images_thumbnail/elastiflow_dashboard.jpg" alt="ElastiFlow">
                             </div>
-                            <!--Start Grid Layout-->
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mt-6" data-aos="fade-up" data-aos-delay="600">
-                                <div class="bg-light p-4 rounded shadow d-flex flex-column">
-                                    <!-- Judul dan Thumbnail -->
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <!-- Judul Proyek -->
-                                        <h3 class="fw-bold mb-0">🔍 Vulnerability Scanning dengan NMAP</h3>
-                            
-                                        <!-- Thumbnail Image -->
-                                        <div class="ms-3">
-                                            <img src="images_thumbnail/" 
-                                                 class="img-fluid rounded thumbnail-img" 
-                                                 data-bs-toggle="modal" data-bs-target="#vulnnmapimg" 
-                                                 alt="NMAP" style="max-width: 100px;">
-                                        </div>
-                                    </div>
-                                    <ul class="mt-3 mb-2 list-unstyled">
-                                        <li>🔹Pemindaian jaringan untuk identifikasi celah keamanan</li>
-                                        <li>🔹Audit open port/service pada server atau device internal</li>
-                                        <li>🔹Rekomendasi allow/deny traffic berdasarkan temuan open port/service yang terbuka dari device network/server</li>
-                                        <li>🔹Dokumentasi penerapan rules policy sesuai dengan diskusi bersama tim</li>
-                                    </ul>
-                                    <!-- Button Details -->
-                                    <div class="portfolio-price">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#vulnnmap">Details</a>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="bg-light p-4 rounded shadow d-flex flex-column">
-                                    <!-- Judul dan Thumbnail -->
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <!-- Judul Proyek -->
-                                        <h3 class="fw-bold mb-0">📈 Monitoring Traffic Flow dengan Elastiflow</h3>
-                            
-                                        <!-- Thumbnail Image -->
-                                        <div class="ms-3">
-                                            <img src="images_thumbnail/elastiflow_dashboard.jpg" 
-                                                 class="img-fluid rounded thumbnail-img" 
-                                                 data-bs-toggle="modal" data-bs-target="#elastiflowimg" 
-                                                 alt="Dashboard Elastiflow" style="max-width: 100px;">
-                                        </div>
-                                    </div>
-                                    <ul class="mt-3 mb-2 list-unstyled">
-                                        <li>🔹Instalasi elastiflow & opensearch index via docker</li>
-                                        <li>🔹Integrasi elastiflow dengan opensearch sebagai dashboard dan penyimpanan data index</li>
-                                        <li>🔹Konfigurasi netflow pada core device network (router/firewall)</li>
-                                        <li>🔹Pembuatan dashboard monitoring traffic flow</li>
-                                        <li>🔹Analisa log traffic melalui data raw dan dashboard</li>
-                                        <li>🔹Review dan dokumentasi system monitoring</li>
-                                        <li>🔹Reporting history traffic flow pada jaringan internal/external</li>
-                                        <li>🔹Maintenance Data Index & Backup rutin (weekly)</li>
-                                    </ul>
-                                    <div class="portfolio-price">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#vulnnmap">Details</a>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="bg-light p-4 rounded shadow d-flex flex-column">
-                                    <!-- Judul dan Thumbnail -->
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <!-- Judul Proyek -->
-                                        <h3 class="fw-bold mb-0">👨‍💻 Build Script Vulnerable Check with InternetDB Shodan</h3>
-                            
-                                        <!-- Thumbnail Image -->
-                                        <div class="ms-3">
-                                            <img src="images_thumbnail/" 
-                                                 class="img-fluid rounded thumbnail-img" 
-                                                 data-bs-toggle="modal" data-bs-target="#internetdbimg" 
-                                                 alt="Script InternetDB" style="max-width: 100px;">
-                                        </div>
-                                    </div>
-                                    <ul class="mt-3 mb-2 list-unstyled">
-                                        <li>🔹Research terkait tools shodan</li>
-                                        <li>🔹Research integrasi API dari InternetDB</li>
-                                        <li>🔹Build script python untuk scrapping data (query:IP Address,CVE) melalui API</li>
-                                        <li>🔹Pengujian script untuk melakukan search vulnerable pada suatu IP Public</li>
-                                    </ul>
-                                    <div class="portfolio-price">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#internetdb">Details</a>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="bg-light p-4 rounded shadow d-flex flex-column">
-                                    <!-- Judul dan Thumbnail -->
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <!-- Judul Proyek -->
-                                        <h3 class="fw-bold mb-0">🕵️‍♂️ Build Honeypot & Honeynet dengan T-POT</h3>
-                            
-                                        <!-- Thumbnail Image -->
-                                        <div class="ms-3">
-                                            <img src="images_thumbnail/" 
-                                                 class="img-fluid rounded thumbnail-img" 
-                                                 data-bs-toggle="modal" data-bs-target="#tpotimg" 
-                                                 alt="T-POT All in Honeynet/Honeypot" style="max-width: 100px;">
-                                        </div>
-                                    </div>
-                                    <ul class="mt-3 mb-2 list-unstyled">
-                                        <li>🔹Research terkait apa itu Honeypot dan Honeynet</li>
-                                        <li>🔹Research software T-POT</li>
-                                        <li>🔹Download & build file .iso untuk T-POT</li>
-                                        <li>🔹Instalasi T-POT OS</li>
-                                        <li>🔹Konfigurasi listening port service</li>
-                                        <li>🔹Konfigurasi Forwarding IP Public menuju ke port service T-POT</li>
-                                        <li>🔹Review dan monitoring attack from Public</li>
-                                        <li>🔹Analisis log attack dan learning metode dari proses setiap attacker</li>
-                                    </ul>
-                                    <div class="portfolio-price">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#tpot">Details</a>
-                                    </div>
-                                </div>
-                                <br>
+                        </div>
+                        <ul class="task-list">
+                            <li><i class="fas fa-shield-virus"></i> Containerized deployment of ElastiFlow and OpenSearch via Docker Compose.</li>
+                            <li><i class="fas fa-shield-virus"></i> Core NetFlow/S-Flow configuration on backbone routers and firewalls.</li>
+                            <li><i class="fas fa-shield-virus"></i> Visual dashboard design for real-time traffic pattern analysis.</li>
+                            <li><i class="fas fa-shield-virus"></i> Log ingestion auditing and historical reporting for external traffic.</li>
+                            <li><i class="fas fa-shield-virus"></i> Weekly maintenance of OpenSearch data indices and performance shards.</li>
+                        </ul>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-danger bg-opacity-10 text-danger">NetSec Ops</span>
+                            <a href="#" class="details-btn" data-toggle="modal" data-target="#modalElasti">View Details</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3: Shodan Script -->
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="premium-card">
+                        <div class="card-header-flex">
+                            <h3 class="project-title">👨‍💻 Python Threat Discovery with Shodan InternetDB API</h3>
+                            <div class="thumbnail-container">
+                                <i class="fas fa-terminal fa-3x text-warning opacity-50"></i>
                             </div>
-                        </div>    
+                        </div>
+                        <ul class="task-list">
+                            <li><i class="fas fa-shield-virus"></i> Comprehensive research on Shodan's InternetDB API capabilities.</li>
+                            <li><i class="fas fa-shield-virus"></i> Custom Python script development for automated vulnerability scraping.</li>
+                            <li><i class="fas fa-shield-virus"></i> CSV/JSON data exporting for IP-to-CVE mapping results.</li>
+                            <li><i class="fas fa-shield-virus"></i> Validating public IP exposures and unauthorized service visibility.</li>
+                        </ul>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-danger bg-opacity-10 text-danger">OSINT Scripting</span>
+                            <a href="#" class="details-btn" data-toggle="modal" data-target="#modalShodan">View Details</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4: T-POT -->
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="premium-card">
+                        <div class="card-header-flex">
+                            <h3 class="project-title">🕵️‍♂️ Advanced Honeypot Deployment with T-POT All-In-One</h3>
+                            <div class="thumbnail-container">
+                                <i class="fas fa-spider fa-3x text-info opacity-50"></i>
+                            </div>
+                        </div>
+                        <ul class="task-list">
+                            <li><i class="fas fa-shield-virus"></i> Deployment of multi-service honeypots (Honeynet architecture).</li>
+                            <li><i class="fas fa-shield-virus"></i> T-POT OS platform installation on dedicated virtual resources.</li>
+                            <li><i class="fas fa-shield-virus"></i> Public-facing port forwarding for simulated vulnerable services.</li>
+                            <li><i class="fas fa-shield-virus"></i> Continuous monitoring of global attack signatures and IP reputations.</li>
+                            <li><i class="fas fa-shield-virus"></i> Attacker methodology analysis using automated forensic tools.</li>
+                        </ul>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-danger bg-opacity-10 text-danger">Deception Tech</span>
+                            <a href="#" class="details-btn" data-toggle="modal" data-target="#modalTpot">View Details</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>    
+    </section>
 
-     <!-- Java Script with Bootstrap-->
-     <script src="../../vendor/jquery/jquery.slim.min.js"></script>
-     <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
-    <footer>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <p>&copy; 2023 - by Ervinda Pratama</p>
+    <!-- Modal for Images -->
+    <div class="modal fade" id="modalImgElasti" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">ElastiFlow Traffic Dashboard</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <img src="images_thumbnail/elastiflow_dashboard.jpg" class="img-fluid rounded" alt="ElastiFlow">
                 </div>
             </div>
         </div>
-    </footer>
-    
-    <!--Inisialisasi AOS JavaScript-->
+    </div>
+
+    <!-- Modals (Content) -->
+    <!-- NMAP Project -->
+    <div class="modal fade" id="modalNmap" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">Vulnerability Scanning with NMAP (NSE)</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+                <div class="modal-body">
+                    <h6>Objective</h6>
+                    <p>Conducting systematic security audits across local and simulated cloud infrastructures to identify misconfigurations and outdated service versions.</p>
+                    <h6>Core Methodology</h6>
+                    <ol>
+                        <li><strong>Discovery:</strong> Using ICMP and TCP SYN scans to map active network assets and live hosts.</li>
+                        <li><strong>NSE Auditing:</strong> Executing specific NMAP Scripting Engine (NSE) scripts (e.g., `vulners`, `http-vuln-*`) to cross-reference discovered services with known CVE databases.</li>
+                        <li><strong>Reporting:</strong> Generating XML/HTML reports to visualize risk levels and prioritize remediation.</li>
+                        <li><strong>Verification:</strong> Re-scanning after applying patches or firewall rule modifications to ensure closure.</li>
+                    </ol>
+                    <h6>Techniques Used</h6>
+                    <ul>
+                        <li><strong>Version Detection (-sV):</strong> Identifying exact service versions for precise CVE mapping.</li>
+                        <li><strong>Scripting Customization:</strong> Modifying Lua-based NSE scripts for higher precision scanning.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ElastiFlow Project -->
+    <div class="modal fade" id="modalElasti" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">Advanced Traffic Monitoring with ElastiFlow</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+                <div class="modal-body">
+                    <h6>Objective</h6>
+                    <p>Building a high-performance flow analysis engine to gain 360-degree visibility into network traffic patterns and potential security anomalies.</p>
+                    <h6>Implementation Workflow</h6>
+                    <ol>
+                        <li><strong>Deployment:</strong> Spinning up the ElastiFlow stack (Telegraf, OpenSearch, Logstash) using a Dockerized microservices architecture.</li>
+                        <li><strong>Flow Exporters:</strong> Enabling NetFlow v9 and IPFIX on edge firewalls (FortiGate/MikroTik) to stream packet headers to the collector.</li>
+                        <li><strong>Enrichment:</strong> Configuring MaxMind GeoIP integration to visualize traffic origin and destination on a global map.</li>
+                        <li><strong>Visualization:</strong> Designing custom Kibana/OpenSearch Dashboards to track top talkers, application usage, and threat-actor IPs.</li>
+                        <li><strong>Incident Response:</strong> Using flow data to trace the lateral movement of unauthorized traffic within the subnet.</li>
+                    </ol>
+                    <h6>Stack Components</h6>
+                    <ul>
+                        <li><strong>ElastiFlow:</strong> The industry-standard flow collector and processor.</li>
+                        <li><strong>OpenSearch:</strong> Distributed search and analytics engine for high-volume logs.</li>
+                        <li><strong>Docker:</strong> Containerization platform for consistent service deployment.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shodan Project -->
+    <div class="modal fade" id="modalShodan" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">Python Threat Discovery with Shodan</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+                <div class="modal-body">
+                    <h6>Objective</h6>
+                    <p>Automating External Attack Surface Management (EASM) using Shodan's InternetDB API and custom Python automation scripts.</p>
+                    <h6>Key Implementation Steps</h6>
+                    <ol>
+                        <li><strong>API Integration:</strong> Developing an asynchronous Python client to interact with Shodan's public and paid API endpoints.</li>
+                        <li><strong>OSINT Scraping:</strong> Automated enumeration of public-facing assets, including open ports, SSL certificate details, and banners.</li>
+                        <li><strong>Vulnerability Mapping:</strong> Extracting CVE (Common Vulnerabilities and Exposures) data directly from the scan results for risk calculation.</li>
+                        <li><strong>Alerting:</strong> Logic triggers to notify administrators when new unauthorized ports or services are detected on company-owned subnets.</li>
+                    </ol>
+                    <h6>Scripting Stack</h6>
+                    <ul>
+                        <li><strong>Python 3.10+:</strong> High-level scripting platform.</li>
+                        <li><strong>Requests / AioHttp:</strong> For efficient, non-blocking API communication.</li>
+                        <li><strong>Pandas:</strong> For data cleaning and CSV/Excel report generation.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- T-POT Project -->
+    <div class="modal fade" id="modalTpot" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">Advanced Honeypot with T-POT</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+                <div class="modal-body">
+                    <h6>Objective</h6>
+                    <p>Deploying a multi-honeypot platform (Deception Technology) to capture, log, and analyze real-world exploit attempts from global threat actors.</p>
+                    <h6>Key Implementation Steps</h6>
+                    <ol>
+                        <li><strong>Infrastructure:</strong> Provisioning a secure, isolated VPS environment with restricted outbound access to prevent lateral movement.</li>
+                        <li><strong>Platform Setup:</strong> Installing T-POT (Telekom Honeypot) in the "Standard" mode, which includes Cowrie, Dionaea, and HoneyTrap.</li>
+                        <li><strong>Simulation:</strong> Port-forwarding common vulnerability targets (SSH, SMB, MySQL, Telnet) into the honeynet environment.</li>
+                        <li><strong>Analysis:</strong> Using the built-in ELK stack to analyze botnet methodologies, brute-force patterns, and zero-day exploit attempts.</li>
+                        <li><strong>Threat Intelligence:</strong> Exporting captured malicious IPs to local firewall blocklists for proactive defense.</li>
+                    </ol>
+                    <h6>Deception Services</h6>
+                    <ul>
+                        <li><strong>Cowrie:</strong> Medium-to-high interaction SSH/Telnet honeypot.</li>
+                        <li><strong>Dionaea:</strong> Catching malware that exploits vulnerabilities in SMB, MSSQL, and SIP.</li>
+                        <li><strong>Suricata:</strong> Network IDS/IPS for real-time signature-based detection.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="../../script/components.js"></script>
     <script>
-        AOS.init()
+        AOS.init({ duration: 800, once: true });
     </script>
-    <!--Script for scroll animation-->
-    <script src="../../script/navbar-scroll.js"></script>
-    <!--<script src="https://cdn.tailwindcss.com"></script> -->
+    
+    <app-footer></app-footer>
 </body>
 </html>

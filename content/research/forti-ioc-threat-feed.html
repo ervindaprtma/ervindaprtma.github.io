@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+        <meta name="description" content="Integrating IOC Threat Feeds into FortiGate for automated blocking of malicious IPs, domains, and file hashes — protecting local-to-internet traffic and DMZ services.">
+        <meta name="author" content="Ervinda Pratama">
+        <link rel="stylesheet" href="../../styles/main.css">
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32">
+        <title>Building an IOC Threat Feed on FortiGate — Ervinda Pratama</title>
+        <style>
+            .article-header{padding:2.5rem 0 1.5rem;border-bottom:1px solid #e0e0e0;margin-bottom:2rem}
+            body.dark-mode .article-header{border-bottom-color:#333}
+            .article-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#0077cc;text-decoration:none;margin-bottom:1.5rem}
+            .article-back:hover{color:#005fa3}
+            body.dark-mode .article-back{color:#00f2fe}
+            .article-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem}
+            .article-tag{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;padding:2px 10px;border-radius:20px;background:rgba(111,66,193,.1);color:#6f42c1;border:1px solid rgba(111,66,193,.25)}
+            body.dark-mode .article-tag{background:rgba(232,62,140,.1);color:#e83e8c;border-color:rgba(232,62,140,.25)}
+            .article-title{font-size:2rem;font-weight:800;line-height:1.25;margin-bottom:.9rem}
+            body.dark-mode .article-title{color:#f0f0f0}
+            .article-meta{font-size:13px;color:#888;display:flex;flex-wrap:wrap;gap:1rem;align-items:center}
+            body.dark-mode .article-meta{color:#666}
+            .article-content{max-width:800px;margin:0 auto;font-size:1rem;line-height:1.8;color:#333}
+            body.dark-mode .article-content{color:#d0d0d0}
+            .article-content h2{font-size:1.35rem;font-weight:700;margin-top:2.2rem;margin-bottom:.7rem;border-left:4px solid #6f42c1;padding-left:.7rem;color:#3b0068}
+            body.dark-mode .article-content h2{border-left-color:#e83e8c;color:#e83e8c}
+            .article-content h3{font-size:1.1rem;font-weight:700;margin-top:1.5rem;margin-bottom:.5rem;color:#6f42c1}
+            body.dark-mode .article-content h3{color:#d4a0ff}
+            .article-content pre,.article-content code{background:#1e1e2e;color:#a8d8a8;border-radius:6px;font-size:.875rem;font-family:'Courier New',monospace}
+            .article-content pre{padding:1rem 1.2rem;overflow-x:auto;margin:1.2rem 0}
+            .article-content code{padding:2px 6px}
+            .article-content blockquote{border-left:4px solid #6f42c1;background:rgba(111,66,193,.06);margin:1.5rem 0;padding:.8rem 1.2rem;border-radius:0 6px 6px 0;font-style:italic;color:#555}
+            body.dark-mode .article-content blockquote{border-left-color:#e83e8c;background:rgba(232,62,140,.05);color:#aaa}
+            .article-content table{width:100%;border-collapse:collapse;margin:1.2rem 0}
+            .article-content table th,.article-content table td{border:1px solid #ddd;padding:8px 12px;font-size:.9rem;vertical-align:top}
+            .article-content table th{background:#f5f0ff;font-weight:700}
+            body.dark-mode .article-content table th{background:#1a1030;color:#e0e0e0}
+            body.dark-mode .article-content table td{border-color:#333;color:#d0d0d0}
+            .article-content ul li{margin-bottom:.35rem}
+            .callout{border-left:4px solid #ff9800;background:rgba(255,152,0,.07);padding:.9rem 1.2rem;border-radius:0 6px 6px 0;margin:1.4rem 0;font-size:.93rem}
+            body.dark-mode .callout{border-left-color:#ffb74d;background:rgba(255,152,0,.06);color:#e0e0e0}
+            .callout strong{color:#e65100}
+            body.dark-mode .callout strong{color:#ffb74d}
+            .article-nav{display:flex;justify-content:space-between;margin-top:3rem;padding-top:1.5rem;border-top:1px solid #e0e0e0;gap:1rem}
+            body.dark-mode .article-nav{border-top-color:#333}
+            .article-nav a{font-size:13px;font-weight:600;color:#6f42c1;text-decoration:none;display:flex;align-items:center;gap:6px}
+            body.dark-mode .article-nav a{color:#e83e8c}
+        </style>
+    </head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <app-navbar></app-navbar>
+    <section class="page-content">
+        <div class="container">
+            <div class="article-content" data-aos="fade-up">
+
+                <div class="article-header">
+                    <a href="../article_research.html" class="article-back">
+                        <i class="fas fa-arrow-left"></i> Back to Articles &amp; Research
+                    </a>
+                    <div class="article-tags">
+                        <span class="article-tag">Fortinet</span>
+                        <span class="article-tag">Security</span>
+                        <span class="article-tag">Threat Intelligence</span>
+                    </div>
+                    <h1 class="article-title">Building an IOC Threat Feed on FortiGate</h1>
+                    <div class="article-meta">
+                        <span><i class="fas fa-user"></i>&nbsp; Ervinda Pratama</span>
+                        <span><i class="fas fa-calendar"></i>&nbsp; April 2025</span>
+                        <span><i class="fas fa-clock"></i>&nbsp; ~5 min read</span>
+                        <span><i class="fas fa-tag"></i>&nbsp; Research Note</span>
+                    </div>
+                </div>
+
+                <h2>Overview</h2>
+                <p>
+                    An <strong>Indicator of Compromise (IOC) Threat Feed</strong> is a continuously updated list of known malicious entities — IP addresses, domains, and file hashes — published by threat intelligence providers. By integrating this feed into FortiGate, every policy lookup automatically checks against the latest threat data <em>without any manual intervention</em>.
+                </p>
+                <p>
+                    This note covers three specific use cases implemented in a production environment:
+                </p>
+                <ol>
+                    <li>Blocking outbound connections from local hosts to malicious internet destinations (IPs &amp; domains)</li>
+                    <li>Blocking file transfers containing known malicious file hashes</li>
+                    <li>Blocking inbound public access to a DMZ Nginx service from scanner IPs and known attackers</li>
+                </ol>
+
+                <h2>Why External Threat Feeds?</h2>
+                <p>
+                    FortiGate's built-in AV and IPS databases are powerful, but they are signature-update dependent (pulled from Fortinet's cloud on a schedule). An <strong>External Threat Feed</strong> allows you to subscribe to any HTTP/HTTPS-hosted text list and have FortiGate consume it at a configurable interval — independently of Fortinet's update cycle.
+                </p>
+                <blockquote>
+                    This approach gives you the flexibility to use open-source IOC feeds (e.g., Abuse.ch, Emerging Threats, Feodo Tracker) or custom internal feeds generated from your own SIEM/SOC pipeline.
+                </blockquote>
+
+                <h2>Architecture</h2>
+                <table>
+                    <tr><th>Component</th><th>Role</th></tr>
+                    <tr><td>FortiGate (v7.x)</td><td>Policy enforcement — consumes the feed and applies it to firewall policies</td></tr>
+                    <tr><td>External Feed URL</td><td>HTTP/HTTPS-hosted plain-text list (one entry per line)</td></tr>
+                    <tr><td>Threat Feed Connector</td><td>FortiGate's built-in External Connector — pulls and refreshes the feed</td></tr>
+                    <tr><td>Firewall Policy</td><td>References the feed object as a source/destination Address Group</td></tr>
+                </table>
+
+                <h2>Use Case 1 — Block Local-to-Internet Traffic to Malicious Destinations</h2>
+                <p>
+                    The goal here is <strong>preventive egress filtering</strong>: stop infected or compromised internal hosts from beaconing to C2 servers or downloading second-stage payloads.
+                </p>
+
+                <h3>Step 1: Create the External Connector</h3>
+                <p>Navigate to: <strong>Security Fabric → External Connectors → Create New → Threat Feeds → IP Address</strong></p>
+<pre><code># FortiGate CLI equivalent:
+config system external-resource
+    edit "ioc-malicious-ip-feed"
+        set type ip
+        set resource "https://feodotracker.abuse.ch/downloads/ipblocklist.txt"
+        set refresh-rate 60
+        set status enable
+    next
+end</code></pre>
+                <p>Repeat for a domain-type feed (e.g., Abuse.ch URLhaus):</p>
+<pre><code>config system external-resource
+    edit "ioc-malicious-domain-feed"
+        set type domain
+        set resource "https://urlhaus.abuse.ch/downloads/hostfile/"
+        set refresh-rate 60
+        set status enable
+    next
+end</code></pre>
+
+                <h3>Step 2: Reference in Firewall Policy</h3>
+                <p>Create or edit a policy covering the LAN-to-WAN direction. Add the threat feed object as a <strong>Destination</strong> with action <strong>DENY</strong>, placed <em>above</em> the general allow policy:</p>
+<pre><code>config firewall policy
+    edit 0
+        set name "Block-IOC-Egress"
+        set srcintf "LAN"
+        set dstintf "WAN"
+        set srcaddr "all"
+        set dstaddr "ioc-malicious-ip-feed" "ioc-malicious-domain-feed"
+        set action deny
+        set schedule "always"
+        set logtraffic all
+        set comments "Block outbound to IOC-listed IPs and domains"
+    next
+end</code></pre>
+
+                <div class="callout">
+                    <strong>⚠️ Note:</strong> Domain-based blocking requires DNS inspection to be enabled on the policy so FortiGate can match the DNS query against the domain feed before the connection is established.
+                </div>
+
+                <h2>Use Case 2 — Block File Transfers Containing Known Malicious Hashes</h2>
+                <p>
+                    FortiGate's <strong>FortiSandbox connector</strong> or a <strong>Threat Feed of type "Malware Hash"</strong> can be assigned to an Antivirus profile. When a file in transit matches a hash in the feed, the transfer is blocked immediately.
+                </p>
+<pre><code>config system external-resource
+    edit "ioc-malware-hash-feed"
+        set type malware-hash
+        set resource "https://bazaar.abuse.ch/export/txt/sha256/recent/"
+        set refresh-rate 120
+        set status enable
+    next
+end</code></pre>
+                <p>Assign this to an AV profile under <strong>Security Profiles → Antivirus → External Malware Block List</strong>, then attach the AV profile to the relevant policies.</p>
+
+                <h2>Use Case 3 — Block Public Scanners from Reaching DMZ (Nginx)</h2>
+                <p>
+                    Public-facing services (e.g., an Nginx reverse proxy in the DMZ) are constantly hammered by automated scanners, bots, and reconnaissance tools. Using a threat feed of known scanner IPs (e.g., Shodan scanners, MassScanner, GreyNoise noisy IPs) as a <strong>Source</strong> block on the WAN-to-DMZ policy provides automatic suppression of this noise.
+                </p>
+<pre><code>config system external-resource
+    edit "ioc-public-scanners-feed"
+        set type ip
+        set resource "https://your-internal-feed-server/scanner-blocklist.txt"
+        set refresh-rate 60
+        set status enable
+    next
+end
+
+config firewall policy
+    edit 0
+        set name "Block-Scanners-to-DMZ"
+        set srcintf "WAN"
+        set dstintf "DMZ"
+        set srcaddr "ioc-public-scanners-feed"
+        set dstaddr "nginx-dmz-vip"
+        set action deny
+        set schedule "always"
+        set logtraffic all
+        set comments "Block known scanners/attackers from reaching Nginx DMZ"
+    next
+end</code></pre>
+                <p>
+                    IP addresses of previously detected attackers can also be appended to a custom feed file hosted internally — creating a <strong>self-learning blocklist</strong> driven by your own FortiGate logs or SIEM detections.
+                </p>
+
+                <h2>Monitoring &amp; Verification</h2>
+                <ul>
+                    <li>Check connector status: <strong>Security Fabric → External Connectors</strong> — verify "Last Sync" timestamp and entry count.</li>
+                    <li>View blocked hits: <strong>Log &amp; Report → Forward Traffic</strong> — filter by policy "Block-IOC-Egress".</li>
+                    <li>CLI quick check:</li>
+                </ul>
+<pre><code># Check feed entries loaded
+diagnose system external-resource status ioc-malicious-ip-feed
+
+# Show last update time
+diagnose debug rating</code></pre>
+
+                <h2>Key Takeaways</h2>
+                <ul>
+                    <li>External Threat Feeds on FortiGate require no additional licenses — they work natively via HTTP/HTTPS pull.</li>
+                    <li>Refresh rate of 60 minutes strikes a good balance between freshness and FortiGate API load.</li>
+                    <li>Always place DENY+IOC policies <em>above</em> general allow policies in the policy table.</li>
+                    <li>Domain feeds require DNS inspection; IP feeds work at the network layer — no inspection needed.</li>
+                    <li>Combine external feeds with FortiGate's built-in botnet C2 list for layered coverage.</li>
+                </ul>
+
+                <div class="article-nav">
+                    <span></span>
+                    <a href="librenms-setup.html">Next: LibreNMS from Scratch <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <script src="../../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <app-footer></app-footer>
+    <script>AOS.init();</script>
+    <script src="../../script/components.js"></script>
+</body>
+</html>
