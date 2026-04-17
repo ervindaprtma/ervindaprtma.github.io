@@ -3,62 +3,850 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
-        <meta name="Desc" content="Noting">
-        <meta name="Author" content="MasVin22">
+        <meta name="description" content="Ervinda Pratama — Personal learning roadmap from Network Engineer to Security Engineering, covering CompTIA, ISC2, CCIE, NetDevOps, and AI-driven networking.">
+        <meta name="author" content="MasVin22">
         <link rel="stylesheet" href="../styles/main.css">
         <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
         <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
-        <title>Network Engineer L2 - Ervinda Pratama</title>
-
-        <link rel="icon" href="../images_cert/profil.jpg" sizes="32x32" class="rounded-circle">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+        <link rel="icon" href="../images_cert/profil.jpg" sizes="32x32" class="rounded-circle">
+        <title>Learning Roadmap — Ervinda Pratama</title>
+        <style>
+            /* ══ CSS Variables ══════════════════════════ */
+            :root {
+                --c-done:    #28a745;
+                --c-active:  #0077cc;
+                --c-next:    #fd7e14;
+                --c-future:  #6c757d;
+                --c-accent:  #00f2fe;
+                --c-purple:  #6f42c1;
+                --c-pink:    #e83e8c;
+                --c-line:    #dee2e6;
+            }
+            body.dark-mode {
+                --c-line: #333;
+            }
+
+            /* ══ Track Legend ══════════════════════════ */
+            .track-legend {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 16px;
+                margin-bottom: 2rem;
+            }
+            .tl-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 13px;
+                font-weight: 600;
+            }
+            .tl-dot {
+                width: 14px; height: 14px;
+                border-radius: 50%;
+                flex-shrink: 0;
+            }
+
+            /* ══ Status Badges ════════════════════════ */
+            .status-badge {
+                display: inline-block;
+                font-size: 10px;
+                font-weight: 700;
+                letter-spacing: .06em;
+                text-transform: uppercase;
+                padding: 2px 9px;
+                border-radius: 20px;
+                margin-bottom: 8px;
+            }
+            .sb-done   { background: rgba(40,167,69,.15);  color: var(--c-done);   border: 1px solid rgba(40,167,69,.3);  }
+            .sb-active { background: rgba(0,119,204,.15);  color: var(--c-active); border: 1px solid rgba(0,119,204,.3);  }
+            .sb-next   { background: rgba(253,126,20,.15); color: var(--c-next);   border: 1px solid rgba(253,126,20,.3); }
+            .sb-future { background: rgba(108,117,125,.12);color: var(--c-future); border: 1px solid rgba(108,117,125,.3);}
+
+            /* ══ Phase Timeline ═══════════════════════ */
+            .roadmap-wrap {
+                position: relative;
+                padding-bottom: 2rem;
+            }
+            /* Vertical center line */
+            .roadmap-wrap::before {
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: 0; bottom: 0;
+                width: 3px;
+                background: linear-gradient(to bottom, var(--c-active), var(--c-purple), var(--c-pink));
+                transform: translateX(-50%);
+                border-radius: 3px;
+            }
+            @media(max-width:767px){
+                .roadmap-wrap::before { left: 22px; }
+            }
+
+            /* ══ Phase Block ══════════════════════════ */
+            .phase-block {
+                display: flex;
+                gap: 28px;
+                margin-bottom: 2.8rem;
+                position: relative;
+                align-items: flex-start;
+            }
+            /* Alternate sides */
+            .phase-block.left  { flex-direction: row-reverse; }
+            .phase-block.right { flex-direction: row; }
+
+            @media(max-width:767px){
+                .phase-block,
+                .phase-block.left,
+                .phase-block.right { flex-direction: row; padding-left: 48px; }
+            }
+
+            /* Center dot */
+            .phase-dot {
+                position: absolute;
+                left: 50%;
+                top: 20px;
+                transform: translateX(-50%);
+                width: 36px; height: 36px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 14px;
+                font-weight: 700;
+                color: #fff;
+                z-index: 2;
+                box-shadow: 0 0 0 4px white;
+                flex-shrink: 0;
+            }
+            body.dark-mode .phase-dot { box-shadow: 0 0 0 4px #121212; }
+            @media(max-width:767px){
+                .phase-dot { left: 4px; transform: none; top: 16px; width: 32px; height: 32px; font-size: 12px; }
+            }
+
+            .dot-done   { background: var(--c-done);   }
+            .dot-active { background: var(--c-active);  box-shadow: 0 0 0 4px white, 0 0 12px rgba(0,119,204,.5); }
+            body.dark-mode .dot-active { box-shadow: 0 0 0 4px #121212, 0 0 14px rgba(0,242,254,.45); }
+            .dot-next   { background: var(--c-next);   }
+            .dot-future { background: var(--c-future); }
+            .dot-parallel { background: linear-gradient(135deg,#6f42c1,#e83e8c); box-shadow: 0 0 0 4px white, 0 0 14px rgba(111,66,193,.4); }
+            body.dark-mode .dot-parallel { box-shadow: 0 0 0 4px #121212, 0 0 16px rgba(232,62,140,.4); }
+
+            /* Phase card */
+            .phase-card {
+                flex: 1;
+                background: #fff;
+                border-radius: 12px;
+                padding: 1.4rem 1.5rem;
+                border: 1px solid #e0e0e0;
+                box-shadow: 0 2px 12px rgba(0,0,0,.06);
+                transition: box-shadow .25s, transform .25s;
+                max-width: calc(50% - 36px);
+            }
+            .phase-card:hover {
+                box-shadow: 0 6px 24px rgba(0,0,0,.12);
+                transform: translateY(-2px);
+            }
+            body.dark-mode .phase-card {
+                background: #1e1e1e;
+                border-color: #333;
+                box-shadow: 0 2px 12px rgba(0,0,0,.3);
+            }
+            @media(max-width:767px){
+                .phase-card { max-width: 100%; }
+            }
+
+            /* spacer on opposite side of card */
+            .phase-spacer { flex: 1; max-width: calc(50% - 36px); }
+            @media(max-width:767px){ .phase-spacer { display: none; } }
+
+            .phase-number {
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: .1em;
+                text-transform: uppercase;
+                color: #888;
+                margin-bottom: 4px;
+            }
+            body.dark-mode .phase-number { color: #666; }
+
+            .phase-title {
+                font-size: 1.1rem;
+                font-weight: 800;
+                margin-bottom: .7rem;
+                color: #1a1a2e;
+            }
+            body.dark-mode .phase-title { color: #f0f0f0; }
+
+            .phase-desc {
+                font-size: .875rem;
+                color: #555;
+                line-height: 1.65;
+                margin-bottom: .9rem;
+            }
+            body.dark-mode .phase-desc { color: #aaa; }
+
+            /* Skill pills */
+            .skill-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: .9rem; }
+            .skill-pill {
+                font-size: 11px;
+                font-weight: 600;
+                padding: 3px 10px;
+                border-radius: 20px;
+                background: rgba(0,119,204,.09);
+                color: #0077cc;
+                border: 1px solid rgba(0,119,204,.2);
+            }
+            body.dark-mode .skill-pill {
+                background: rgba(0,242,254,.09);
+                color: #00f2fe;
+                border-color: rgba(0,242,254,.2);
+            }
+            .skill-pill.purple {
+                background: rgba(111,66,193,.09);
+                color: var(--c-purple);
+                border-color: rgba(111,66,193,.2);
+            }
+            body.dark-mode .skill-pill.purple {
+                background: rgba(232,62,140,.09);
+                color: #e83e8c;
+                border-color: rgba(232,62,140,.2);
+            }
+            .skill-pill.green {
+                background: rgba(40,167,69,.09);
+                color: var(--c-done);
+                border-color: rgba(40,167,69,.2);
+            }
+
+            /* Cert badges row */
+            .cert-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+            .cert-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                font-size: 11px;
+                font-weight: 700;
+                padding: 4px 10px;
+                border-radius: 6px;
+                color: #fff;
+            }
+            .cb-comptia  { background: #c8102e; }
+            .cb-isc2     { background: #003087; }
+            .cb-fortinet { background: #EE3624; }
+            .cb-paloalto { background: #FA582D; }
+            .cb-cisco    { background: #1ba0d7; }
+            .cb-mikrotik { background: #D04A2A; }
+            .cb-linux    { background: #f0a500; color: #111; }
+            .cb-hackviser{ background: #2ecc71; color: #111; }
+            .cb-neutral  { background: #6c757d; }
+
+            /* ══ Parallel Tracks Banner ═══════════════ */
+            .parallel-banner {
+                background: linear-gradient(135deg, rgba(111,66,193,.12), rgba(232,62,140,.12));
+                border: 1px solid rgba(111,66,193,.25);
+                border-radius: 12px;
+                padding: 1.4rem 1.5rem;
+                margin-bottom: 2rem;
+            }
+            body.dark-mode .parallel-banner {
+                background: linear-gradient(135deg, rgba(111,66,193,.15), rgba(232,62,140,.15));
+                border-color: rgba(232,62,140,.3);
+            }
+            .parallel-banner h5 {
+                font-weight: 800;
+                font-size: 1rem;
+                color: #6f42c1;
+                margin-bottom: .5rem;
+            }
+            body.dark-mode .parallel-banner h5 { color: #e83e8c; }
+
+            /* ══ Section Divider ══════════════════════ */
+            .track-divider {
+                text-align: center;
+                position: relative;
+                margin: 2.5rem 0 2rem;
+            }
+            .track-divider::before {
+                content: '';
+                position: absolute;
+                top: 50%; left: 0; right: 0;
+                height: 1px;
+                background: var(--c-line);
+            }
+            .track-divider span {
+                position: relative;
+                background: #fff;
+                padding: 0 14px;
+                font-size: 12px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: .12em;
+                color: #888;
+            }
+            body.dark-mode .track-divider span { background: #121212; color: #555; }
+
+            /* current phase glowing card */
+            .phase-card.glow-active {
+                border-color: rgba(0,119,204,.45);
+                box-shadow: 0 0 0 3px rgba(0,119,204,.15), 0 6px 24px rgba(0,0,0,.1);
+            }
+            body.dark-mode .phase-card.glow-active {
+                border-color: rgba(0,242,254,.4);
+                box-shadow: 0 0 0 3px rgba(0,242,254,.12), 0 6px 24px rgba(0,0,0,.3);
+            }
+        </style>
     </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light navbar-library fixed-top navbar-fixed-top">
-            <div class="container">
-                <button
-                    class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle Navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active navtab-active" href="../index.html">Back to Home</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="#">Network & Security</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="#">Cyber Security Path</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="#">AI & ML Security</a>
-                        </li>
-                    </ul>
-                    <!-- <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="#">Blockchain & Web3 Path</a>
-                        </li> -->
-                    </ul>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <app-navbar></app-navbar>
+    <section class="page-content">
+        <div class="container">
+            <div id="home">
+                <div class="page-home">
+                    <div class="header">
+
+                        <!-- ─── Page Header ──────────────────────── -->
+                        <div class="row align-items-center">
+                            <div class="col-lg-12 text-center">
+                                <img src="../images_cert/profil.jpg" class="w-25 rounded mx-auto d-block" width="200" alt="profil" data-aos="zoom-in">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-lg-12 text-center">
+                            <h4>Ervinda Pratama</h4>
+                            <p><i>Network Engineer L2 | Transitioning into Security Engineering | Hackviser CAPT &amp; CWSE | Fortinet FCA | MikroTik MTCNA &amp; MTCTCE<br>
+                            Cybersecurity, AI, and Blockchain Enthusiast</i></p>
+                        </div>
+                        <div class="col-lg-12 text-center">
+                            <br>
+                            <div class="header-title mt-8" data-aos="fade-up" data-aos-delay="400">
+                                <p><b>Learning Roadmap</b></p>
+                                <blockquote class="justify-content-center text-center">
+                                    "An investment in knowledge pays the best interest."
+                                </blockquote>
+                                <p>~ Benjamin Franklin</p>
+                            </div>
+                        </div>
+                        <hr class="mt-5" data-aos="fade-up" data-aos-delay="500" />
+
+                        <!-- ─── Legend ───────────────────────────── -->
+                        <div class="col-lg-10 mx-auto mt-4 mb-2" data-aos="fade-up">
+                            <div class="track-legend">
+                                <div class="tl-item"><div class="tl-dot" style="background:var(--c-done)"></div> Completed</div>
+                                <div class="tl-item"><div class="tl-dot" style="background:var(--c-active)"></div> In Progress / Current Focus</div>
+                                <div class="tl-item"><div class="tl-dot" style="background:var(--c-next)"></div> Next Target</div>
+                                <div class="tl-item"><div class="tl-dot" style="background:var(--c-future)"></div> Planned / Future</div>
+                                <div class="tl-item"><div class="tl-dot" style="background:linear-gradient(135deg,#6f42c1,#e83e8c)"></div> Parallel / Ongoing Track</div>
+                            </div>
+                        </div>
+
+                        <!-- ══════════════════════════════════════════
+                             PARALLEL TRACKS BANNER
+                        ═══════════════════════════════════════════ -->
+                        <div class="col-lg-10 mx-auto" data-aos="fade-up" data-aos-delay="100">
+                            <div class="parallel-banner">
+                                <h5><i class="fa fa-code-fork"></i>&nbsp; Two Parallel Tracks — Pursued Simultaneously</h5>
+                                <p class="mb-1" style="font-size:.88rem;">
+                                    This roadmap runs on <strong>two concurrent tracks</strong> that reinforce each other:
+                                </p>
+                                <p class="mb-0" style="font-size:.88rem;">
+                                    <strong>🔐 Security Engineering Track</strong> — Progressing from IA fundamentals through CWSE/CAPT → CompTIA Security+ → CySA+ → SSCP → CCSP → CISSP → SecurityX CAS-005.<br>
+                                    <strong>🌐 Network Engineering Track</strong> — Deepening NetEng expertise from CCNP → CCIE → NetDevOps + Automation → Agentic AI for Networks → Fortinet NSE 7 / Palo Alto PCNSE.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- ══════════════════════════════════════════
+                             TIMELINE
+                        ═══════════════════════════════════════════ -->
+                        <div class="col-lg-10 mx-auto mt-4">
+                        <div class="roadmap-wrap">
+
+                            <!-- ── PHASE 0: Foundation ────────────────── -->
+                            <div class="phase-block right" data-aos="fade-right">
+                                <div class="phase-spacer"></div>
+                                <div class="phase-dot dot-done" title="Completed">0</div>
+                                <div class="phase-card">
+                                    <div class="phase-number">Phase 0 · Foundation</div>
+                                    <span class="status-badge sb-done"><i class="fa fa-check"></i> Completed</span>
+                                    <div class="phase-title">Network Engineer Core — ISP, Enterprise &amp; Security Baseline</div>
+                                    <div class="phase-desc">
+                                        5+ years as a Network Engineer spanning ISP distribution design, enterprise routing, firewall administration, and hands-on cybersecurity. This is the solid foundation all future tracks are built on.
+                                    </div>
+                                    <div class="skill-pills">
+                                        <span class="skill-pill green">BGP / OSPF / EIGRP</span>
+                                        <span class="skill-pill green">MikroTik L7 Firewall</span>
+                                        <span class="skill-pill green">FortiGate FW &amp; IPS</span>
+                                        <span class="skill-pill green">VLAN / QoS / MPLS</span>
+                                        <span class="skill-pill green">LibreNMS / SNMP</span>
+                                        <span class="skill-pill green">SD-WAN SLA</span>
+                                        <span class="skill-pill green">Web Security Testing</span>
+                                    </div>
+                                    <div class="cert-badges">
+                                        <span class="cert-badge cb-mikrotik"><i class="fa fa-check-circle"></i> MTCNA</span>
+                                        <span class="cert-badge cb-mikrotik"><i class="fa fa-check-circle"></i> MTCTCE</span>
+                                        <span class="cert-badge cb-fortinet"><i class="fa fa-check-circle"></i> FCA</span>
+                                        <span class="cert-badge cb-hackviser"><i class="fa fa-check-circle"></i> CWSE</span>
+                                        <span class="cert-badge cb-hackviser"><i class="fa fa-check-circle"></i> CAPT</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ── PHASE 1: Basic IA ───────────────────── -->
+                            <div class="phase-block left" data-aos="fade-left">
+                                <div class="phase-spacer"></div>
+                                <div class="phase-dot dot-done" title="Completed">1</div>
+                                <div class="phase-card">
+                                    <div class="phase-number">Phase 1 · Security Track</div>
+                                    <span class="status-badge sb-done"><i class="fa fa-check"></i> Completed</span>
+                                    <div class="phase-title">Basic Information Assurance</div>
+                                    <div class="phase-desc">
+                                        Understanding the foundational principles that govern all security decisions: CIA Triad, risk management, access control models, security policies, and basic threat classification. Supported by hands-on firewall and IOC work at the network layer.
+                                    </div>
+                                    <div class="skill-pills">
+                                        <span class="skill-pill green">CIA Triad</span>
+                                        <span class="skill-pill green">Risk Assessment</span>
+                                        <span class="skill-pill green">Access Control</span>
+                                        <span class="skill-pill green">Security Policies</span>
+                                        <span class="skill-pill green">Threat Classification</span>
+                                        <span class="skill-pill green">IOC &amp; Threat Feeds</span>
+                                    </div>
+                                    <div class="cert-badges">
+                                        <span class="cert-badge cb-isc2"><i class="fa fa-check-circle"></i> ISC2 CC (Applied)</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ── PHASE 2: Beginner CySec ─────────────── -->
+                            <div class="phase-block right" data-aos="fade-right">
+                                <div class="phase-spacer"></div>
+                                <div class="phase-dot dot-active" title="Current">2</div>
+                                <div class="phase-card glow-active">
+                                    <div class="phase-number">Phase 2 · Security Track</div>
+                                    <span class="status-badge sb-active"><i class="fa fa-spinner fa-pulse"></i> In Progress</span>
+                                    <div class="phase-title">Beginner Cybersecurity — CompTIA Security+</div>
+                                    <div class="phase-desc">
+                                        Formalizing cybersecurity fundamentals through the globally recognized <strong>CompTIA Security+ SY0-701</strong> framework. Covers cryptography basics, PKI fundamentals, network security, identity management, threat analysis, and incident response — bridging the gap from NetEng to SecEng.
+                                    </div>
+                                    <div class="skill-pills">
+                                        <span class="skill-pill">Cryptography Basics</span>
+                                        <span class="skill-pill">PKI Intro</span>
+                                        <span class="skill-pill">Network Security</span>
+                                        <span class="skill-pill">Identity &amp; Access</span>
+                                        <span class="skill-pill">Threat Analysis</span>
+                                        <span class="skill-pill">Incident Response (IR)</span>
+                                        <span class="skill-pill">Vulnerability Scanning</span>
+                                        <span class="skill-pill">Security Architecture</span>
+                                    </div>
+                                    <div class="cert-badges">
+                                        <span class="cert-badge cb-comptia"><i class="fa fa-graduation-cap"></i> CompTIA Security+ SY0-701</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ── PHASE 3: Beginner Hacking ──────────── -->
+                            <div class="phase-block left" data-aos="fade-left">
+                                <div class="phase-spacer"></div>
+                                <div class="phase-dot dot-active" title="In Progress">3</div>
+                                <div class="phase-card glow-active">
+                                    <div class="phase-number">Phase 3 · Security Track</div>
+                                    <span class="status-badge sb-active"><i class="fa fa-spinner fa-pulse"></i> In Progress</span>
+                                    <div class="phase-title">Beginner Offensive Security (Ethical Hacking)</div>
+                                    <div class="phase-desc">
+                                        Developing an attacker's mindset through structured offensive security training. Covers web application hacking (OWASP Top 10), reconnaissance, enumeration, exploitation basics, and reporting. Leveraging existing CWSE/CAPT foundation from Hackviser.
+                                    </div>
+                                    <div class="skill-pills">
+                                        <span class="skill-pill green">OWASP Top 10 ✓</span>
+                                        <span class="skill-pill green">Web App Testing ✓</span>
+                                        <span class="skill-pill">Reconnaissance</span>
+                                        <span class="skill-pill">Enumeration</span>
+                                        <span class="skill-pill">Exploitation Basics</span>
+                                        <span class="skill-pill">Privilege Escalation (Linux)</span>
+                                        <span class="skill-pill">Report Writing</span>
+                                    </div>
+                                    <div class="cert-badges">
+                                        <span class="cert-badge cb-hackviser"><i class="fa fa-check-circle"></i> CWSE (Done)</span>
+                                        <span class="cert-badge cb-hackviser"><i class="fa fa-check-circle"></i> CAPT (Done)</span>
+                                        <span class="cert-badge cb-neutral"><i class="fa fa-graduation-cap"></i> eJPT (INE — Target)</span>
+                                        <span class="cert-badge cb-neutral"><i class="fa fa-graduation-cap"></i> HTB / THM Labs</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ── PHASE 4: Beginner Security Analyst ─── -->
+                            <div class="phase-block right" data-aos="fade-right">
+                                <div class="phase-spacer"></div>
+                                <div class="phase-dot dot-next" title="Next">4</div>
+                                <div class="phase-card">
+                                    <div class="phase-number">Phase 4 · Security Track</div>
+                                    <span class="status-badge sb-next"><i class="fa fa-flag"></i> Next Target</span>
+                                    <div class="phase-title">Beginner Security Analyst — CySA+ &amp; SOC Fundamentals</div>
+                                    <div class="phase-desc">
+                                        Transitioning to a defensive blue team role: understanding SOC workflows, SIEM fundamentals, threat hunting, log analysis, and incident triage. CompTIA CySA+ CS0-003 provides the structured framework covering threat &amp; vulnerability management, security operations, and incident response.
+                                    </div>
+                                    <div class="skill-pills">
+                                        <span class="skill-pill">SIEM &amp; Log Analysis</span>
+                                        <span class="skill-pill">Threat Hunting</span>
+                                        <span class="skill-pill">Incident Triage</span>
+                                        <span class="skill-pill">Vulnerability Management</span>
+                                        <span class="skill-pill">Network Traffic Analysis</span>
+                                        <span class="skill-pill">SOC Playbooks</span>
+                                        <span class="skill-pill">Malware Analysis (Basic)</span>
+                                    </div>
+                                    <div class="cert-badges">
+                                        <span class="cert-badge cb-comptia"><i class="fa fa-graduation-cap"></i> CompTIA CySA+ CS0-003</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ── PHASE 5: Intermediate Hacking + Analyst -->
+                            <div class="phase-block left" data-aos="fade-left">
+                                <div class="phase-spacer"></div>
+                                <div class="phase-dot dot-future" title="Planned">5</div>
+                                <div class="phase-card">
+                                    <div class="phase-number">Phase 5 · Security Track</div>
+                                    <span class="status-badge sb-future"><i class="fa fa-clock-o"></i> Planned</span>
+                                    <div class="phase-title">Intermediate Hacking &amp; Security Analysis — SSCP &amp; Purple Team</div>
+                                    <div class="phase-desc">
+                                        Combining red and blue team perspectives (Purple Team approach): correlating offensive techniques with defensive detections. ISC2 SSCP formalizes systems security, cryptography, access control, and risk management at an intermediate-to-professional level. Parallel offensive work with PNPT or eNPT.
+                                    </div>
+                                    <div class="skill-pills">
+                                        <span class="skill-pill">Purple Team Ops</span>
+                                        <span class="skill-pill">Detection Engineering</span>
+                                        <span class="skill-pill">MITRE ATT&amp;CK Framework</span>
+                                        <span class="skill-pill">Advanced Log Correlation</span>
+                                        <span class="skill-pill">Web App Pentest</span>
+                                        <span class="skill-pill">FortiSOC / FortiSIEM</span>
+                                        <span class="skill-pill">Risk Management</span>
+                                    </div>
+                                    <div class="cert-badges">
+                                        <span class="cert-badge cb-isc2"><i class="fa fa-graduation-cap"></i> ISC2 SSCP</span>
+                                        <span class="cert-badge cb-neutral"><i class="fa fa-graduation-cap"></i> PNPT / eNPT</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ── PHASE 6: Cryptography & PKI ───────── -->
+                            <div class="phase-block right" data-aos="fade-right">
+                                <div class="phase-spacer"></div>
+                                <div class="phase-dot dot-future" title="Planned">6</div>
+                                <div class="phase-card">
+                                    <div class="phase-number">Phase 6 · Security Track</div>
+                                    <span class="status-badge sb-future"><i class="fa fa-clock-o"></i> Planned</span>
+                                    <div class="phase-title">Cryptography, Key Management &amp; Cloud Security (CCSP)</div>
+                                    <div class="phase-desc">
+                                        Deep-diving into cryptographic systems — symmetric/asymmetric encryption, hashing, digital signatures, certificate lifecycle management, and PKI hierarchies. ISC2 CCSP extends this into cloud security architecture, covering data security, platform security, and compliance in cloud environments.
+                                    </div>
+                                    <div class="skill-pills">
+                                        <span class="skill-pill">Symmetric &amp; Asymmetric Crypto</span>
+                                        <span class="skill-pill">PKI Design &amp; Management</span>
+                                        <span class="skill-pill">TLS/SSL Deep Dive</span>
+                                        <span class="skill-pill">Certificate Lifecycle</span>
+                                        <span class="skill-pill">Cloud Security Architecture</span>
+                                        <span class="skill-pill">Data Sovereignty</span>
+                                        <span class="skill-pill">Zero Trust (Cloud)</span>
+                                    </div>
+                                    <div class="cert-badges">
+                                        <span class="cert-badge cb-isc2"><i class="fa fa-graduation-cap"></i> ISC2 CCSP</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ── PHASE 7: GRC ────────────────────────── -->
+                            <div class="phase-block left" data-aos="fade-left">
+                                <div class="phase-spacer"></div>
+                                <div class="phase-dot dot-future" title="Planned">7</div>
+                                <div class="phase-card">
+                                    <div class="phase-number">Phase 7 · Security Track</div>
+                                    <span class="status-badge sb-future"><i class="fa fa-clock-o"></i> Planned</span>
+                                    <div class="phase-title">Intermediate Security Principles &amp; GRC</div>
+                                    <div class="phase-desc">
+                                        Governance, Risk &amp; Compliance (GRC) provides the strategic dimension of security. Understanding how security programs align with business objectives, regulatory requirements, and risk tolerance. Frameworks studied: NIST CSF, ISO/IEC 27001, COBIT, and GDPR/PDP compliance awareness.
+                                    </div>
+                                    <div class="skill-pills">
+                                        <span class="skill-pill">NIST CSF 2.0</span>
+                                        <span class="skill-pill">ISO/IEC 27001</span>
+                                        <span class="skill-pill">Risk Register &amp; BIA</span>
+                                        <span class="skill-pill">Security Policies</span>
+                                        <span class="skill-pill">Audit &amp; Compliance</span>
+                                        <span class="skill-pill">COBIT Basics</span>
+                                        <span class="skill-pill">Data Privacy (GDPR/PDP)</span>
+                                    </div>
+                                    <div class="cert-badges">
+                                        <span class="cert-badge cb-neutral"><i class="fa fa-graduation-cap"></i> ISO 27001 Awareness</span>
+                                        <span class="cert-badge cb-neutral"><i class="fa fa-graduation-cap"></i> NIST CSF Practice</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ── PHASE 8: CISSP ─────────────────────── -->
+                            <div class="phase-block right" data-aos="fade-right">
+                                <div class="phase-spacer"></div>
+                                <div class="phase-dot dot-future" title="Planned">8</div>
+                                <div class="phase-card">
+                                    <div class="phase-number">Phase 8 · Security Track · Advanced</div>
+                                    <span class="status-badge sb-future"><i class="fa fa-clock-o"></i> Planned</span>
+                                    <div class="phase-title">Advanced Security Engineering — ISC2 CISSP</div>
+                                    <div class="phase-desc">
+                                        The gold standard in information security certification. CISSP's 8 domains span the full breadth of enterprise security — from security architecture and engineering to asset security, identity management, software development security, and security operations. Requires 5 years of professional experience.
+                                    </div>
+                                    <div class="skill-pills">
+                                        <span class="skill-pill purple">Security Architecture</span>
+                                        <span class="skill-pill purple">Asset Security</span>
+                                        <span class="skill-pill purple">Comm &amp; Network Security</span>
+                                        <span class="skill-pill purple">IAM &amp; PAM</span>
+                                        <span class="skill-pill purple">Security Assessment</span>
+                                        <span class="skill-pill purple">Security Operations</span>
+                                        <span class="skill-pill purple">Software Dev Security</span>
+                                        <span class="skill-pill purple">Security &amp; Risk Mgmt</span>
+                                    </div>
+                                    <div class="cert-badges">
+                                        <span class="cert-badge cb-isc2"><i class="fa fa-graduation-cap"></i> ISC2 CISSP (8 Domains)</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ── PHASE 9: SecurityX CAS-005 ─────────── -->
+                            <div class="phase-block left" data-aos="fade-left">
+                                <div class="phase-spacer"></div>
+                                <div class="phase-dot dot-future" title="Planned">9</div>
+                                <div class="phase-card">
+                                    <div class="phase-number">Phase 9 · Security Track · Advanced</div>
+                                    <span class="status-badge sb-future"><i class="fa fa-clock-o"></i> Planned</span>
+                                    <div class="phase-title">Advanced Security Architecture — CompTIA SecurityX CAS-005</div>
+                                    <div class="phase-desc">
+                                        The capstone practical counterpart to CISSP. SecurityX (formerly CASP+) targets senior security practitioners who design, implement, and manage enterprise security architecture. Focus areas: risk analysis at enterprise scale, advanced cryptographic implementations, security engineering for complex environments, and research-informed security solutions.
+                                    </div>
+                                    <div class="skill-pills">
+                                        <span class="skill-pill purple">Enterprise Risk Engineering</span>
+                                        <span class="skill-pill purple">Advanced Cryptography</span>
+                                        <span class="skill-pill purple">Security Solution Design</span>
+                                        <span class="skill-pill purple">Research &amp; Collaboration</span>
+                                        <span class="skill-pill purple">Business Context Security</span>
+                                        <span class="skill-pill purple">Multi-Cloud Security Arch</span>
+                                    </div>
+                                    <div class="cert-badges">
+                                        <span class="cert-badge cb-comptia"><i class="fa fa-graduation-cap"></i> CompTIA SecurityX CAS-005</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ── PHASE ∞: Always Learning ────────────── -->
+                            <div class="phase-block right" data-aos="fade-right">
+                                <div class="phase-spacer"></div>
+                                <div class="phase-dot dot-future" title="Ongoing">∞</div>
+                                <div class="phase-card">
+                                    <div class="phase-number">Phase ∞ · All Tracks · Continuous</div>
+                                    <span class="status-badge sb-future"><i class="fa fa-refresh"></i> Always Ongoing</span>
+                                    <div class="phase-title">Beyond — Research, Specialization &amp; Mastery</div>
+                                    <div class="phase-desc">
+                                        Learning never ends. This phase captures continuous specialization in emerging fields that intersect network engineering and security — new certifications, hands-on research labs, and keeping pace with the evolving threat landscape.
+                                    </div>
+                                    <div class="skill-pills">
+                                        <span class="skill-pill purple">Threat Intelligence Research</span>
+                                        <span class="skill-pill purple">Reverse Engineering</span>
+                                        <span class="skill-pill purple">Malware Analysis</span>
+                                        <span class="skill-pill">Bug Bounty</span>
+                                        <span class="skill-pill">CTF Competitions</span>
+                                        <span class="skill-pill">Security Research &amp; Publishing</span>
+                                    </div>
+                                    <div class="cert-badges">
+                                        <span class="cert-badge cb-neutral"><i class="fa fa-infinity"></i> Continuous Learning</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div><!-- /roadmap-wrap Security Track -->
+
+                        <!-- ══════════════════════════════════════════
+                             PARALLEL TRACK — NETWORK ENGINEERING
+                        ═══════════════════════════════════════════ -->
+                        <div class="track-divider">
+                            <span>⟵ &nbsp; Parallel Track: Network Engineering &amp; Automation &nbsp; ⟶</span>
+                        </div>
+
+                        <div class="roadmap-wrap">
+
+                            <!-- ── NET Phase A: CCNP (Done) ────────────── -->
+                            <div class="phase-block right" data-aos="fade-right">
+                                <div class="phase-spacer"></div>
+                                <div class="phase-dot dot-done">A</div>
+                                <div class="phase-card">
+                                    <div class="phase-number">Net Track · Phase A</div>
+                                    <span class="status-badge sb-done"><i class="fa fa-check"></i> Completed</span>
+                                    <div class="phase-title">CCNP Enterprise Path (ENCOR &amp; ENARSI)</div>
+                                    <div class="phase-desc">
+                                        Completed the full CCNP Enterprise learning track covering advanced routing (BGP, OSPF multi-area, EIGRP Named Mode), MPLS, VPN technologies, SD-WAN fundamentals, infrastructure security, and enterprise architecture design.
+                                    </div>
+                                    <div class="skill-pills">
+                                        <span class="skill-pill green">BGP Attributes &amp; Policy</span>
+                                        <span class="skill-pill green">OSPF Multi-area</span>
+                                        <span class="skill-pill green">MPLS &amp; LDP</span>
+                                        <span class="skill-pill green">IPsec / GRE VPN</span>
+                                        <span class="skill-pill green">SD-WAN Architecture</span>
+                                        <span class="skill-pill green">Infrastructure Security</span>
+                                    </div>
+                                    <div class="cert-badges">
+                                        <span class="cert-badge cb-cisco"><i class="fa fa-book"></i> CCNP ENCOR (Studied)</span>
+                                        <span class="cert-badge cb-cisco"><i class="fa fa-book"></i> CCNP ENARSI (Studied)</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ── NET Phase B: Fortinet NSE 7 ─────────── -->
+                            <div class="phase-block left" data-aos="fade-left">
+                                <div class="phase-spacer"></div>
+                                <div class="phase-dot dot-active">B</div>
+                                <div class="phase-card glow-active">
+                                    <div class="phase-number">Net Track · Phase B</div>
+                                    <span class="status-badge sb-active"><i class="fa fa-spinner fa-pulse"></i> In Progress</span>
+                                    <div class="phase-title">Fortinet Specialization — NSE 4 → NSE 7</div>
+                                    <div class="phase-desc">
+                                        Advancing Fortinet expertise from FCA (NSE 3) to the full Fortinet Security Expert pathway. NSE 4 covers FortiOS fundamentals, NSE 7 targets advanced security infrastructure (SD-WAN, LAN Edge, Zero Trust) — positioning for enterprise-level Fortinet architecture roles.
+                                    </div>
+                                    <div class="skill-pills">
+                                        <span class="skill-pill green">FCA (NSE 3) ✓</span>
+                                        <span class="skill-pill">NSE 4 FortiOS</span>
+                                        <span class="skill-pill">NSE 5 FortiManager</span>
+                                        <span class="skill-pill">NSE 6 FortiAuthenticator</span>
+                                        <span class="skill-pill">NSE 7 SD-WAN</span>
+                                        <span class="skill-pill">NSE 7 Zero Trust</span>
+                                    </div>
+                                    <div class="cert-badges">
+                                        <span class="cert-badge cb-fortinet"><i class="fa fa-check-circle"></i> FCA ✓</span>
+                                        <span class="cert-badge cb-fortinet"><i class="fa fa-graduation-cap"></i> NSE 4</span>
+                                        <span class="cert-badge cb-fortinet"><i class="fa fa-graduation-cap"></i> NSE 7</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ── NET Phase C: Palo Alto ──────────────── -->
+                            <div class="phase-block right" data-aos="fade-right">
+                                <div class="phase-spacer"></div>
+                                <div class="phase-dot dot-next">C</div>
+                                <div class="phase-card">
+                                    <div class="phase-number">Net Track · Phase C</div>
+                                    <span class="status-badge sb-next"><i class="fa fa-flag"></i> Next Target</span>
+                                    <div class="phase-title">Palo Alto Networks — PCNSA → PCNSE</div>
+                                    <div class="phase-desc">
+                                        Gaining expertise on the world's second dominant next-generation firewall platform. Palo Alto's App-ID, User-ID, Content-ID, and GlobalProtect ZTNA architecture are increasingly required in enterprise security roles. PCNSA covers operations, PCNSE covers design and troubleshooting at the expert level.
+                                    </div>
+                                    <div class="skill-pills">
+                                        <span class="skill-pill">PAN-OS Fundamentals</span>
+                                        <span class="skill-pill">App-ID / User-ID</span>
+                                        <span class="skill-pill">Security Profiles</span>
+                                        <span class="skill-pill">GlobalProtect VPN/ZTNA</span>
+                                        <span class="skill-pill">Panorama Management</span>
+                                        <span class="skill-pill">SD-WAN (PAN)</span>
+                                        <span class="skill-pill">Cortex XDR (Intro)</span>
+                                    </div>
+                                    <div class="cert-badges">
+                                        <span class="cert-badge cb-paloalto"><i class="fa fa-graduation-cap"></i> PCNSA</span>
+                                        <span class="cert-badge cb-paloalto"><i class="fa fa-graduation-cap"></i> PCNSE</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ── NET Phase D: NetDevOps ──────────────── -->
+                            <div class="phase-block left" data-aos="fade-left">
+                                <div class="phase-spacer"></div>
+                                <div class="phase-dot dot-next">D</div>
+                                <div class="phase-card">
+                                    <div class="phase-number">Net Track · Phase D</div>
+                                    <span class="status-badge sb-next"><i class="fa fa-flag"></i> Next Target</span>
+                                    <div class="phase-title">NetDevOps — Network Automation &amp; Infrastructure as Code</div>
+                                    <div class="phase-desc">
+                                        Transitioning from manual CLI-driven network operations to automation-first workflows using Python, Ansible, and Terraform. Covers network programmability via RESTCONF/NETCONF, CI/CD for network configs, and Git-based config management — completing the CCNP DevNet path.
+                                    </div>
+                                    <div class="skill-pills">
+                                        <span class="skill-pill green">Git / GitHub CLI ✓</span>
+                                        <span class="skill-pill">Python for NetEng</span>
+                                        <span class="skill-pill">Ansible Network Modules</span>
+                                        <span class="skill-pill">Terraform (Network)</span>
+                                        <span class="skill-pill">NETCONF / RESTCONF</span>
+                                        <span class="skill-pill">Nornir / Napalm</span>
+                                        <span class="skill-pill">CI/CD for Network</span>
+                                    </div>
+                                    <div class="cert-badges">
+                                        <span class="cert-badge cb-cisco"><i class="fa fa-graduation-cap"></i> Cisco DevNet Associate</span>
+                                        <span class="cert-badge cb-neutral"><i class="fa fa-graduation-cap"></i> Ansible for Network (Red Hat)</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ── NET Phase E: Agentic AI for Networks ── -->
+                            <div class="phase-block right" data-aos="fade-right">
+                                <div class="phase-spacer"></div>
+                                <div class="phase-dot dot-future">E</div>
+                                <div class="phase-card">
+                                    <div class="phase-number">Net Track · Phase E</div>
+                                    <span class="status-badge sb-future"><i class="fa fa-clock-o"></i> Planned</span>
+                                    <div class="phase-title">Agentic AI for Networks &amp; Security Automation</div>
+                                    <div class="phase-desc">
+                                        The frontier of network operations: applying Large Language Models (LLMs) and Agentic AI frameworks to automate NOC tasks — root cause analysis from logs, natural language policy generation, autonomous remediation pipelines, and AI-driven anomaly detection integrated with SNMP/NetFlow telemetry.
+                                    </div>
+                                    <div class="skill-pills">
+                                        <span class="skill-pill purple">LangChain / LangGraph</span>
+                                        <span class="skill-pill purple">LLM for Log Analysis</span>
+                                        <span class="skill-pill purple">RAG for Network Docs</span>
+                                        <span class="skill-pill purple">Agentic Remediation</span>
+                                        <span class="skill-pill purple">AI + SIEM Integration</span>
+                                        <span class="skill-pill purple">Prompt Engineering</span>
+                                        <span class="skill-pill purple">OpenAI / Gemini API</span>
+                                    </div>
+                                    <div class="cert-badges">
+                                        <span class="cert-badge cb-neutral"><i class="fa fa-graduation-cap"></i> Google AI Essentials</span>
+                                        <span class="cert-badge cb-neutral"><i class="fa fa-graduation-cap"></i> DeepLearning.AI (Agentic)</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ── NET Phase F: CCIE ───────────────────── -->
+                            <div class="phase-block left" data-aos="fade-left">
+                                <div class="phase-spacer"></div>
+                                <div class="phase-dot dot-future">F</div>
+                                <div class="phase-card">
+                                    <div class="phase-number">Net Track · Phase F · Expert Level</div>
+                                    <span class="status-badge sb-future"><i class="fa fa-clock-o"></i> Long-term Goal</span>
+                                    <div class="phase-title">CCIE — Enterprise or Security Track</div>
+                                    <div class="phase-desc">
+                                        The highest level of Cisco networking certification. The 8-hour hands-on lab exam tests real-world expert-level skills in complex network design, troubleshooting, and optimization. Target track: <strong>CCIE Security</strong> (aligns with security engineering path) or <strong>CCIE Enterprise Infrastructure</strong>.
+                                    </div>
+                                    <div class="skill-pills">
+                                        <span class="skill-pill purple">Complex Topology Design</span>
+                                        <span class="skill-pill purple">Expert Troubleshooting</span>
+                                        <span class="skill-pill purple">Full Stack Network Security</span>
+                                        <span class="skill-pill purple">8-Hour Lab Exam</span>
+                                        <span class="skill-pill purple">400-level Written Exam</span>
+                                    </div>
+                                    <div class="cert-badges">
+                                        <span class="cert-badge cb-cisco"><i class="fa fa-trophy"></i> CCIE Security (350-701)</span>
+                                        <span class="cert-badge cb-cisco"><i class="fa fa-trophy"></i> CCIE Enterprise (350-401)</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div><!-- /roadmap-wrap Net Track -->
+                        </div><!-- /col-lg-10 -->
+
+                    </div><!-- /header -->
                 </div>
             </div>
-        </nav>
-    </header>
-    <section>
-        Proses Created
+        </div>
     </section>
 
-</body>
      <!-- Java Script with Bootstrap-->
      <script src="../vendor/jquery/jquery.slim.min.js"></script>
      <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
      <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <app-footer></app-footer>
+    <script>AOS.init({ once: true, duration: 700 });</script>
+    <!-- Web Components -->
+    <script src="../script/components.js"></script>
+</body>
 </html>

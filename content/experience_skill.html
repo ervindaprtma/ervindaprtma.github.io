@@ -2,7 +2,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
-        <meta name="Desc" content="Noting">
+        <meta name="Desc" content="Ervinda Pratama - Network & Security Engineer Portfolio. Experience in NOC, ISP, Cybersecurity L2, AI, and Blockchain.">
         <meta name="Author" content="MasVin22">
         <link rel="stylesheet" href="../styles/main.css">
         <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
@@ -13,54 +13,13 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light navbar-library fixed-top navbar-fixed-top">
-            <div class="container">
-                <button
-                    class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle Navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="../index.html">Home</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="about.html">About Me</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active   navtab-active" href="experience_skill.html">Experience & Skills</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="certificate.html">My Certificate</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="project_homelab.html">Project & Home Lab</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="learning_roadmap.html">Learning Roadmap</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item navbar-url">
-                            <a class="navbar-url-active" href="article_research.html">Article & Research</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <app-navbar></app-navbar>
     <section class="page-content">
         <div class="container">
             <div id="home">
@@ -74,7 +33,7 @@
                         <br>
                         <div class="col-lg-12 col-md-6 justify-content-center text-center">
                             <h4>Ervinda Pratama</h4>
-                            <p><i>Network Engineer L2 | Fortinet & MikroTik Certified<br>
+                            <p><i>Network Engineer L2 | Transitioning into Security Engineering | Hackviser CAPT & CWSE | Fortinet FCA | MikroTik MTCNA & MTCTCE<br>
                                 Cybersecurity, AI, and Blockchain Enthusiast</i></p>
                         </div>
                         <div class="col-lg-12 col-md-6 justify-content-center text-center">
@@ -94,9 +53,9 @@
                             class="col-lg-12 col-md-8 text-left">
                             <div class="header-title mt-4" data-aos="fade-up" data-aos-delay="600">
                                 <h2>
-                                    <b>Pengalaman Kerja</b>
+                                    <b>Work Experience</b>
                                 </h2>
-                                <p>Di bawah ini adalah pengalaman kerja saya selama 6 tahun ini sejak saya lulus dari sekolah kejuruan di SMK Negeri 1 Nglegok.</p>
+                                <p>Below is my 6 years of work experience since graduating from vocational school at SMK Negeri 1 Nglegok.</p>
                             </div>
                             <!--Pengalaman kerja di ezSign-->
                             <div class="experience-item" data-aos="fade-up" data-aos-delay="700">
@@ -104,26 +63,22 @@
                                     <h3>
                                         PT. Solusi Identitas Global Net
                                     </h3>
-                                    <p><strong>Network Engineer L2</strong> <i>(Promosi - Juni 2025 hingga sekarang)</i></p>
-                                    <p><strong>Sebelumnya : Network Administrator L1</strong> <i>(Juni 2024 - Juni 2025)</i></p>
-                                    <p><strong>Lokasi : Sidoarjo - Onsite</strong> | Kontrak</p>
+                                    <p><strong>Network Engineer L2</strong> <i>(Promoted - June 2025 to Present)</i></p>
+                                    <p><strong>Previously : Network Administrator L1</strong> <i>(June 2024 - June 2025)</i></p>
+                                    <p><strong>Location : Sidoarjo - On-site</strong> | Contract</p>
                                     <br>
                                     <p>
-                                    Bergabung dengan perusahaan yang bergerak di bidang PSrE (Penyelenggara Sertifikat Elektronik), saya bertanggung jawab dalam membangun
-                                    dan menjaga infrastruktur jaringan internal dan layanan kripto grafi berbasis PKI (Public Key Infrastructure). Setelah satu tahun menjabat
-                                    sebagai Network Administrator L1, saya dipercaya mengemban jabatan sebagai Network Engineer L2 untuk memperkuat stabilitas dan keamanan jaringan
-                                    perusahaan.
+                                    Joining a company in the Electronic Certificate Authority (CA/PSrE) sector, I was responsible for building and maintaining the internal network infrastructure and PKI (Public Key Infrastructure)-based cryptographic services. After serving as a Network Administrator L1 for one year, I was promoted to Network Engineer L2 to strengthen the stability and security of the enterprise network.
                                     </p>
                                     <br>
-                                    <p><strong>Kontribusi & Dampak :</strong></p>
+                                    <p><strong>Contributions & Impact :</strong></p>
                                     <ul>
-                                        <li>Melakukan monitoring dan analisis log akses fisik / non-fisik, termasuk sistem CCTV, perangkat IDS/IPS, serta seluruh perangkat jaringan internal.</li>
-                                        <li>Mengelola konfigurasi dan segmentasi pada perangkat jaringan seperti FortiGate Firewall, Switch Layer 2 / 3 (H3C, Cisco), dan router MikroTik.</li>
-                                        <li>Menyusun sistem monitoring lalu lintas jaringan berbasis PRTG dan NetFlow, untuk deteksi dini anomali atau bottleneck.</li>
-                                        <li>Bertanggung jawab atas dokumentasi, laporan traffic usage, backup rutin konfigurasi, dan prosedur recovery.</li>
-                                        <li>Menambahkan indikator IOC Malware terbaru ke FortiGate secara manual melalui External Threat Feed Connector.</li>
-                                        <li>Melakukan riset dan simulasi beberapa teknologi modern seperti <strong>ADVPN, Pi-Hole, VXLAN, dan BGP EVPN</strong> sebagai Proof-of-Concept untuk
-                                        peningkatan arsitektur jaringan perusahaan di masa mendatang.</li>
+                                        <li>Conducted monitoring and analysis of physical/non-physical access logs, including CCTV systems, IDS/IPS devices, and all internal network devices.</li>
+                                        <li>Managed the configuration and segmentation of network devices, including FortiGate Firewalls, Layer 2/3 Switches (H3C, Cisco), and MikroTik routers.</li>
+                                        <li>Built a network traffic monitoring system based on PRTG and NetFlow for early detection of anomalies and bottlenecks.</li>
+                                        <li>Responsible for network documentation, traffic usage reporting, routine configuration backups, and recovery procedures.</li>
+                                        <li>Manually integrated the latest Malware IOCs into FortiGate via the External Threat Feed Connector.</li>
+                                        <li>Researched and simulated modern technologies like <strong>ADVPN, Pi-Hole, VXLAN, and BGP EVPN</strong> as Proof-of-Concepts to improve future enterprise network architecture.</li>
                                     </ul>
                                 </div>
                             </div>
@@ -133,22 +88,21 @@
                                     <h3>
                                         Ayesha.Net
                                     </h3>
-                                    <p><strong>Network Operator Center</strong> <i>(Juni 2023 - April 2024)</i></p>
-                                    <p><strong>Lokasi : Remote</strong> | Penuh Waktu</p>
+                                    <p><strong>Network Operations Center</strong> <i>(June 2023 - April 2024)</i></p>
+                                    <p><strong>Location : Remote</strong> | Full-Time</p>
                                     <br>
                                     <p>
-                                    Menjadi bagian penting dari fase pengembangan awal ISP lokal ini, saya dipercaya merancang, membangun, dan memelihara jaringan dari nol yang kemudian melayani
-                                    lebih dari 300 pelanggan di wilayah Lamongan Barat - Selatan.
+                                    Taking a critical role during the initial development phase of this local ISP, I was trusted to design, build, and maintain the network from scratch. The network successfully served over 300 customers in the West-South Lamongan region.
                                     </p>
                                     <br>
-                                    <p><strong>Kontribusi & Dampak :</strong></p>
+                                    <p><strong>Contributions & Impact :</strong></p>
                                     <ul>
-                                        <li>Merancang jaringan distribusi pelanggan, backbone antar BTS, serta penghubung ke jalur utama UpStream.</li>
-                                        <li>Mengimplementasikan konfigurasi untuk berbagai perangkat Multi-Vendor seperti MikroTik, Ubiquity, Huawei, HSGQ dan ZTE.</li>
-                                        <li>Melakukan monitoring performa jaringan End-to-End, termasuk distribusi backbone dan akses pelanggan.</li>
-                                        <li>Menyusun dan menerapkan manajemen VLAN untuk segmentasi layanan PPPoE dan distribusi IP dinamis pada perangkat pelanggan.</li>
-                                        <li>Mengoptimalkan kualitas jaringan FTTH dan mengukur redaman optik setiap user modem menggunakan parameter teknis.</li>
-                                        <li>Melakukan perbaikan struktural pada link wireless Point-to-Multipoint dan sistem distribusi akses RT/RW Net untuk menurunkan angka gangguan pelanggan.</li>
+                                        <li>Designed the customer distribution network, inter-BTS backbone, and the main upstream connection link.</li>
+                                        <li>Implemented configurations for Multi-Vendor devices, including MikroTik, Ubiquiti, Huawei, HSGQ, and ZTE.</li>
+                                        <li>Monitored End-to-End network performance, covering both backbone distribution and customer access.</li>
+                                        <li>Structured and applied VLAN management for PPPoE service segmentation and dynamic IP distribution to customer premises equipment.</li>
+                                        <li>Optimized FTTH network quality by measuring user modem optical attenuation using technical parameters.</li>
+                                        <li>Executed structural improvements on Point-to-Multipoint wireless links and RT/RW Net distribution systems to reduce customer service interruptions.</li>
                                     </ul>
                                 </div>
                             </div>
@@ -158,39 +112,35 @@
                                     <h3>
                                         PT. Appnet Indonesia
                                     </h3>
-                                    <p><strong>Network Operations Center</strong> <i>(Desember 2018 - Mei 2024)</i></p>
-                                    <p><strong>Lokasi : Lamongan - Onsite</strong> | Penuh Waktu</p>
+                                    <p><strong>Network Operations Center</strong> <i>(December 2018 - May 2024)</i></p>
+                                    <p><strong>Location : Lamongan - On-site</strong> | Full-Time</p>
                                     <br>
                                     <p>
-                                        Selama lebih dari 5 tahun, saya menjadi bagian penting dalam pengembangan jaringan ISP lokal ini sejak awal berdirinya.
-                                        Sebagai bagian dari tim teknis inti, saya bertanggung jawab merancang, mengimplementasikan, dan mengoptimalkan infrastruktur
-                                        jaringan hingga mampu melayani ratusan pelanggan di berbagai wilayah.
+                                        For over 5 years, I was a vital part of this local ISP's network expansion since its inception. As a core technical team member, I was responsible for designing, implementing, and optimizing network infrastructure to serve hundreds of customers across various regions.
                                     </p>
                                     <br>
-                                    <p><strong>Kontribusi & Dampak :</strong></p>
+                                    <p><strong>Contributions & Impact :</strong></p>
                                     <ul>
-                                        <li>Merancang dan membangun topologi jaringan LAN dan wireless, termasuk koneksi antar BTS (Point to Point) dan distribusi ke 
-                                            pelanggan akhir (Point to Multipoint).
+                                        <li>Designed and built LAN and wireless network topologies, including Point-to-Point (PtP) links for BTS connections and Point-to-Multipoint (PtMP) distribution to end customers.
                                         </li>
-                                        <li>Mengembangkan sistem monitoring jaringan real-time dengan notifikasi otomatis berbasis LibreNMS dan SNMP dari perangkat MikroTik.</li>
-                                        <li>Menyusun konfigurasi static routing, VLAN ID, dan pemetaan subnet untuk efisiensi alokasi IP.</li>
-                                        <li>Menerapkan manajemen bandwidth dan QoS melalui antrian serta pembatasan traffic di perangkat MikroTik.</li>
-                                        <li>Menyusun dokumentasi jaringan, melakukan backup konfigurasi, serta perawatan fisik perangkat jaringan BTS & Rack.</li>
+                                        <li>Developed a real-time network monitoring system with automated alerting based on LibreNMS and MikroTik SNMP.</li>
+                                        <li>Formulated static routing configurations, VLAN IDs, and subnet mapping to ensure efficient IP allocation.</li>
+                                        <li>Implemented bandwidth management and QoS via queuing and traffic limitation on MikroTik routers.</li>
+                                        <li>Created network documentation, performed routine configuration backups, and maintained physical hardware at BTS sites and server racks.</li>
                                     </ul>
                                     <br>
-                                    <p><strong>Interim Supervisor Technical Support</strong> <i>(Juli 2020 - November 2020)</i></p>
-                                    <p><strong>Lokasi : Lamongan - Onsite</strong> | Penuh Waktu</p>
+                                    <p><strong>Interim Technical Support Supervisor</strong> <i>(July 2020 - November 2020)</i></p>
+                                    <p><strong>Location : Lamongan - On-site</strong> | Full-Time</p>
                                     <br>
                                     <p>
-                                        Ditunjuk sebagai Supervisor sementara untuk menangani transisi dan ekspansi layanan, saya mengambil peran dalam pengawasan teknisi,
-                                        manajemen layanan, dan pelatihan teknis.
+                                        Appointed as interim supervisor to handle service transitions and expansion. I took on leadership responsibilities, including overseeing technicians, managing services, and providing technical training.
                                     </p>
                                     <br>
-                                    <p><strong>Kontribusi & Dampak :</strong></p>
+                                    <p><strong>Contributions & Impact :</strong></p>
                                     <ul>
-                                        <li>Menyusun jadwal teknisi,  mengelola laporan gangguan, dan mengoordinasi eskalasi teknis secara efisien.</li>
-                                        <li>Menganalisis data gangguan dari tiket pelanggan untuk evaluasi layanan dan pengembangan area jaringan baru.</li>
-                                        <li>Memberikan pelatihan kepada peserta magang Disnaker (10 peserta) selama 6 bulan, termasuk kegiatan praktik dan pemahaman teknis jaringan dasar.</li>
+                                        <li>Organized technician schedules, managed incident reports, and coordinated technical escalations efficiently.</li>
+                                        <li>Analyzed incident data from customer tickets to evaluate network performance and plan new coverage areas.</li>
+                                        <li>Delivered training to 10 Disnaker interns over a 6-month period, encompassing practical activities and fundamental network comprehension.</li>
                                     </ul>
                                 </div>
                             </div>
@@ -200,19 +150,19 @@
                                     <h3>
                                         PT. Universal Broadband
                                     </h3>
-                                    <p><strong>Technical Support & Customer Service</strong> <i>(Mei 2018 - Oktober 2018)</i></p>
-                                    <p><strong>Lokasi : Surabaya - Onsite</strong> | Penuh Waktu</p>
+                                    <p><strong>Technical Support & Customer Service</strong> <i>(May 2018 - October 2018)</i></p>
+                                    <p><strong>Location : Surabaya - On-site</strong> | Full-Time</p>
                                     <br>
                                     <p>
-                                    Ini merupakan awal mula karir profesional saya setelah lulus SMK. Di sini saya mempelajari langsung praktik lapangan yang belum saya temui di bangku sekolah.
+                                    This was the beginning of my professional career after graduating from vocational school. Here, I engaged in hands-on field practices that I hadn't encountered during my formal education.
                                     </p>
                                     <br>
-                                    <p><strong>Kontribusi & Dampak :</strong></p>
+                                    <p><strong>Contributions & Impact :</strong></p>
                                     <ul>
-                                        <li>Melakukan instalasi jaringan LAN dan Wireless (2.4 Ghz dan 5 Ghz) untuk pelanggan perkantoran, pabrik, dan area residensial.</li>
-                                        <li>Menangani proses instalasi dan troubleshooting CCTV Digital Analog serta IP Camera sesuai kebutuhan pelanggan.</li>
-                                        <li>Melakukan troubleshooting OnSite untuk gangguan jaringan pelanggan serta memastikan uptime konektivitas setiap titik distribusi BTS.</li> 
-                                        <li>Menjadi frontliner sebagai Customer Service ketika tidak sedang bertugas ke lapangan, mengelola komunikasi pelanggan, dan eskalasi teknis ke tim engineer.</li>                                       
+                                        <li>Installed LAN and Wireless networks (2.4 GHz and 5 GHz) for corporate, industrial, and residential clients.</li>
+                                        <li>Handled the installation and troubleshooting of Analog Digital CCTV and IP Cameras according to customer requirements.</li>
+                                        <li>Performed on-site troubleshooting for customer network outages and ensured the uptime connectivity of every corresponding BTS distribution point.</li> 
+                                        <li>Acted as a front-line Customer Service representative when not deployed in the field, managing customer communication and technical escalation to the engineering team.</li>                                       
                                     </ul>
                                 </div>
                             </div>
@@ -222,75 +172,75 @@
                             class="col-lg-12 col-md-8 text-left">
                             <div class="header-title mt-4" data-aos="fade-up" data-aos-delay="600">
                                 <h2>
-                                    <b>Kemampuan / Keahlian</b>
+                                    <b>Skills & Expertise</b>
                                 </h2>
-                                <p>Di bawah ini adalah beberapa kemampuan / keahlian yang saya telah kuasai, khususnya di beberapa vendor yang sering saya gunakan/konfigurasi.</p>
+                                <p>Below are some of the skills and expertise I have acquired, particularly focusing on several vendors that I frequently use and configure.</p>
                             </div>
                             <div class="experience-item" data-aos="fade-up" data-aos-delay="600">
                                 <div>
-                                    <h3>🛠️ Jaringan & Infrastruktur</h3>
+                                    <h3>🛠️ Network & Infrastructure</h3>
                                     <ul>
-                                        <li>Perancangan dan implementasi topologi jaringan LAN, wireless PtP/PtMP, serta segmentasi VLAN.</li>
-                                        <li>Konfigurasi IP Addressing (IPv4 / IPv6), subnetting, ARP, ICMP, dan routing static & dynamic (OSPF, EIGRP).</li>
-                                        <li>Manajemen switch Layer 2/3 dan routing antar VLAN (Router on a Stick, Inter-VLAN Routing).</li>
-                                        <li>Instalasi dan konfigurasi access point wireless multi-vendor (TP-Link, MikroTik, Ubiquity, Cisco, Huawei, Ruckus).</li>
-                                        <li>Implementasi EtherChanel, STP, dan FHRP untuk keandalan jaringan.</li>
+                                        <li>Design and implementation of LAN/wireless network topologies (PtP/PtMP) and VLAN segmentation.</li>
+                                        <li>Configuration of IP Addressing (IPv4/IPv6), subnetting, ARP, ICMP, and static & dynamic routing (OSPF, EIGRP).</li>
+                                        <li>Layer 2/3 switch management and Inter-VLAN Routing (Router on a Stick).</li>
+                                        <li>Installation and configuration of multi-vendor wireless access points (TP-Link, MikroTik, Ubiquiti, Cisco, Huawei, Ruckus).</li>
+                                        <li>Implementation of EtherChannel, STP, and FHRP for network reliability.</li>
                                     </ul>
                                 </div>
                                 <div>
-                                    <h3>🔐 Keamanan Jaringan</h3>
+                                    <h3>🔐 Network Security</h3>
                                     <ul>
-                                        <li>Konfigurasi firewall (MikroTik & FortiGate) untuk NAT, Filter, Mangle, Raw, dan Layer 7 (L7) inspection.</li>
-                                        <li>Pemanfaatan Connection State, Mark Routing/Packet, dan Hierarchical Token Bucket (HTB) untuk Quality of Services (QoS).</li>
-                                        <li>Konfigurasi Access Control Lists (ACL) IPv4, NAT, dan DHCP Snooping.</li>
-                                        <li>Integrasi IoC (Indicator of Compromise) Malware terbaru ke FortiGate via External Threat Feed.</li>
-                                        <li>Simulasi dan pengujian teknologi DNS Sinkhole (Pi-Hole), VPN IPSec, ADVPN, BGP EVPN, dan VXLAN.</li>
+                                        <li>Firewall configuration (MikroTik & FortiGate) for NAT, Filter, Mangle, Raw, and Layer 7 (L7) inspection.</li>
+                                        <li>Utilization of Connection State, Packet/Routing Marks, and Hierarchical Token Bucket (HTB) for Quality of Services (QoS).</li>
+                                        <li>Configuration of IPv4 Access Control Lists (ACLs), NAT, and DHCP Snooping.</li>
+                                        <li>Integration of the latest Malware Indicators of Compromise (IoCs) into FortiGate via External Threat Feeds.</li>
+                                        <li>Simulation and testing of DNS Sinkhole (Pi-Hole), IPsec VPN, ADVPN, BGP EVPN, and VXLAN technologies.</li>
                                     </ul>
                                 </div>
                                 <div>
                                     <h3>📡 Monitoring & Observability</h3>
                                     <ul>
-                                        <li>Penerapan sistem monitoring jaringan menggunakan PRTG, Traffic Flow, dan SNMP.</li>
-                                        <li>Setup LibreNMS : Instalasi manual / VM / Docker, device discovery via SNMP, konfigurasi MAP & monitoring layanan.</li>
-                                        <li>Pemantauan kualitas backbone, link distribusi, dan FTTH (Optical Loss & Signal Strength)</li>
-                                        <li>Troubleshooting jaringan (routing static, wireless interference, downlink / BTS error).</li>
+                                        <li>Deployment of network monitoring systems using PRTG, Traffic Flow, and SNMP.</li>
+                                        <li>LibreNMS Setup: Manual/VM/Docker installation, SNMP device discovery, map configurations, and service monitoring.</li>
+                                        <li>Quality monitoring for backbones, distribution links, and FTTH (Optical Loss & Signal Strength).</li>
+                                        <li>Network troubleshooting (static routing, wireless interference, downlink / BTS errors).</li>
                                     </ul>
                                 </div>
                                 <div>
-                                    <h3>🖥️ Sistem Operasi & Virtualisasi</h3>
+                                    <h3>🖥️ Operating Systems & Virtualization</h3>
                                     <ul>
-                                        <li>Instalasi dan manajemen OS Windows (client/server) & Linux (Ubuntu, Debian, Kali, Parrot OS).</li>
-                                        <li>Operasional CLI & GUI, remote desktop, user permission, file & printer sharing.</li>
-                                        <li>Penanganan VM (vmdk) dan instalasi monitoring di lingkungan virtual.</li>
+                                        <li>Installation and management of Windows (Client/Server) & Linux (Ubuntu, Debian, Kali, Parrot OS).</li>
+                                        <li>CLI & GUI operations, remote desktop, user permissions, file & printer sharing.</li>
+                                        <li>VM (vmdk) handling and monitoring installations in virtualized environments.</li>
                                     </ul>
                                 </div>
                                 <div>
-                                    <h3>💻 Version Control & Tools Developer</h3>
+                                    <h3>💻 Version Control & Developer Tools</h3>
                                     <ul>
-                                        <li>Penguasaan Git dasar hingga intermediate (clone, init, remote, add, commit, branch, merge, revert, restore).</li>
-                                        <li>Integrasi Github dengan token classic atau GitHub Desktop.</li>
-                                        <li>Praktik versioning untuk dokumentasi, script backup, dan konfigurasi jaringan.</li>
+                                        <li>Basic to intermediate Git proficiency (clone, init, remote, add, commit, branch, merge, revert, restore).</li>
+                                        <li>GitHub integration using classic tokens or GitHub Desktop.</li>
+                                        <li>Versioning practices for network documentation, backup scripts, and configurations.</li>
                                     </ul>
                                 </div>
                                 <div>
-                                    <h3>🔧 Keterampilan Tambahan</h3>
+                                    <h3>🔧 Additional Skills</h3>
                                     <ul>
-                                        <li>Instalasi CCTV (Analog, Digital, IP Camera) untuk indoor & outdoor.</li>
-                                        <li>Manajemen kabel jaringan & kelistrikan dasar (rack server, penomoran kabel, grounding).</li>
-                                        <li>Penataan perangkat jaringan di rak server dan troubleshooting lapangan.</li>
+                                        <li>CCTV installation (Analog, Digital, IP Camera) for indoor and outdoor environments.</li>
+                                        <li>Basic cable and electrical management (server racks, cable labeling, grounding).</li>
+                                        <li>Arrangement of network devices in server racks and field troubleshooting.</li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="experience-item" data-aos="fade-up" data-aos-delay="600">
-                                <h3>🧠 Vendor & Teknologi</h3>
-                                <table>
+                                <h3>🧠 Vendors & Technologies</h3>
+                                <table class="table table-bordered table-striped mt-3">
                                     <tr>
                                         <th>Vendor / Tools</th>
-                                        <th>Pengalaman Praktis</th>
+                                        <th>Practical Experience</th>
                                     </tr>
                                     <tr>
                                         <td>MikroTik</td>
-                                        <td>Firewall L7, Tunnels (EoIP, PPTP, PPPoE), VLAN, OSPF, Simple Queue, Queue Tree, Burst, HTB</td>
+                                        <td>L7 Firewall, Tunnels (EoIP, PPTP, PPPoE), VLAN, OSPF, Simple Queue, Queue Tree, Burst, HTB</td>
                                     </tr>
                                     <tr>
                                         <td>Cisco CCNA (Netacad)</td>
@@ -298,41 +248,41 @@
                                     </tr>
                                     <tr>
                                         <td>Fortinet</td>
-                                        <td>FortiGate Firewall, IOC Threat Feed, DNS Filtering, Policy Review</td>
+                                        <td>FortiGate Firewall, IOC Threat Feeds, DNS Filtering, Policy Review</td>
                                     </tr>
                                     <tr>
                                         <td>LibreNMS</td>
-                                        <td>Instalasi, SNMP Monitoring, Map Group, Service Check</td>
+                                        <td>Installation, SNMP Monitoring, Map Groups, Service Checks</td>
                                     </tr>
                                     <tr>
                                         <td>PRTG & Traffic Flow</td>
-                                        <td>Pemantauan bandwidth & utilisasi perangkat real-time</td>
+                                        <td>Real-time monitoring of bandwidth and device utilization</td>
                                     </tr>
                                     <tr>
                                         <td>Git & GitHub</td>
-                                        <td>Daily CLI workflow, dokumentasi konfigurasi, kontrol versi script/tools</td>
+                                        <td>Daily CLI workflows, configuration documentation, version control for scripts/tools</td>
                                     </tr>
                                     <tr>
                                         <td>Wireless Vendors</td>
-                                        <td>TP-Link, Ubiquity, MikroTik, Cisco, Netis, Ruckus, Tenda, ZTE, Huawei (konfigurasi & desain)</td>
+                                        <td>TP-Link, Ubiquiti, MikroTik, Cisco, Netis, Ruckus, Tenda, ZTE, Huawei (configuration & design)</td>
                                     </tr>
                                 </table>
                             </div>
                             <div class="experience-item" data-aos="fade-up" data-aos-delay="600">
                                 <h3>
-                                    🎓 Kursus Cisco NetAcad (CCNA Path)
+                                    🎓 Cisco NetAcad Courses (CCNA Path)
                                 </h3>
                                 <p>
-                                    Saya telah menyelesaikan pembelajaran resmi dari <b>Cisco Networking Academy, </b>meliputi :
+                                    I have completed official courses from the <b>Cisco Networking Academy, </b>including:
                                 </p>
                                 <ul>
-                                    <li>✅ CCNA: Introduction to Networks <br><i>(OSI, IP Addressing, IPv6, Switching, Routing Dasar, Keamanan Jaringan)</i></li>
+                                    <li>✅ CCNA: Introduction to Networks <br><i>(OSI, IP Addressing, IPv6, Switching, Basics of Routing & Network Security)</i></li>
                                     <li>✅ CCNA: Routing, Switching, and Wireless Essentials <br><i>(VLAN, STP, DHCP, WLAN, EIGRP/OSPF, Troubleshooting)</i></li>
                                     <li>✅ CCNA: Enterprise Networking, Security, and Automation <br><i>(OSPFv2, ACL, NAT, VPN/IPSec, QoS, Automation, Virtualization)</i></li>
                                 </ul>
                                 <br>
                                 <p>
-                                    <i>➡️ Materi ini memperkuat pemahaman saya dalam konfigurasi perangkat Cisco, keamanan jaringan, serta manajemen dan troubleshooting infrastruktur skala kecil hingga enterprise.</i>
+                                    <i>➡️ These materials strengthened my understanding of Cisco device configuration, network security, as well as management and troubleshooting of small-scale to enterprise infrastructures.</i>
                                 </p>
                             </div>
                         </div>
@@ -341,9 +291,9 @@
                             class="col-lg-12 col-md-8 text-left">
                             <div class="header-title mt-4" data-aos="fade-up" data-aos-delay="600">
                                 <h2>
-                                    <b>Galeri Dokumentasi</b>
+                                    <b>Documentation Gallery</b>
                                 </h2>
-                                <p>Di bawah ini adalah beberapa foto dokumentasi saat saya sedang melakukan pekerjaan.</p>
+                                <p>Below are some documentation photos taken while on the job.</p>
                             </div>
                             <div class="page-portfolio row mt-4 justify-content-center">
                                 <div
@@ -363,7 +313,7 @@
                                         </div>
                                         <div class="portfolio-price">
                                             <p>
-                                            Detail : Instalasi radio Metal 5Ghz-AC saat masih bekerja di PT. Universal Broadband.
+                                            Detail: Installation of a Metal 5GHz-AC radio during my tenure at PT. Universal Broadband.
                                             </p>
                                         </div>
                                     </div>
@@ -385,7 +335,7 @@
                                         </div>
                                         <div class="portfolio-price">
                                             <p>
-                                            Detail : Maintenance server untuk share VPS menggunakan VMware saat masih bekerja di PT. Universal Broadband.
+                                            Detail: Server maintenance for shared VPS using VMware during my tenure at PT. Universal Broadband.
                                             </p>
                                         </div>
                                     </div>
@@ -407,7 +357,7 @@
                                         </div>
                                         <div class="portfolio-price">
                                             <p>
-                                            Detail : Foto bergaya di depan rak server sebelum maintenance.
+                                            Detail: Taking a moment in front of the server rack prior to maintenance.
                                             </p>
                                         </div>
                                     </div>
@@ -429,7 +379,7 @@
                                         </div>
                                         <div class="portfolio-price">
                                             <p>
-                                            Detail : Pengecekan kabel LAN dan kerapihan kabel di rak server saat masih bekerja di PT. Universal Broadband. Foto sebelum eksekusi.
+                                            Detail: Inspecting LAN cables and organizing cable management in the server rack during my tenure at PT. Universal Broadband. Photo taken before execution.
                                             </p>
                                         </div>
                                     </div>
@@ -451,7 +401,7 @@
                                         </div>
                                         <div class="portfolio-price">
                                             <p>
-                                            Detail : Maintenance link radio Point-to-Point di tower BTS saat masih bekerja di PT. Universal Broadband.
+                                            Detail: Maintenance of a Point-to-Point radio link on a BTS tower during my tenure at PT. Universal Broadband.
                                             </p>
                                         </div>
                                     </div>
@@ -473,7 +423,7 @@
                                         </div>
                                         <div class="portfolio-price">
                                             <p>
-                                            Detail : Monitoring link wireless Point-to-Multipoint untuk pelanggan dari Ayesha.Net.
+                                            Detail: Monitoring Point-to-Multipoint wireless links for Ayesha.Net customers.
                                             </p>
                                         </div>
                                     </div>
@@ -495,7 +445,7 @@
                                         </div>
                                         <div class="portfolio-price">
                                             <p>
-                                            Detail : Analisa traffic connection di jaringan PT. Appnet Indonesia untuk mencari bad-traffic yaitu Spam SMTP.
+                                            Detail: Analyzing connection traffic on the PT. Appnet Indonesia network to identify bad traffic, specifically SMTP Spam.
                                             </p>
                                         </div>
                                     </div>
@@ -517,7 +467,7 @@
                                         </div>
                                         <div class="portfolio-price">
                                             <p>
-                                            Detail : Perbaikan PC Desktop di kantor PT. Appnet Indonesia karena bermasalah di bagian tombol powernya.
+                                            Detail: Repairing a desktop PC at the PT. Appnet Indonesia office due to power button issues.
                                             </p>
                                         </div>
                                     </div>
@@ -539,7 +489,7 @@
                                         </div>
                                         <div class="portfolio-price">
                                             <p>
-                                            Detail : Pengecekan rak server outdoor untuk beberapa perangkat yang mati saat ada insiden terkena sambaran petir di beberapa radio yang terpasang di tower pusat PT. Appnet Indonesia.
+                                            Detail: Inspecting an outdoor server rack for several offline devices following a lightning strike incident affecting radios on the PT. Appnet Indonesia central tower.
                                             </p>
                                         </div>
                                     </div>
@@ -561,7 +511,7 @@
                                         </div>
                                         <div class="portfolio-price">
                                             <p>
-                                            Detail : Rekap laporan harian sekaligus melakukan pengetesan kualitas koneksi jalur BTS.
+                                            Detail: Compiling daily reports and conducting quality tests on the BTS connection line.
                                             </p>
                                         </div>
                                     </div>
@@ -583,7 +533,7 @@
                                         </div>
                                         <div class="portfolio-price">
                                             <p>
-                                            Detail : Uji coba install ParrotOS di PC lokal kantor PT. Appnet Indonesia.
+                                            Detail: Trial installation of ParrotOS on a local office PC at PT. Appnet Indonesia.
                                             </p>
                                         </div>
                                     </div>
@@ -605,7 +555,7 @@
                                         </div>
                                         <div class="portfolio-price">
                                             <p>
-                                            Detail : Monitoring traffic usage bandwitdh jalur utama/backbone di PT. Appnet Indonesia menggunakan software opensource LibreNMS dengan memanfaatkan service SNMP.
+                                            Detail: Monitoring the main/backbone bandwidth utilization at PT. Appnet Indonesia using the open-source LibreNMS software via the SNMP service.
                                             </p>
                                         </div>
                                     </div>
@@ -627,7 +577,7 @@
                                         </div>
                                         <div class="portfolio-price">
                                             <p>
-                                            Detail : Uji coba instalasi Squid Proxy untuk traffic HTTP/HTTPS melalui aplikasi opensource Webmin.
+                                            Detail: Trial installation of Squid Proxy for HTTP/HTTPS traffic through the open-source Webmin application.
                                             </p>
                                         </div>
                                     </div>
@@ -649,7 +599,7 @@
                                         </div>
                                         <div class="portfolio-price">
                                             <p>
-                                            Detail : Pemberian materi untuk pelatihan peserta magang dari Disnaker Lamongan terkait Teknik Informatika khususnya di bidang Jaringan Komputer.
+                                            Detail: Delivering training material for interns from Disnaker Lamongan regarding Information Technology, specifically focusing on Computer Networking.
                                             </p>
                                         </div>
                                     </div>
@@ -671,7 +621,7 @@
                                         </div>
                                         <div class="portfolio-price">
                                             <p>
-                                            Detail : Pemberian materi sekaligus praktek persiapan dan SOP yang diperlukan saat akan memanjat sebuah tower BTS kepada peserta magang dari Disnaker Lamongan.
+                                            Detail: Providing theoretical and practical instructions on the preparations and required SOPs for climbing a BTS tower to interns from Disnaker Lamongan.
                                             </p>
                                         </div>
                                     </div>
@@ -693,7 +643,7 @@
                                         </div>
                                         <div class="portfolio-price">
                                             <p>
-                                            Detail : Mendampingi peserta magang Disnaker Lamongan untuk mengikuti Uji Kompetensi dari sertifikasi LSP-2 Singosari. Foto part_1.
+                                            Detail: Assisting interns from Disnaker Lamongan during their Competency Exams for the LSP-2 Singosari certification. Photo part_1.
                                             </p>
                                         </div>
                                     </div>
@@ -715,7 +665,7 @@
                                         </div>
                                         <div class="portfolio-price">
                                             <p>
-                                            Detail : Mendampingi peserta magang Disnaker Lamongan untuk mengikuti Uji Kompetensi dari sertifikasi LSP-2 Singosari. Foto part_2.
+                                            Detail: Assisting interns from Disnaker Lamongan during their Competency Exams for the LSP-2 Singosari certification. Photo part_2.
                                             </p>
                                         </div>
                                     </div>
@@ -735,21 +685,13 @@
      <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
      <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-    <footer>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <p>&copy; 2023 - by Ervinda Pratama</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <app-footer></app-footer>
     
     <!--Inisialisasi AOS JavaScript-->
     <script>
         AOS.init()
     </script>
-    <!--Script for scroll animation-->
-    <script src="../script/navbar-scroll.js"></script>
+    <!-- Web Components -->
+    <script src="../script/components.js"></script>
 </body>
 </html>

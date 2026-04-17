@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+        <meta name="description" content="Monitoring FortiGate SD-WAN SLA performance via SNMP OIDs, storing metrics in OpenSearch, and visualizing them in Grafana dashboards.">
+        <meta name="author" content="Ervinda Pratama">
+        <link rel="stylesheet" href="../../styles/main.css">
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+        <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32">
+        <title>SD-WAN SLA Monitoring with Telegraf &amp; FortiGate — Ervinda Pratama</title>
+        <style>
+            .article-header{padding:2.5rem 0 1.5rem;border-bottom:1px solid #e0e0e0;margin-bottom:2rem}
+            body.dark-mode .article-header{border-bottom-color:#333}
+            .article-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#0077cc;text-decoration:none;margin-bottom:1.5rem}
+            .article-back:hover{color:#005fa3}
+            body.dark-mode .article-back{color:#00f2fe}
+            .article-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem}
+            .article-tag{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;padding:2px 10px;border-radius:20px;background:rgba(111,66,193,.1);color:#6f42c1;border:1px solid rgba(111,66,193,.25)}
+            body.dark-mode .article-tag{background:rgba(232,62,140,.1);color:#e83e8c;border-color:rgba(232,62,140,.25)}
+            .article-title{font-size:2rem;font-weight:800;line-height:1.25;margin-bottom:.9rem}
+            body.dark-mode .article-title{color:#f0f0f0}
+            .article-meta{font-size:13px;color:#888;display:flex;flex-wrap:wrap;gap:1rem;align-items:center}
+            body.dark-mode .article-meta{color:#666}
+            .article-content{max-width:800px;margin:0 auto;font-size:1rem;line-height:1.8;color:#333}
+            body.dark-mode .article-content{color:#d0d0d0}
+            .article-content h2{font-size:1.35rem;font-weight:700;margin-top:2.2rem;margin-bottom:.7rem;border-left:4px solid #6f42c1;padding-left:.7rem;color:#3b0068}
+            body.dark-mode .article-content h2{border-left-color:#e83e8c;color:#e83e8c}
+            .article-content h3{font-size:1.1rem;font-weight:700;margin-top:1.5rem;margin-bottom:.5rem;color:#6f42c1}
+            body.dark-mode .article-content h3{color:#d4a0ff}
+            .article-content pre,.article-content code{background:#1e1e2e;color:#a8d8a8;border-radius:6px;font-size:.875rem;font-family:'Courier New',monospace}
+            .article-content pre{padding:1rem 1.2rem;overflow-x:auto;margin:1.2rem 0}
+            .article-content code{padding:2px 6px}
+            .article-content blockquote{border-left:4px solid #6f42c1;background:rgba(111,66,193,.06);margin:1.5rem 0;padding:.8rem 1.2rem;border-radius:0 6px 6px 0;font-style:italic;color:#555}
+            body.dark-mode .article-content blockquote{border-left-color:#e83e8c;background:rgba(232,62,140,.05);color:#aaa}
+            .article-content table{width:100%;border-collapse:collapse;margin:1.2rem 0}
+            .article-content table th,.article-content table td{border:1px solid #ddd;padding:8px 12px;font-size:.9rem;vertical-align:top}
+            .article-content table th{background:#f5f0ff;font-weight:700}
+            body.dark-mode .article-content table th{background:#1a1030;color:#e0e0e0}
+            body.dark-mode .article-content table td{border-color:#333;color:#d0d0d0}
+            .article-content ul li{margin-bottom:.35rem}
+            .callout{border-left:4px solid #17a2b8;background:rgba(23,162,184,.07);padding:.9rem 1.2rem;border-radius:0 6px 6px 0;margin:1.4rem 0;font-size:.93rem}
+            body.dark-mode .callout{border-left-color:#5bc0de;background:rgba(23,162,184,.05);color:#e0e0e0}
+            .callout strong{color:#0c5460}
+            body.dark-mode .callout strong{color:#5bc0de}
+            .warn{border-left:4px solid #ff9800;background:rgba(255,152,0,.07);padding:.9rem 1.2rem;border-radius:0 6px 6px 0;margin:1.4rem 0;font-size:.93rem}
+            body.dark-mode .warn{border-left-color:#ffb74d;background:rgba(255,152,0,.05);color:#e0e0e0}
+            .warn strong{color:#e65100}
+            body.dark-mode .warn strong{color:#ffb74d}
+            .article-nav{display:flex;justify-content:space-between;margin-top:3rem;padding-top:1.5rem;border-top:1px solid #e0e0e0;gap:1rem}
+            body.dark-mode .article-nav{border-top-color:#333}
+            .article-nav a{font-size:13px;font-weight:600;color:#6f42c1;text-decoration:none;display:flex;align-items:center;gap:6px}
+            body.dark-mode .article-nav a{color:#e83e8c}
+            .arch-diagram{background:#f8f9fa;border:1px solid #ddd;border-radius:8px;padding:1.5rem;font-family:'Courier New',monospace;font-size:.85rem;line-height:1.9;color:#333;margin:1.2rem 0}
+            body.dark-mode .arch-diagram{background:#1a1a2e;border-color:#333;color:#a8d8a8}
+        </style>
+    </head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <app-navbar></app-navbar>
+    <section class="page-content">
+        <div class="container">
+            <div class="article-content" data-aos="fade-up">
+
+                <div class="article-header">
+                    <a href="../article_research.html" class="article-back">
+                        <i class="fa fa-arrow-left"></i> Back to Articles &amp; Research
+                    </a>
+                    <div class="article-tags">
+                        <span class="article-tag">Fortinet</span>
+                        <span class="article-tag">Monitoring</span>
+                        <span class="article-tag">Telegraf</span>
+                        <span class="article-tag">Grafana</span>
+                    </div>
+                    <h1 class="article-title">SD-WAN SLA Monitoring with Telegraf &amp; FortiGate</h1>
+                    <div class="article-meta">
+                        <span><i class="fa fa-user"></i>&nbsp; Ervinda Pratama</span>
+                        <span><i class="fa fa-calendar"></i>&nbsp; February 2025</span>
+                        <span><i class="fa fa-clock-o"></i>&nbsp; ~6 min read</span>
+                        <span><i class="fa fa-tag"></i>&nbsp; Research Note</span>
+                    </div>
+                </div>
+
+                <h2>Overview</h2>
+                <p>
+                    FortiGate's SD-WAN feature continuously measures the health of each WAN link via <strong>SLA probes</strong> — tracking latency, jitter, and packet loss per link. While FortiGate's own GUI provides a basic SLA view, this is not persistent (no historical data) and cannot be integrated into a centralized dashboard.
+                </p>
+                <p>
+                    This research note documents a pipeline that uses <strong>Telegraf</strong> (as an SNMP collector) to poll FortiGate SD-WAN SLA OIDs, writes the results to an <strong>OpenSearch</strong> index, and renders the time-series data in <strong>Grafana</strong> dashboards — giving operators a persistent, queryable view of WAN link health over time.
+                </p>
+
+                <h2>Architecture</h2>
+                <div class="arch-diagram">
+┌─────────────────────────────────────────────────────────────┐<br>
+│  FortiGate (SD-WAN SLA probes running on WAN interfaces)    │<br>
+│  → Exposes SLA metrics via SNMP (custom Fortinet MIB)       │<br>
+└───────────────────────┬─────────────────────────────────────┘<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│ SNMP v2c / v3 (UDP 161)<br>
+┌───────────────────────▼─────────────────────────────────────┐<br>
+│  Telegraf   (SNMP input plugin — polls every 60s)           │<br>
+│  → Parses OID table: FORTINET-FORTIGATE-MIB::fgVWLHealthCheck│<br>
+└───────────────────────┬─────────────────────────────────────┘<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│ OpenSearch output plugin (HTTP bulk API)<br>
+┌───────────────────────▼─────────────────────────────────────┐<br>
+│  OpenSearch  (index: telegraf-sdwan-*)                      │<br>
+└───────────────────────┬─────────────────────────────────────┘<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│ OpenSearch data source<br>
+┌───────────────────────▼─────────────────────────────────────┐<br>
+│  Grafana     (SD-WAN SLA Dashboard)                         │<br>
+│  → Latency / Jitter / Packet Loss per WAN link, time-series │<br>
+└─────────────────────────────────────────────────────────────┘
+                </div>
+
+                <h2>FortiGate SNMP &amp; SD-WAN SLA OIDs</h2>
+                <p>
+                    FortiGate exposes SD-WAN health-check (SLA) data through the <strong>Fortinet FortiGate MIB</strong>. The relevant OID table is <code>fgVWLHealthCheck</code> under the <code>FORTINET-FORTIGATE-MIB</code>.
+                </p>
+
+                <h3>Key OIDs</h3>
+                <table>
+                    <tr><th>Metric</th><th>OID</th><th>Unit</th></tr>
+                    <tr><td>SLA Name</td><td><code>1.3.6.1.4.1.12356.101.4.9.2.1.2</code></td><td>String</td></tr>
+                    <tr><td>Link Interface</td><td><code>1.3.6.1.4.1.12356.101.4.9.2.1.3</code></td><td>String</td></tr>
+                    <tr><td>Latency (ms)</td><td><code>1.3.6.1.4.1.12356.101.4.9.2.1.5</code></td><td>Milliseconds</td></tr>
+                    <tr><td>Jitter (ms)</td><td><code>1.3.6.1.4.1.12356.101.4.9.2.1.6</code></td><td>Milliseconds</td></tr>
+                    <tr><td>Packet Loss (%)</td><td><code>1.3.6.1.4.1.12356.101.4.9.2.1.7</code></td><td>Percent</td></tr>
+                    <tr><td>State (up/down)</td><td><code>1.3.6.1.4.1.12356.101.4.9.2.1.4</code></td><td>1=up, 2=down</td></tr>
+                </table>
+
+                <div class="callout">
+                    <strong>ℹ️ Note:</strong> These OIDs require the <strong>Fortinet MIB</strong> to be loaded in your SNMP manager. Download the MIB from FortiGate's official support portal or extract it from the firmware: <code>/bin/mibs/</code> via SSH.
+                </div>
+
+                <h3>Enable SNMP on FortiGate</h3>
+<pre><code>config system snmp community
+    edit 1
+        set name "telegraf-monitor"
+        set status enable
+        config hosts
+            edit 1
+                set ip 192.168.100.50/32    # Telegraf host IP
+            next
+        end
+    next
+end
+
+config system snmp sysinfo
+    set status enable
+    set description "FortiGate-HQ-FW01"
+    set contact-info "noc@company.net"
+    set location "Jakarta-DC"
+end</code></pre>
+
+                <h2>Step 1 — Telegraf Configuration</h2>
+                <p>Install Telegraf on the monitoring server (Ubuntu):</p>
+<pre><code>wget -q https://repos.influxdata.com/influxdata-archive_compat.key -O- | \
+    sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/influxdata.gpg
+
+echo "deb [signed-by=/etc/apt/trusted.gpg.d/influxdata.gpg] \
+    https://repos.influxdata.com/ubuntu stable main" | \
+    sudo tee /etc/apt/sources.list.d/influxdata.list
+
+sudo apt update && sudo apt install -y telegraf</code></pre>
+
+                <h3>SNMP Input Plugin for SD-WAN SLA</h3>
+                <p>Create <code>/etc/telegraf/telegraf.d/fortigate-sdwan.conf</code>:</p>
+<pre><code>[[inputs.snmp]]
+  agents = ["udp://192.168.1.1:161"]    # FortiGate management IP
+  version = 2
+  community = "telegraf-monitor"
+  interval = "60s"
+  timeout = "10s"
+  retries = 3
+
+  ## SD-WAN SLA health check table
+  [[inputs.snmp.table]]
+    name = "fortigate_sdwan_sla"
+    inherit_tags = ["source"]
+
+    [[inputs.snmp.table.field]]
+      name  = "sla_name"
+      oid   = "1.3.6.1.4.1.12356.101.4.9.2.1.2"
+      is_tag = true
+
+    [[inputs.snmp.table.field]]
+      name  = "link_interface"
+      oid   = "1.3.6.1.4.1.12356.101.4.9.2.1.3"
+      is_tag = true
+
+    [[inputs.snmp.table.field]]
+      name = "state"
+      oid  = "1.3.6.1.4.1.12356.101.4.9.2.1.4"
+
+    [[inputs.snmp.table.field]]
+      name = "latency_ms"
+      oid  = "1.3.6.1.4.1.12356.101.4.9.2.1.5"
+
+    [[inputs.snmp.table.field]]
+      name = "jitter_ms"
+      oid  = "1.3.6.1.4.1.12356.101.4.9.2.1.6"
+
+    [[inputs.snmp.table.field]]
+      name = "packet_loss_pct"
+      oid  = "1.3.6.1.4.1.12356.101.4.9.2.1.7"</code></pre>
+
+                <h2>Step 2 — OpenSearch Output Plugin</h2>
+                <p>Add to <code>/etc/telegraf/telegraf.d/output-opensearch.conf</code>:</p>
+<pre><code>[[outputs.opensearch]]
+  urls        = ["http://192.168.100.51:9200"]   # OpenSearch node
+  index_name  = "telegraf-sdwan-%Y.%m.%d"
+  manage_template = true
+  template_name   = "telegraf-sdwan"
+  username    = "admin"
+  password    = "YourOpenSearchPassword"
+  # Health check timeout
+  timeout     = "5s"</code></pre>
+
+                <p>Restart Telegraf and verify:</p>
+<pre><code>sudo systemctl restart telegraf
+sudo journalctl -u telegraf -f</code></pre>
+
+                <h2>Step 3 — Verify Data in OpenSearch</h2>
+<pre><code># Check index created
+curl -u admin:password http://192.168.100.51:9200/_cat/indices?v | grep sdwan
+
+# Query latest documents
+curl -u admin:password -X GET \
+    "http://192.168.100.51:9200/telegraf-sdwan-*/_search?pretty&size=5" \
+    -H 'Content-Type: application/json' \
+    -d '{"sort": [{"@timestamp": {"order": "desc"}}]}'</code></pre>
+
+                <p>Expected fields in each document:</p>
+<pre><code>{
+  "@timestamp": "2025-02-15T10:00:00Z",
+  "latency_ms": 12,
+  "jitter_ms":   3,
+  "packet_loss_pct": 0,
+  "state": 1,
+  "sla_name": "SLA-ISP1",
+  "link_interface": "wan1",
+  "host": "192.168.1.1"
+}</code></pre>
+
+                <h2>Step 4 — Grafana Dashboard</h2>
+                <h3>Add OpenSearch Data Source</h3>
+                <p>In Grafana: <strong>Configuration → Data Sources → Add → OpenSearch</strong></p>
+                <ul>
+                    <li>URL: <code>http://192.168.100.51:9200</code></li>
+                    <li>Index pattern: <code>telegraf-sdwan-*</code></li>
+                    <li>Time field: <code>@timestamp</code></li>
+                </ul>
+
+                <h3>Recommended Panel Layout</h3>
+                <table>
+                    <tr><th>Panel</th><th>Type</th><th>Metric</th><th>Group By</th></tr>
+                    <tr><td>WAN Latency Over Time</td><td>Time series</td><td>avg(latency_ms)</td><td>link_interface</td></tr>
+                    <tr><td>WAN Jitter Over Time</td><td>Time series</td><td>avg(jitter_ms)</td><td>link_interface</td></tr>
+                    <tr><td>Packet Loss %</td><td>Time series</td><td>avg(packet_loss_pct)</td><td>link_interface</td></tr>
+                    <tr><td>Link State (Up/Down)</td><td>Stat panel</td><td>last(state)</td><td>link_interface</td></tr>
+                    <tr><td>SLA Heatmap</td><td>Heatmap</td><td>latency_ms</td><td>sla_name</td></tr>
+                </table>
+
+                <div class="warn">
+                    <strong>⚠️ Note on Polling Interval:</strong> FortiGate updates SD-WAN SLA probe results approximately every 10–30 seconds depending on probe configuration. Setting Telegraf poll interval to 60s is safe and avoids overwhelming FortiGate's SNMP agent under high load. For higher resolution, reduce to 30s — but monitor FortiGate CPU impact.
+                </div>
+
+                <h2>Key Takeaways</h2>
+                <ul>
+                    <li>FortiGate SD-WAN SLA data is accessible via SNMP using Fortinet's proprietary <code>fgVWLHealthCheck</code> OID table — no FortiAnalyzer license required.</li>
+                    <li>Telegraf's SNMP input plugin natively supports table walks, making multi-link SD-WAN polling straightforward.</li>
+                    <li>OpenSearch as the time-series backend offers powerful full-text query capabilities alongside time-series analytics — useful when correlating SLA degradation with security events in the same cluster.</li>
+                    <li>Grafana dashboards provide historical trending that FortiGate's built-in GUI cannot — critical for SLA reporting and root-cause analysis.</li>
+                    <li>The same Telegraf pipeline can be extended to collect FortiGate interface throughput, CPU, memory, and session count OIDs — creating a unified FortiGate observability dashboard.</li>
+                </ul>
+
+                <div class="article-nav">
+                    <a href="librenms-setup.html"><i class="fa fa-arrow-left"></i> Previous: LibreNMS Setup</a>
+                    <span></span>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <script src="../../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <app-footer></app-footer>
+    <script>AOS.init();</script>
+    <script src="../../script/components.js"></script>
+</body>
+</html>
