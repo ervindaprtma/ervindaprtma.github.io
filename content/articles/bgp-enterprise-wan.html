@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+        <meta name="description" content="Breaking down BGP attributes, AS path, and iBGP vs eBGP from the lens of an enterprise network engineer designing resilient multi-homed WAN connectivity.">
+        <meta name="author" content="Ervinda Pratama">
+        <link rel="stylesheet" href="../../styles/main.css">
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32">
+        <title>Understanding BGP for Enterprise WAN Design — Ervinda Pratama</title>
+        <style>
+            .article-header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid #e0e0e0; margin-bottom: 2rem; }
+            body.dark-mode .article-header { border-bottom-color: #333; }
+            .article-back { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; margin-bottom:1.5rem; }
+            .article-back:hover { color:#005fa3; }
+            body.dark-mode .article-back { color:#00f2fe; }
+            .article-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:1rem; }
+            .article-tag { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; padding:2px 10px; border-radius:20px; background:rgba(0,119,204,0.1); color:#0077cc; border:1px solid rgba(0,119,204,0.25); }
+            body.dark-mode .article-tag { background:rgba(0,242,254,0.1); color:#00f2fe; border-color:rgba(0,242,254,0.25); }
+            .article-title { font-size:2rem; font-weight:800; line-height:1.25; margin-bottom:0.9rem; }
+            body.dark-mode .article-title { color:#f0f0f0; }
+            .article-meta { font-size:13px; color:#888; display:flex; flex-wrap:wrap; gap:1rem; align-items:center; }
+            body.dark-mode .article-meta { color:#666; }
+            .article-content { max-width: 780px; margin: 0 auto; font-size: 1rem; line-height: 1.8; color: #333; }
+            body.dark-mode .article-content { color: #d0d0d0; }
+            .article-content h2 { font-size:1.35rem; font-weight:700; margin-top:2.2rem; margin-bottom:0.7rem; border-left:4px solid #0077cc; padding-left:0.7rem; color:#003366; }
+            body.dark-mode .article-content h2 { border-left-color:#00f2fe; color:#00f2fe; }
+            .article-content h3 { font-size:1.1rem; font-weight:700; margin-top:1.5rem; margin-bottom:0.5rem; color:#0077cc; }
+            body.dark-mode .article-content h3 { color:#7fffff; }
+            .article-content pre, .article-content code { background:#1e1e2e; color:#a8d8a8; border-radius:6px; font-size:0.875rem; font-family:'Courier New',monospace; }
+            .article-content pre { padding:1rem 1.2rem; overflow-x:auto; margin:1.2rem 0; }
+            .article-content code { padding:2px 6px; }
+            .article-content blockquote { border-left:4px solid #0077cc; background:rgba(0,119,204,0.06); margin:1.5rem 0; padding:0.8rem 1.2rem; border-radius:0 6px 6px 0; font-style:italic; color:#555; }
+            body.dark-mode .article-content blockquote { border-left-color:#00f2fe; background:rgba(0,242,254,0.05); color:#aaa; }
+            .article-content table { width:100%; border-collapse:collapse; margin:1.2rem 0; }
+            .article-content table th, .article-content table td { border:1px solid #ddd; padding:8px 12px; font-size:0.9rem; }
+            .article-content table th { background:#f0f5ff; font-weight:700; }
+            body.dark-mode .article-content table th { background:#1a1a2e; color:#e0e0e0; }
+            body.dark-mode .article-content table td { border-color:#333; color:#d0d0d0; }
+            .article-nav { display:flex; justify-content:space-between; margin-top:3rem; padding-top:1.5rem; border-top:1px solid #e0e0e0; gap:1rem; }
+            body.dark-mode .article-nav { border-top-color:#333; }
+            .article-nav a { font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; display:flex; align-items:center; gap:6px; }
+            body.dark-mode .article-nav a { color:#00f2fe; }
+        </style>
+    </head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <app-navbar></app-navbar>
+    <section class="page-content">
+        <div class="container">
+            <div class="article-content" data-aos="fade-up">
+
+                <div class="article-header">
+                    <a href="../article_research.html" class="article-back">
+                        <i class="fas fa-arrow-left"></i> Back to Articles &amp; Research
+                    </a>
+                    <div class="article-tags">
+                        <span class="article-tag">Networking</span>
+                        <span class="article-tag">BGP</span>
+                    </div>
+                    <h1 class="article-title">Understanding BGP for Enterprise WAN Design</h1>
+                    <div class="article-meta">
+                        <span><i class="fas fa-user"></i>&nbsp; Ervinda Pratama</span>
+                        <span><i class="fas fa-calendar"></i>&nbsp; March 2025</span>
+                        <span><i class="fas fa-clock"></i>&nbsp; ~12 min read</span>
+                    </div>
+                </div>
+
+                <h2>Introduction</h2>
+                <p>
+                    Border Gateway Protocol (BGP) is the routing protocol of the internet, but its role within the enterprise campus and WAN is equally critical. For an enterprise network engineer, BGP isn't just about sharing routes; it's about <strong>policy-driven path control</strong>. In a multi-homed environment where your business depends on redundant ISP links, BGP is the engine that ensures resilience.
+                </p>
+
+                <h2>iBGP vs eBGP: The Internal/External Divide</h2>
+                <p>
+                    The distinction between <strong>Internal BGP (iBGP)</strong> and <strong>External BGP (eBGP)</strong> is fundamental to how traffic enters and leaves your Autonomous System (AS).
+                </p>
+                <ul>
+                    <li><strong>eBGP:</strong> Runs between different Autonomous Systems (e.g., your Enterprise and your ISP). It expects directly connected neighbors and resets the NEXT_HOP to itself.</li>
+                    <li><strong>iBGP:</strong> Runs within your own AS. It is used to carry external routes across your internal network so that all border routers have a consistent view of the world. Crucially, iBGP does <em>not</em> change the NEXT_HOP attribute by default.</li>
+                </ul>
+
+                <h2>Control Your Egress: BGP Attributes</h2>
+                <p>
+                    When your enterprise has two primary internet circuits (ISP-A and ISP-B), how do you decide which one should be the preferred path for user traffic? We use <strong>BGP Attributes</strong> to influence the decision process.
+                </p>
+                
+                <h3>1. Local Preference (The Egress King)</h3>
+                <p>
+                    Local Preference is the first attribute BGP looks at after checking the Weight (Cisco proprietary). It is shared across your entire iBGP mesh. Higher is better.
+                </p>
+<pre><code># Scenario: Prefer ISP-A for all outbound traffic
+router bgp 65001
+ neighbor 1.1.1.1 remote-as 100  # ISP-A
+ neighbor 1.1.1.1 route-map PREFER-ISP-A in
+
+route-map PREFER-ISP-A permit 10
+ set local-preference 200</code></pre>
+
+                <h3>2. AS-Path Prepending (The Inbound Traffic Shifter)</h3>
+                <p>
+                    Influencing inbound traffic (how the world reaches you) is harder because you are trying to influence routers you don't control. The most common tool is <strong>AS-Path Prepending</strong>. By making your path look "longer" to one ISP, the internet will naturally prefer the other.
+                </p>
+<pre><code># Scenario: Make ISP-B less attractive for inbound traffic
+route-map PREPEND-ISP-B permit 10
+ set as-path prepend 65001 65001 65001</code></pre>
+
+                <h2>Designing for High Availability</h2>
+                <p>
+                    In a resilient WAN design, we often use <strong>Multi-homing</strong>. This provides protection against ISP failure, fiber cuts, or regional routing issues.
+                </p>
+                <blockquote>
+                    "Redundancy is not just having two links; it's having a protocol that knows when one is failing even before the link-light goes out."
+                </blockquote>
+
+                <h2>Summary / Takeaways</h2>
+                <ul>
+                    <li>BGP is a <strong>path-vector protocol</strong>, not a link-state protocol. It cares about policy, not physics.</li>
+                    <li>Use <strong>Local Preference</strong> to control how traffic leaves your network.</li>
+                    <li>Use <strong>AS-Path Prepending</strong> or <strong>MED</strong> to influence how traffic enters your network.</li>
+                    <li>Ensure your iBGP mesh is complete (or use Route Reflectors) to prevent routing loops and black holes.</li>
+                </ul>
+
+                <div class="article-nav">
+                    <a href="mikrotik-firewall-deep-dive.html">
+                        <i class="fas fa-arrow-left"></i> Previous Article
+                    </a>
+                    <span></span>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="../../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <app-footer></app-footer>
+    <script>AOS.init({ once: true, duration: 800 });</script>
+    <script src="../../script/components.js"></script>
+</body>
+</html>

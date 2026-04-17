@@ -1,12 +1,20 @@
 class AppNavbar extends HTMLElement {
   connectedCallback() {
-    const isSubdir = window.location.pathname.includes('/content/');
-    const basePath = isSubdir ? '../' : '';
+    // Robust path detection
+    const path = window.location.pathname;
+    let basePath = './';
+    
+    // Check depth based on known directory structure
+    if (path.includes('/homelab/') || path.includes('/research/') || path.includes('/articles/')) {
+      basePath = '../../';
+    } else if (path.includes('/content/')) {
+      basePath = '../';
+    }
 
-    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+    const currentPath = path.split('/').pop() || 'index.html';
 
     const menuItems = [
-      { name: 'Home', url: isSubdir ? '../index.html' : 'index.html', match: 'index.html' },
+      { name: 'Home', url: basePath + 'index.html', match: 'index.html' },
       { name: 'About Me', url: basePath + 'content/about.html', match: 'about.html' },
       { name: 'Experience & Skills', url: basePath + 'content/experience_skill.html', match: 'experience_skill.html' },
       { name: 'My Certificate', url: basePath + 'content/certificate.html', match: 'certificate.html' },
@@ -39,7 +47,7 @@ class AppNavbar extends HTMLElement {
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
                         <button class="btn btn-sm btn-outline-secondary" id="darkModeToggle" title="Toggle Dark Mode">
-                           <i class="fa fa-moon-o"></i>
+                           <i class="fas fa-moon"></i>
                         </button>
                     </li>
                 </ul>
@@ -60,7 +68,7 @@ class AppNavbar extends HTMLElement {
     if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
       htmlEl.setAttribute('data-bs-theme', 'dark');
       bodyEl.classList.add('dark-mode');
-      toggleBtn.innerHTML = '<i class="fa fa-sun-o"></i>';
+      toggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
     }
 
     toggleBtn.addEventListener('click', () => {
@@ -69,17 +77,16 @@ class AppNavbar extends HTMLElement {
         htmlEl.setAttribute('data-bs-theme', 'light');
         bodyEl.classList.remove('dark-mode');
         localStorage.setItem('theme', 'light');
-        toggleBtn.innerHTML = '<i class="fa fa-moon-o"></i>';
+        toggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
       } else {
         htmlEl.setAttribute('data-bs-theme', 'dark');
         bodyEl.classList.add('dark-mode');
         localStorage.setItem('theme', 'dark');
-        toggleBtn.innerHTML = '<i class="fa fa-sun-o"></i>';
+        toggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
       }
     });
 
     // Rebind scroll event for navbar glassmorphism
-    // Since this runs after DOM load, we bind immediately
     const nav = this.querySelector('.navbar-fixed-top');
     window.addEventListener('scroll', () => {
       if (window.scrollY > nav.offsetHeight) {

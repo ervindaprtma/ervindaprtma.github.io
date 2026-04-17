@@ -1,18 +1,138 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
-        <meta name="Desc" content="Ervinda Pratama - Network & Security Engineer Portfolio. Experience in NOC, ISP, Cybersecurity L2, AI, and Blockchain.">
-        <meta name="Author" content="MasVin22">
+        <meta name="description" content="Ervinda Pratama - Home Lab Projects. Interactive labs covering Network Security, Infrastructure, Cybersecurity, and AI.">
+        <meta name="author" content="MasVin22">
+        
+        <!-- Stylesheets -->
         <link rel="stylesheet" href="../styles/main.css">
         <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
         <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
-        <title>Network Engineer L2 - Ervinda Pratama</title>
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         
+        <title>Home Lab Projects | Ervinda Pratama</title>
+
         <link rel="icon" href="../images_cert/profil.jpg" sizes="32x32" class="rounded-circle">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+        
+        <style>
+            :root {
+                --card-bg: #ffffff;
+                --card-border: #e0e0e0;
+                --accent-color: #0077cc;
+                --text-muted: #666;
+            }
+
+            [data-bs-theme="dark"] {
+                --card-bg: #1e1e1e;
+                --card-border: #333;
+                --accent-color: #00f2fe;
+                --text-muted: #aaa;
+            }
+
+            .premium-card {
+                background: var(--card-bg);
+                border: 1px solid var(--card-border);
+                border-radius: 16px;
+                transition: all 0.3s ease;
+                overflow: hidden;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            }
+
+            .premium-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+                border-color: var(--accent-color);
+            }
+
+            .card-icon-wrapper {
+                height: 160px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: rgba(0, 119, 204, 0.05);
+                position: relative;
+                border-bottom: 1px solid var(--card-border);
+            }
+
+            [data-bs-theme="dark"] .card-icon-wrapper {
+                background: rgba(0, 242, 254, 0.05);
+            }
+
+            .card-icon-wrapper i {
+                font-size: 3.5rem;
+                color: var(--accent-color);
+                transition: transform 0.3s ease;
+            }
+
+            .premium-card:hover .card-icon-wrapper i {
+                transform: scale(1.1);
+            }
+
+            .card-content {
+                padding: 1.5rem;
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .card-category {
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                font-size: 0.7rem;
+                font-weight: 700;
+                color: var(--accent-color);
+                margin-bottom: 0.5rem;
+            }
+
+            .card-title {
+                font-size: 1.25rem;
+                font-weight: 700;
+                margin-bottom: 0.75rem;
+            }
+
+            .card-desc {
+                font-size: 0.9rem;
+                color: var(--text-muted);
+                line-height: 1.6;
+                margin-bottom: 1.5rem;
+            }
+
+            .explore-btn {
+                margin-top: auto;
+                background: var(--accent-color);
+                border: none;
+                border-radius: 8px;
+                padding: 10px 20px;
+                font-weight: 600;
+                color: white;
+                text-decoration: none;
+                text-align: center;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                font-size: 0.9rem;
+            }
+
+            [data-bs-theme="dark"] .explore-btn {
+                color: #000;
+            }
+
+            .explore-btn:hover {
+                opacity: 0.9;
+                color: white;
+                transform: translateY(-2px);
+            }
+            [data-bs-theme="dark"] .explore-btn:hover {
+                color: #000;
+            }
+        </style>
     </head>
 <body>
     <script>
@@ -21,96 +141,97 @@
             document.body.classList.add('dark-mode');
         }
     </script>
+    
     <app-navbar></app-navbar>
-    <section class="page-content">
-        <div class="container">
-            <div id="home">
-                <div class="page-home">
-                    <div class="header">
-                        <div class="row align-items-center">
-                            <div class="col-lg-12 col-md-6 justify-content-left text-center">
-                                <img src="../background/project_homelabs.jpg" class="w-25 rounded mx-auto d-block" width="200" alt="profil" data-aos="zoom-in">
-                            </div>
+
+    <section class="page-content py-5">
+        <div class="container container-content">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <div class="d-inline-block px-3 py-1 mb-3 rounded-pill bg-primary bg-opacity-10 text-primary fw-bold" style="font-size: 0.75rem; letter-spacing: 1px;">
+                    EXPLORATION & RESEARCH
+                </div>
+                <h1 class="display-5 fw-bold mb-3">Technical Home Lab</h1>
+                <p class="lead text-muted mx-auto" style="max-width: 700px; font-size: 1.1rem;">
+                    A collection of experimental projects, infrastructure simulations, and security labs designed to bridge the gap between theory and real-world deployment.
+                </p>
+            </div>
+
+            <div class="row g-4 justify-content-center">
+                <!-- Network Security & Infra -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="premium-card">
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-network-wired"></i>
                         </div>
-                        <br>
-                        <div class="col-lg-12 col-md-6 justify-content-center text-center">
-                            <br>
-                            <p><b>Project & Home Labs</b></p>
-                            <blockquote class="justify-content-center text-center">
-                                Research exploration, experimentation, and practical implementation in the fields of
-                                Networking, Cybersecurity, and Artificial Intelligence (AI)
-                            </blockquote>
-                            <p>~ Ervinda Pratama</p>
+                        <div class="card-content">
+                            <span class="card-category">Infrastructure</span>
+                            <h3 class="card-title">Network Security & Infra</h3>
+                            <p class="card-desc">
+                                Deep dive into routing protocols, firewall implementations, and high-availability infrastructure deployments.
+                            </p>
+                            <a href="homelab/networksecurity.html" class="explore-btn">
+                                <span>Explore Labs</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
                         </div>
-                        <hr class="mt-5" data-aos="fade-up" data-aos-delay="500" />
-                        <div class="col-lg-12 col-md-8 text-left">
-                            <div class="header-title mt-4" data-aos="fade-up" data-aos-delay="600">
-                                <h2>
-                                    <b>My Projects & Home Labs</b>
-                                </h2>
-                            </div>
-                            <!--Start Grid Layout-->
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mt-6" data-aos="fade-up" data-aos-delay="600">
-                                <div class="bg-light p-4 rounded shadow">
-                                    <h3 class="h5 font-weight-bold">🖧 Network & Security</h3>
-                                    <ul class="mt-3 mb-2 list-unstyled">
-                                        <li>🔹Outdoor Wireless Distribution with MikroTik & Ubiquiti Airfiber</li>
-                                        <li>🔹Network Monitoring with MikroTik The Dude</li>
-                                        <li>🔹Multi-Area Dynamic Routing with OSPF</li>
-                                        <li>🔹Network Monitoring with LibreNMS</li>
-                                        <li>🔹FortiGate Firewall Implementation</li>
-                                        <li>🔹SD-WAN SLA Performance Monitoring for FortiGate using Telegraf</li>
-                                    </ul>
-                                    <a href="homelab/networksecurity.html" class="text-primary font-weight-semibold d-block mt-3">🔎 Explore</a>
-                                </div>
-                                <br>
-                                <div class="bg-light p-4 rounded shadow">
-                                    <h3 class="h5 font-weight-bold">🛡 Cybersecurity Labs</h3>
-                                    <ul class="mt-3 mb-2 list-unstyled">
-                                        <li>🔹Vulnerability Scanning using NMAP</li>
-                                        <li>🔹Traffic Flow Monitoring using ElastiFlow</li>
-                                        <li>🔹Building a Vulnerability Check Script with Shodan InternetDB</li>
-                                        <li>🔹Building a Honeypot & Honeynet using T-POT</li>
-                                    </ul>
-                                    <a href="homelab/cybersecurity.html" class="text-primary font-weight-semibold d-block mt-3">🔎 Explore</a>
-                                </div>
-                                <br>
-                                <div class="bg-light p-4 rounded shadow">
-                                    <h3 class="h5 font-weight-bold">🤖 AI for Security</h3>
-                                    <ul class="mt-3 mb-2 list-unstyled">
-                                        <li>🔹In Progress</li>
-                                    </ul>
-                                    <a href="homelab/artificial_intelligence.html" class="text-primary font-weight-semibold d-block mt-3">🔎 Explore</a>
-                                </div>
-                                <br>
-                                <!-- <div class="bg-light p-4 rounded shadow">
-                                    <h3 class="h5 font-weight-bold">🔗 Blockchain & Web3</h3>
-                                    <ul class="mt-3 mb-2 list-unstyled">
-                                        <li>🔹On Progress</li>
-                                    </ul>
-                                    <a href="homelab/blockchain.html" class="text-primary font-weight-semibold d-block mt-3">🔎 Explore</a>
-                                </div> -->
-                            </div>
-                        </div>    
+                    </div>
+                </div>
+
+                <!-- Cybersecurity -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="premium-card">
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-shield-halved"></i>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-category">Security</span>
+                            <h3 class="card-title">Cybersecurity Operations</h3>
+                            <p class="card-desc">
+                                Exploring vulnerability management, traffic analysis, and defensive security measures in a controlled environment.
+                            </p>
+                            <a href="homelab/cybersecurity.html" class="explore-btn">
+                                <span>Explore Labs</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Artificial Intelligence -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="premium-card">
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-category">Future Tech</span>
+                            <h3 class="card-title">Artificial Intelligence</h3>
+                            <p class="card-desc">
+                                Research and development in agentic AI, automation scripts, and machine learning integration for IT operations.
+                            </p>
+                            <a href="homelab/artificial_intelligence.html" class="explore-btn">
+                                <span>Roadmap</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>    
-    
-     <!-- Java Script with Bootstrap-->
-     <script src="../vendor/jquery/jquery.slim.min.js"></script>
-     <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    </section>
 
-    <app-footer></app-footer>
-    
-    <!--Inisialisasi AOS JavaScript-->
-    <script>
-        AOS.init()
-    </script>
-    <!-- Web Components -->
+    <!-- Scripts -->
+    <script src="../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="../script/components.js"></script>
-    <!--<script src="https://cdn.tailwindcss.com"></script> -->
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+    </script>
+    
+    <app-footer></app-footer>
 </body>
 </html>
