@@ -11,6 +11,51 @@
 
         <link rel="icon" href="../images_cert/profil.jpg" sizes="32x32" class="rounded-circle">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <style>
+            /* Dark mode overrides for Bootstrap 4 modals */
+            body.dark-mode .modal-content {
+                background-color: #1e1e1e;
+                color: #e0e0e0;
+                border: 1px solid #333;
+            }
+            body.dark-mode .modal-header {
+                background-color: #252525;
+                border-bottom: 1px solid #333;
+            }
+            body.dark-mode .modal-header .modal-title {
+                color: #e0e0e0;
+            }
+            body.dark-mode .modal-header .close {
+                color: #aaa;
+                text-shadow: none;
+                opacity: 0.8;
+            }
+            body.dark-mode .modal-header .close:hover {
+                color: #fff;
+                opacity: 1;
+            }
+            body.dark-mode .modal-body {
+                background-color: #1e1e1e;
+                color: #d0d0d0;
+            }
+            body.dark-mode .modal-body p,
+            body.dark-mode .modal-body li {
+                color: #d0d0d0;
+            }
+            body.dark-mode .modal-body a {
+                color: #00f2fe !important;
+            }
+            body.dark-mode .modal-body a:hover {
+                color: #4facfe !important;
+            }
+            body.dark-mode .modal-footer {
+                background-color: #252525;
+                border-top: 1px solid #333;
+            }
+            body.dark-mode .modal-backdrop {
+                opacity: 0.7;
+            }
+        </style>
     </head>
 <body>
     <script>
@@ -68,18 +113,96 @@
                                                     <p>Other official certification badges can be verified directly via the Credly platform on my <a href="https://credly.com/users/ervinda-pratama">Credly Profile</a>.</p>
                                                 </div>
                                         </div>
+                                        <!-- Group 1: Hackviser Certifications -->
                                         <div class="row mt-4 justify-content-center">
-                                            <div
-                                                class="col-12 col-md-6 col-lg-4 mb-3"
-                                                data-aos="fade-up"
-                                                data-aos-delay="200">
+                                            <div class="col-12 col-md-6 col-lg-4 mb-3" data-aos="fade-up" data-aos-delay="200">
                                                 <div class="component-portfolio d-block">
                                                     <div class="portfolio-thumbnail">
-                                                        <div
-                                                            class="portfolio-image"
-                                                            style="
-                                                                background-image: url('../images_cert/CCNA-ITN-Course-by-Netacad-Ervinda-Pratama.jpg');">
-                                                        </div>
+                                                        <div class="portfolio-image" style="background-image: url('../images_cert/CAPT-Hackviser-Ervinda-Pratama.jpg');"></div>
+                                                    </div>
+                                                    <div class="portfolio-text">
+                                                        <a href="../images_cert/CAPT-Hackviser-Ervinda-Pratama.jpg">
+                                                            Hackviser CAPT : Certified Associate Penetration Tester
+                                                        </a>
+                                                    </div>
+                                                    <div class="portfolio-price">
+                                                        <p>
+                                                        Certification CAPT by Hackviser
+                                                        <br>
+                                                        <a href="#" data-toggle="modal" data-target="#capt_hackviser">Click to details of certification</a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6 col-lg-4 mb-3" data-aos="fade-up" data-aos-delay="300">
+                                                <div class="component-portfolio d-block">
+                                                    <div class="portfolio-thumbnail">
+                                                        <div class="portfolio-image" style="background-image: url('../images_cert/CWSE-Hackviser-Ervinda-Pratama.jpg');"></div>
+                                                    </div>
+                                                    <div class="portfolio-text">
+                                                        <a href="../images_cert/CWSE-Hackviser-Ervinda-Pratama.jpg">
+                                                            Hackviser CWSE : Certified Web Security Expert
+                                                        </a>
+                                                    </div>
+                                                    <div class="portfolio-price">
+                                                        <p>
+                                                        Certification CWSE by Hackviser
+                                                        <br>
+                                                        <a href="#" data-toggle="modal" data-target="#cwse_hackviser">Click to details of certification</a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Group 2: Cisco CCNP Certifications -->
+                                        <div class="row mt-4 justify-content-center">
+                                            <div class="col-12 col-md-6 col-lg-4 mb-3" data-aos="fade-up" data-aos-delay="200">
+                                                <div class="component-portfolio d-block">
+                                                    <div class="portfolio-thumbnail">
+                                                        <div class="portfolio-image" style="background-image: url('../images_cert/CCNP-Enterprise-Core-Networking-by-Netacad-Ervinda-Pratama.jpg');"></div>
+                                                    </div>
+                                                    <div class="portfolio-text">
+                                                        <a href="../images_cert/CCNP-Enterprise-Core-Networking-by-Netacad-Ervinda-Pratama.jpg">
+                                                            Cisco CCNP Enterprise : Core Networking
+                                                        </a>
+                                                    </div>
+                                                    <div class="portfolio-price">
+                                                        <p>
+                                                        Certificate Course CCNP Enterprise (ENCOR) by Netacad
+                                                        <br>
+                                                        <a href="#" data-toggle="modal" data-target="#ccnp_core">Click to details of certification</a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6 col-lg-4 mb-3" data-aos="fade-up" data-aos-delay="300">
+                                                <div class="component-portfolio d-block">
+                                                    <div class="portfolio-thumbnail">
+                                                        <div class="portfolio-image" style="background-image: url('../images_cert/CCNP-Enterprise-Advanced-Routing-by-Netacad-Ervinda-Pratama.jpg');"></div>
+                                                    </div>
+                                                    <div class="portfolio-text">
+                                                        <a href="../images_cert/CCNP-Enterprise-Advanced-Routing-by-Netacad-Ervinda-Pratama.jpg">
+                                                            Cisco CCNP Enterprise : Advanced Routing
+                                                        </a>
+                                                    </div>
+                                                    <div class="portfolio-price">
+                                                        <p>
+                                                        Certificate Course CCNP Enterprise (ENARSI) by Netacad
+                                                        <br>
+                                                        <a href="#" data-toggle="modal" data-target="#ccnp_advanced">Click to details of certification</a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Group 3: Cisco CCNA Certifications -->
+                                        <div class="row mt-4 justify-content-center">
+                                            <div class="col-12 col-md-6 col-lg-4 mb-3" data-aos="fade-up" data-aos-delay="200">
+                                                <div class="component-portfolio d-block">
+                                                    <div class="portfolio-thumbnail">
+                                                        <div class="portfolio-image" style="background-image: url('../images_cert/CCNA-ITN-Course-by-Netacad-Ervinda-Pratama.jpg');"></div>
                                                     </div>
                                                     <div class="portfolio-text">
                                                         <a href="../images_cert/CCNA-ITN-Course-by-Netacad-Ervinda-Pratama.jpg">
@@ -95,12 +218,10 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row mt-4 justify-content-center">
                                             <div
                                                 class="col-12 col-md-6 col-lg-4 mb-3"
                                                 data-aos="fade-up"
-                                                data-aos-delay="200">
+                                                data-aos-delay="300">
                                                 <div class="component-portfolio d-block">
                                                     <div class="portfolio-thumbnail">
                                                         <div
@@ -574,6 +695,86 @@
                                                         Certificate ACA from Alibaba Cloud
                                                         <br>
                                                         <a href="#" data-toggle="modal" data-target="#alibabaaca">Click to details of certification</a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-6 col-lg-4 mb-3" data-aos="fade-up" data-aos-delay="200">
+                                                <div class="component-portfolio d-block">
+                                                    <div class="portfolio-thumbnail">
+                                                        <div class="portfolio-image" style="background-image: url('../images_cert/Fortinet-NSE7-Enterprise-Firewall-Training-by-Udemy_Ervinda-Pratama.jpg');"></div>
+                                                    </div>
+                                                    <div class="portfolio-text">
+                                                        <a href="../images_cert/Fortinet-NSE7-Enterprise-Firewall-Training-by-Udemy_Ervinda-Pratama.jpg">
+                                                            Fortinet NSE7 Enterprise Firewall Training
+                                                        </a>
+                                                    </div>
+                                                    <div class="portfolio-price">
+                                                        <p>
+                                                        Certificate Course Fortinet NSE7 Enterprise Firewall Training by Udemy
+                                                        <br>
+                                                        <a href="#" data-toggle="modal" data-target="#nse7_fortinet">Click to details of certification</a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-6 col-lg-4 mb-3" data-aos="fade-up" data-aos-delay="200">
+                                                <div class="component-portfolio d-block">
+                                                    <div class="portfolio-thumbnail">
+                                                        <div class="portfolio-image" style="background-image: url('../images_cert/Learn-Wireshark-Like-a-Pro-by-Udemy_Ervinda-Pratama.jpg');"></div>
+                                                    </div>
+                                                    <div class="portfolio-text">
+                                                        <a href="../images_cert/Learn-Wireshark-Like-a-Pro-by-Udemy_Ervinda-Pratama.jpg">
+                                                            Learn Wireshark Like a Pro : Hands-on Packet Capture &amp; View
+                                                        </a>
+                                                    </div>
+                                                    <div class="portfolio-price">
+                                                        <p>
+                                                        Certificate Course Wireshark by Udemy
+                                                        <br>
+                                                        <a href="#" data-toggle="modal" data-target="#wireshark_udemy">Click to details of certification</a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-6 col-lg-4 mb-3" data-aos="fade-up" data-aos-delay="200">
+                                                <div class="component-portfolio d-block">
+                                                    <div class="portfolio-thumbnail">
+                                                        <div class="portfolio-image" style="background-image: url('../images_cert/Mastering-GenAI-Tools-for-SOC-Analysts-by-SOCRadar_Ervinda-Pratama.jpg');"></div>
+                                                    </div>
+                                                    <div class="portfolio-text">
+                                                        <a href="../images_cert/Mastering-GenAI-Tools-for-SOC-Analysts-by-SOCRadar_Ervinda-Pratama.jpg">
+                                                            Mastering GenAI Tools for SOC Analysts
+                                                        </a>
+                                                    </div>
+                                                    <div class="portfolio-price">
+                                                        <p>
+                                                        Certificate Course Mastering GenAI Tools for SOC Analysts by SOCRadar
+                                                        <br>
+                                                        <a href="#" data-toggle="modal" data-target="#genai_socradar">Click to details of certification</a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-6 col-lg-4 mb-3" data-aos="fade-up" data-aos-delay="200">
+                                                <div class="component-portfolio d-block">
+                                                    <div class="portfolio-thumbnail">
+                                                        <div class="portfolio-image" style="background-image: url('../images_cert/Mastering-Threat-Intelligence-for-SOC_Analysts-by-SOCRadar_Ervinda-Pratama.jpg');"></div>
+                                                    </div>
+                                                    <div class="portfolio-text">
+                                                        <a href="../images_cert/Mastering-Threat-Intelligence-for-SOC_Analysts-by-SOCRadar_Ervinda-Pratama.jpg">
+                                                            Mastering Cyber Threat Intelligence for SOC Analysts
+                                                        </a>
+                                                    </div>
+                                                    <div class="portfolio-price">
+                                                        <p>
+                                                        Certificate Course Mastering Cyber Threat Intelligence for SOC Analysts by SOCRadar
+                                                        <br>
+                                                        <a href="#" data-toggle="modal" data-target="#cti_socradar">Click to details of certification</a>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -1142,7 +1343,340 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="modal fade" id="ccnp_core" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                             <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                     <div class="modal-header">
+                                         <h6 class="modal-title">Detail of Course CCNP Enterprise : Core Networking</h6>
+                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                             <span aria-hidden="true">&times;</span>
+                                         </button>
+                                     </div>
+                                     <div class="modal-body">
+                                         <p>
+                                             CCNP Enterprise: Core Networking is a professional-level networking course focused on enterprise switching, routing, wireless, security, automation, programmability, and modern network architecture. This training is aligned with the Cisco ENCOR (350-401) blueprint and is intended for engineers who want strong core networking expertise for enterprise environments.
+                                         </p>
+                                         <p>Below is a structured breakdown of the CCNP Enterprise: Core Networking course modules:</p>
+                                         <ol>
+                                             <li>Module 1: Packet Forwarding</li>
+                                             <li>Module 2: Spanning Tree Protocol</li>
+                                             <li>Module 3: Advanced Spanning Tree Tuning</li>
+                                             <li>Module 4: Multiple Spanning Tree Protocol</li>
+                                             <li>Module 5: VLAN Trunks and EtherChannel Bundles</li>
+                                             <li>Module 6: IP Routing Essentials</li>
+                                             <li>Module 7: EIGRP</li>
+                                             <li>Module 8: OSPF</li>
+                                             <li>Module 9: Advanced OSPF</li>
+                                             <li>Module 10: OSPFv3</li>
+                                             <li>Module 11: BGP</li>
+                                             <li>Module 12: Advanced BGP</li>
+                                             <li>Module 13: Multicast</li>
+                                             <li>Module 14: QoS</li>
+                                             <li>Module 15: IP Services</li>
+                                             <li>Module 16: Overlay Tunnels</li>
+                                             <li>Module 17: Wireless Signals and Modulation</li>
+                                             <li>Module 18: Wireless Architecture Infrastructure</li>
+                                             <li>Module 19: Understanding Wireless Roaming and Location Services</li>
+                                             <li>Module 20: Authenticating Wireless Clients</li>
+                                             <li>Module 21: Troubleshooting Wireless Connectivity</li>
+                                             <li>Module 22: Enterprise Network Architecture</li>
+                                             <li>Module 23: Fabric Technologies</li>
+                                             <li>Module 24: Network Assurance</li>
+                                             <li>Module 25: Secure Network Access Control</li>
+                                             <li>Module 26: Network Device Access Control and Infrastructure Security</li>
+                                             <li>Module 27: Virtualization</li>
+                                             <li>Module 28: Foundational Network Programmability Concepts</li>
+                                             <li>Module 29: Introduction to Automation Tools</li>
+                                         </ol>
+                                         <p>More details about CCNP ENCOR can be found <a href="https://www.netacad.com/courses/ccnp-enterprise-core-networking">here.</a></p>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="modal fade" id="ccnp_advanced" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                             <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                     <div class="modal-header">
+                                         <h6 class="modal-title">Detail of Course CCNP Enterprise : Advanced Routing</h6>
+                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                             <span aria-hidden="true">&times;</span>
+                                         </button>
+                                     </div>
+                                     <div class="modal-body">
+                                         <p>
+                                             CCNP Enterprise: Advanced Routing is a professional-level networking course focused on enterprise routing technologies, advanced troubleshooting, VPN solutions, route control, and infrastructure security. This training is highly aligned with the Cisco ENARSI blueprint and is intended for engineers who want to master complex routed enterprise environments.
+                                         </p>
+                                         <p>Below is a structured breakdown of the CCNP Enterprise: Advanced Routing course modules:</p>
+                                         <ol>
+                                             <li>Module 1: IPv4/IPv6 Addressing and Routing Review</li>
+                                             <li>Module 2: EIGRP</li>
+                                             <li>Module 3: Advanced EIGRP</li>
+                                             <li>Module 4: Troubleshooting EIGRP for IPv4</li>
+                                             <li>Module 5: EIGRP for IPv6</li>
+                                             <li>Module 6: OSPF</li>
+                                             <li>Module 7: Advanced OSPF</li>
+                                             <li>Module 8: Troubleshooting OSPFv2</li>
+                                             <li>Module 9: OSPFv3</li>
+                                             <li>Module 10: Troubleshooting OSPFv3</li>
+                                             <li>Module 11: BGP</li>
+                                             <li>Module 12: Advanced BGP</li>
+                                             <li>Module 13: BGP Path Selection</li>
+                                             <li>Module 14: Troubleshooting BGP</li>
+                                             <li>Module 15: Route Maps and Conditional Forwarding</li>
+                                             <li>Module 16: Route Redistribution</li>
+                                             <li>Module 17: Troubleshooting Redistribution</li>
+                                             <li>Module 18: VRF, MPLS, and MPLS Layer 3 VPNs</li>
+                                             <li>Module 19: DMVPN Tunnels</li>
+                                             <li>Module 20: Securing DMVPN Tunnels</li>
+                                             <li>Module 21: Troubleshooting ACLs and Prefix Lists</li>
+                                             <li>Module 22: Infrastructure Security</li>
+                                             <li>Module 23: Device Management and Management Tools Troubleshooting</li>
+                                         </ol>
+                                         <p>More details about CCNP ENARSI can be found <a href="https://www.netacad.com/courses/ccnp-enterprise-advanced-routing">here.</a></p>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="modal fade" id="capt_hackviser" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                             <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                     <div class="modal-header">
+                                         <h6 class="modal-title">Detail of Certification CAPT Hackviser</h6>
+                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                             <span aria-hidden="true">&times;</span>
+                                         </button>
+                                     </div>
+                                     <div class="modal-body">
+                                         <p>
+                                             CAPT (Certified Associate Penetration Tester) Hackviser is an entry-level cybersecurity training program designed for beginners who want to build a strong foundation in penetration testing, security assessment, and offensive security techniques through practical real-world scenarios. This course is ideal for aspiring ethical hackers and junior security professionals starting their cybersecurity journey.
+                                         </p>
+                                         <p>Below is a structured breakdown of the CAPT Hackviser course modules:</p>
+                                         <ol>
+                                             <li>Module 1: Introduction to Cybersecurity and Ethical Hacking</li>
+                                             <li>Module 2: Linux Fundamentals</li>
+                                             <li>Module 3: Windows Fundamentals</li>
+                                             <li>Module 4: Network Fundamentals</li>
+                                             <li>Module 5: Web Fundamentals</li>
+                                             <li>Module 6: Security Principles and Risk Awareness</li>
+                                             <li>Module 7: Penetration Testing Methodology</li>
+                                             <li>Module 8: Reconnaissance and Information Gathering</li>
+                                             <li>Module 9: Open Source Intelligence (OSINT) Techniques</li>
+                                             <li>Module 10: Vulnerability Analysis and Enumeration</li>
+                                             <li>Module 11: Network Security Fundamentals</li>
+                                             <li>Module 12: Web Security Fundamentals</li>
+                                             <li>Module 13: Security Tools for Pentesters</li>
+                                             <li>Module 14: Privilege Escalation Fundamentals</li>
+                                             <li>Module 15: System Auditing Basics</li>
+                                             <li>Module 16: Cryptography Fundamentals</li>
+                                             <li>Module 17: Social Engineering Awareness and Techniques</li>
+                                             <li>Module 18: Reporting and Documentation</li>
+                                             <li>Module 19: Real-World Penetration Testing Scenarios</li>
+                                             <li>Module 20: Career Path and Certification Readiness</li>
+                                         </ol>
+                                         <p>More details about CAPT Hackviser can be found <a href="https://app.hackviser.com/certifications/capt">here.</a></p>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="modal fade" id="cwse_hackviser" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                             <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                     <div class="modal-header">
+                                         <h6 class="modal-title">Detail of Certification CWSE Hackviser</h6>
+                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                             <span aria-hidden="true">&times;</span>
+                                         </button>
+                                     </div>
+                                     <div class="modal-body">
+                                         <p>
+                                             CWSE Hackviser is a hands-on web security training course focused on modern web application penetration testing and vulnerability exploitation. This course is designed for learners who want practical offensive security skills in discovering, analyzing, and validating common to advanced web vulnerabilities using real-world methodologies and professional tools such as Burp Suite.
+                                         </p>
+                                         <p>Below is a structured breakdown of the CWSE Hackviser course modules:</p>
+                                         <ol>
+                                             <li>Module 1: Introduction to Web Security and Ethical Hacking</li>
+                                             <li>Module 2: Web Architecture Fundamentals</li>
+                                             <li>Module 3: Information Gathering and Reconnaissance</li>
+                                             <li>Module 4: Burp Suite Fundamentals</li>
+                                             <li>Module 5: Cross-Site Scripting (XSS)</li>
+                                             <li>Module 6: SQL Injection</li>
+                                             <li>Module 7: NoSQL Injection</li>
+                                             <li>Module 8: Insecure Direct Object References (IDOR)</li>
+                                             <li>Module 9: Command Injection</li>
+                                             <li>Module 10: Local and Remote File Inclusion</li>
+                                             <li>Module 11: File Upload Security Vulnerabilities</li>
+                                             <li>Module 12: Authentication Vulnerabilities</li>
+                                             <li>Module 13: JSON Web Token (JWT) Vulnerabilities</li>
+                                             <li>Module 14: XML External Entity (XXE) Injection</li>
+                                             <li>Module 15: Server-Side Template Injection (SSTI)</li>
+                                             <li>Module 16: Server-Side Request Forgery (SSRF)</li>
+                                             <li>Module 17: Cross-Site Request Forgery (CSRF)</li>
+                                             <li>Module 18: Race Condition Vulnerabilities</li>
+                                             <li>Module 19: WAF Bypass Techniques</li>
+                                             <li>Module 20: Real-World Web Application Attack Workflow</li>
+                                             <li>Module 21: Reporting and Remediation Guidance</li>
+                                         </ol>
+                                         <p>More details about CWSE Hackviser can be found <a href="https://app.hackviser.com/certifications/cwse">here.</a></p>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="modal fade" id="nse7_fortinet" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                             <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                     <div class="modal-header">
+                                         <h6 class="modal-title">Detail of Course Fortinet NSE7 Enterprise Firewall Training</h6>
+                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                             <span aria-hidden="true">&times;</span>
+                                         </button>
+                                     </div>
+                                     <div class="modal-body">
+                                         <p>
+                                             Fortinet NSE7 Enterprise Firewall Training is an advanced-level course designed for professionals who want to strengthen their expertise in enterprise firewall deployment, centralized management, advanced routing, VPN technologies, and security operations using Fortinet solutions. This training is highly relevant for engineers preparing for senior security roles and large-scale production environments.
+                                         </p>
+                                         <p>Below is a structured breakdown of the Fortinet NSE7 Enterprise Firewall Training course modules:</p>
+                                         <ol>
+                                             <li>Module 1: Introduction and Initial Configuration</li>
+                                             <li>Module 2: Security Fabric and Central Management</li>
+                                             <li>Module 3: FortiGuard Services and FortiManager</li>
+                                             <li>Module 4: Web Filter and Application Control</li>
+                                             <li>Module 5: Antivirus, DNS Filter, and File Filter Profiles</li>
+                                             <li>Module 6: Intrusion Prevention System (IPS)</li>
+                                             <li>Module 7: Routing with OSPF</li>
+                                             <li>Module 8: Routing with BGP</li>
+                                             <li>Module 9: IPsec VPN and ADVPN</li>
+                                             <li>Module 10: BGP Configuration Through CLI Template</li>
+                                             <li>Module 11: OSPF Configuration Through CLI Template</li>
+                                             <li>Module 12: VPN Setup Through VPN Manager</li>
+                                             <li>Module 13: FortiGate, FortiManager, and FortiAnalyzer Backups</li>
+                                             <li>Module 14: Logging, Monitoring, and Analytics</li>
+                                             <li>Module 15: High Availability and Redundancy</li>
+                                             <li>Module 16: Enterprise Troubleshooting Methodology</li>
+                                         </ol>
+                                         <p>More details for the Fortinet NSE7 course at <a href="https://www.udemy.com/">Udemy.com</a> can be found <a href="https://www.udemy.com/share/10a7Ge3@0mztdJeSKTDXoE0Gvi54tFf3q-mKLpdpq7682NjhG5VJBXIdW6bQRKXmRqTRN5XfzA==/">here.</a></p>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="modal fade" id="wireshark_udemy" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                             <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                     <div class="modal-header">
+                                         <h6 class="modal-title">Detail of Course Learn Wireshark Like a Pro</h6>
+                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                             <span aria-hidden="true">&times;</span>
+                                         </button>
+                                     </div>
+                                     <div class="modal-body">
+                                         <p>
+                                             Learn Wireshark Like a Pro: Hands-on Packet Capture &amp; View is a practical networking and cybersecurity course designed for learners who want to master packet capture, protocol analysis, and network troubleshooting using Wireshark and related tools. This course is valuable for Network Engineers, Security Analysts, SOC personnel, and ethical hacking learners who need strong traffic visibility skills.
+                                         </p>
+                                         <p>Below is a structured breakdown of the Learn Wireshark Like a Pro course modules:</p>
+                                         <ol>
+                                             <li>Module 1: Introduction to Ethical Hacking and Network Security Fundamentals</li>
+                                             <li>Module 2: OSI Model Deep Dive</li>
+                                             <li>Module 3: Fundamentals of Packet Analysis</li>
+                                             <li>Module 4: Understanding Hubs, Switches, and Routers</li>
+                                             <li>Module 5: Traffic Identification and Classification</li>
+                                             <li>Module 6: Network Sniffing Techniques in Modern Networks</li>
+                                             <li>Module 7: Installing and Configuring Wireshark (Windows, Linux, macOS)</li>
+                                             <li>Module 8: Wireshark Interface and Customization</li>
+                                             <li>Module 9: Capture Filters in Wireshark</li>
+                                             <li>Module 10: Display Filters in Wireshark</li>
+                                             <li>Module 11: ARP Protocol Analysis</li>
+                                             <li>Module 12: IP Protocol Analysis</li>
+                                             <li>Module 13: TCP Protocol Analysis</li>
+                                             <li>Module 14: UDP Protocol Analysis</li>
+                                             <li>Module 15: DHCP Protocol Analysis</li>
+                                             <li>Module 16: HTTP Protocol Analysis</li>
+                                             <li>Module 17: Packet Troubleshooting Methodology</li>
+                                             <li>Module 18: TcpDump for Command-Line Packet Capture</li>
+                                             <li>Module 19: Tshark for Advanced CLI Analysis</li>
+                                             <li>Module 20: Real-World Network Investigation Scenarios</li>
+                                         </ol>
+                                         <p>More details for the Wireshark course at <a href="https://www.udemy.com/">Udemy.com</a> can be found <a href="https://www.udemy.com/share/10cIDr3@JxPc_isYw-Ftd3Z0Y59NYPWIT0kq5ceTVYpsVPl4WasQV9PVSMpn0nq8UboOiECk9w==/">here.</a></p>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="modal fade" id="genai_socradar" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                             <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                     <div class="modal-header">
+                                         <h6 class="modal-title">Detail of Course Mastering GenAI Tools for SOC Analysts</h6>
+                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                             <span aria-hidden="true">&times;</span>
+                                         </button>
+                                     </div>
+                                     <div class="modal-body">
+                                         <p>
+                                             Mastering GenAI Tools for SOC Analysts is a modern cybersecurity course designed to help Security Operations Center professionals understand, secure, and operationalize Generative AI tools within defensive security workflows. This training focuses on practical AI adoption for detection, triage, automation, threat intelligence, and emerging AI-related risks.
+                                         </p>
+                                         <p>Below is a structured breakdown of the Mastering GenAI Tools for SOC Analysts course modules:</p>
+                                         <ol>
+                                             <li>Module 1: Fundamentals of AI and Large Language Models in Cybersecurity</li>
+                                             <li>Module 2: Securing AI Systems and Applying AI to Security Operations</li>
+                                             <li>Module 3: How Threat Actors Use AI for Offensive Techniques</li>
+                                             <li>Module 4: AI for Phishing Triage and Email Analysis</li>
+                                             <li>Module 5: AI for Log Parsing and Security Event Investigation</li>
+                                             <li>Module 6: AI for Playbook Generation and Workflow Automation</li>
+                                             <li>Module 7: AI-Driven Threat Intelligence Operations</li>
+                                             <li>Module 8: AI for Compliance Monitoring and Governance Support</li>
+                                             <li>Module 9: Prompt Engineering for SOC Analysts</li>
+                                             <li>Module 10: Risk Management, Privacy, and Responsible AI Usage</li>
+                                             <li>Module 11: Integrating GenAI with SIEM, SOAR, and SOC Processes</li>
+                                             <li>Module 12: Future Trends of AI in Security Operations</li>
+                                         </ol>
+                                         <p>More details about Mastering GenAI Tools for SOC Analysts can be found <a href="https://university.socradar.io/course/masteringgenaitools4socanalysts">here.</a></p>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="modal fade" id="cti_socradar" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                             <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                     <div class="modal-header">
+                                         <h6 class="modal-title">Detail of Course Mastering Cyber Threat Intelligence for SOC Analysts</h6>
+                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                             <span aria-hidden="true">&times;</span>
+                                         </button>
+                                     </div>
+                                     <div class="modal-body">
+                                         <p>
+                                             Mastering Cyber Threat Intelligence for SOC Analysts is a specialized cybersecurity course designed to help SOC professionals understand threat actors, intelligence frameworks, threat feeds, and practical CTI operations. This training focuses on turning raw threat data into actionable intelligence that improves detection, response, and organizational security posture.
+                                         </p>
+                                         <p>Below is a structured breakdown of the Mastering Cyber Threat Intelligence for SOC Analysts course modules:</p>
+                                         <ol>
+                                             <li>Module 1: Introduction to Cyber Threat Intelligence (CTI)</li>
+                                             <li>Module 2: Understanding Threat Actors and Adversary Motivations</li>
+                                             <li>Module 3: Cybercriminals, Nation-State Groups, APTs, Hacktivists, and Insider Threats</li>
+                                             <li>Module 4: Extended Threat Intelligence (XTI) Concepts</li>
+                                             <li>Module 5: Digital Risk Protection (DRP)</li>
+                                             <li>Module 6: External Attack Surface Management (EASM)</li>
+                                             <li>Module 7: Intelligence Life Cycle Framework</li>
+                                             <li>Module 8: Cyber Kill Chain Model</li>
+                                             <li>Module 9: Diamond Model of Intrusion Analysis</li>
+                                             <li>Module 10: Pyramid of Pain</li>
+                                             <li>Module 11: MITRE ATT&amp;CK Framework</li>
+                                             <li>Module 12: Indicators of Compromise (IoCs) Analysis</li>
+                                             <li>Module 13: Threat Intelligence Reporting and Documentation</li>
+                                             <li>Module 14: Using VirusTotal for Threat Investigation</li>
+                                             <li>Module 15: Using Shodan for Exposure Discovery</li>
+                                             <li>Module 16: Domain, IP Address, and Device Intelligence Gathering</li>
+                                             <li>Module 17: Threat Intelligence in Incident Response</li>
+                                             <li>Module 18: Real-Time IoC Blocking and Detection Use Cases</li>
+                                             <li>Module 19: Dark Web Monitoring and Credential Exposure Awareness</li>
+                                             <li>Module 20: Brand Impersonation and Digital Risk Monitoring</li>
+                                             <li>Module 21: Threat Intelligence Sources and Feeds</li>
+                                             <li>Module 22: Internal Intelligence Sources and SOC Telemetry</li>
+                                             <li>Module 23: External Intelligence Sources and Sharing Communities (ISACs)</li>
+                                             <li>Module 24: Building CTI Workflows for SOC Operations</li>
+                                         </ol>
+                                         <p>More details about Mastering Cyber Threat Intelligence for SOC Analysts can be found <a href="https://university.socradar.io/course/mastering-cyber-threat-intelligence-for-soc-analysts">here.</a></p>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                     </div></div>
                 </div>
             </div>
             <!--<hr class="mt-5" data-aos="fade-up" data-aos-delay="800" />
