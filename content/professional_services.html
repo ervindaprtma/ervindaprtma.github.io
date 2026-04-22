@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+        <meta name="description" content="Ervinda Pratama - Professional IT Services. Network Installation, Server Setup, Firewall, Monitoring, and Technical Training.">
+        <meta name="author" content="MasVin22">
+        
+        <!-- Stylesheets -->
+        <link rel="stylesheet" href="../styles/main.css">
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        
+        <title>Professional Services | Ervinda Pratama</title>
+
+        <link rel="icon" href="../images_cert/profil.jpg" sizes="32x32" class="rounded-circle">
+        
+        <style>
+            :root {
+                --card-bg: #ffffff;
+                --card-border: #e0e0e0;
+                --accent-color: #0077cc;
+                --text-muted: #666;
+            }
+
+            [data-bs-theme="dark"] {
+                --card-bg: #1e1e1e;
+                --card-border: #333;
+                --accent-color: #00f2fe;
+                --text-muted: #aaa;
+            }
+
+            .premium-card {
+                background: var(--card-bg);
+                border: 1px solid var(--card-border);
+                border-radius: 16px;
+                transition: all 0.3s ease;
+                overflow: hidden;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            }
+
+            .premium-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+                border-color: var(--accent-color);
+            }
+
+            .card-icon-wrapper {
+                height: 120px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: rgba(0, 119, 204, 0.05);
+                position: relative;
+                border-bottom: 1px solid var(--card-border);
+            }
+
+            [data-bs-theme="dark"] .card-icon-wrapper {
+                background: rgba(0, 242, 254, 0.05);
+            }
+
+            .card-icon-wrapper i {
+                font-size: 2.5rem;
+                color: var(--accent-color);
+                transition: transform 0.3s ease;
+            }
+
+            .premium-card:hover .card-icon-wrapper i {
+                transform: scale(1.1);
+            }
+
+            .card-content {
+                padding: 1.5rem;
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .card-category {
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                font-size: 0.65rem;
+                font-weight: 700;
+                color: var(--accent-color);
+                margin-bottom: 0.5rem;
+            }
+
+            .card-title {
+                font-size: 1.15rem;
+                font-weight: 700;
+                margin-bottom: 0.75rem;
+            }
+
+            .card-desc {
+                font-size: 0.85rem;
+                color: var(--text-muted);
+                line-height: 1.6;
+                margin-bottom: 1rem;
+            }
+
+            .tech-list {
+                margin-top: auto;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+
+            .tech-badge {
+                font-size: 0.7rem;
+                padding: 2px 8px;
+                border-radius: 4px;
+                background: rgba(0, 119, 204, 0.08);
+                color: var(--accent-color);
+                border: 1px solid rgba(0, 119, 204, 0.1);
+                font-weight: 600;
+            }
+
+            [data-bs-theme="dark"] .tech-badge {
+                background: rgba(0, 242, 254, 0.08);
+                border-color: rgba(0, 242, 254, 0.1);
+            }
+
+            /* Custom utilities for Bootstrap 4 compatibility */
+            .bg-opacity-10 {
+                background-color: rgba(0, 119, 204, 0.1) !important;
+            }
+            [data-bs-theme="dark"] .bg-opacity-10 {
+                background-color: rgba(0, 242, 254, 0.1) !important;
+            }
+            [data-bs-theme="dark"] .text-primary {
+                color: var(--accent-color) !important;
+            }
+        </style>
+    </head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    
+    <app-navbar></app-navbar>
+
+    <section class="page-content py-5">
+        <div class="container container-content">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <div class="d-inline-block px-3 py-1 mb-3 rounded-pill bg-primary bg-opacity-10 text-primary fw-bold" style="font-size: 0.75rem; letter-spacing: 1px;">
+                    SERVICES & SOLUTIONS
+                </div>
+                <h1 class="display-5 fw-bold mb-3">Professional IT Services</h1>
+                <p class="lead text-muted mx-auto" style="max-width: 700px; font-size: 1.1rem;">
+                    Providing end-to-end technical solutions ranging from network infrastructure and security to advanced monitoring and IT operations.
+                </p>
+            </div>
+
+            <div class="row g-4">
+                <!-- 1. Office Network -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="premium-card">
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-category">Infrastructure</span>
+                            <h3 class="card-title">Office Network Installation</h3>
+                            <p class="card-desc">Complete local network setup for office environments, ensuring stability and performance.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">MikroTik</span>
+                                <span class="tech-badge">Cisco</span>
+                                <span class="tech-badge">Router/Switch</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. CCTV -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="premium-card">
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-category">Security</span>
+                            <h3 class="card-title">CCTV Systems Deployment</h3>
+                            <p class="card-desc">Professional installation of indoor and outdoor surveillance systems with remote monitoring.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">Hikvision</span>
+                                <span class="tech-badge">Analog</span>
+                                <span class="tech-badge">IP Camera</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Server -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="premium-card">
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-category">Systems</span>
+                            <h3 class="card-title">Server Setup & Hardening</h3>
+                            <p class="card-desc">Physical mounting, OS installation, and security hardening following the CIS benchmark.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">HPE</span>
+                                <span class="tech-badge">DELL</span>
+                                <span class="tech-badge">Linux (CIS)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Firewall -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="premium-card">
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-category">Security</span>
+                            <h3 class="card-title">Firewall Infrastructure</h3>
+                            <p class="card-desc">Advanced security perimeter setup including policies, VPN, and traffic inspection.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">FortiGate</span>
+                                <span class="tech-badge">NGFW</span>
+                                <span class="tech-badge">Security Policy</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. SNMP Monitoring -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+                    <div class="premium-card">
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-category">Operations</span>
+                            <h3 class="card-title">SNMP Monitoring Stack</h3>
+                            <p class="card-desc">Implementation of professional monitoring systems for hardware telemetry and alerts.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">Zabbix</span>
+                                <span class="tech-badge">LibreNMS</span>
+                                <span class="tech-badge">Alerting</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. The Dude -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
+                    <div class="premium-card">
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-category">Operations</span>
+                            <h3 class="card-title">The Dude Visual Monitoring</h3>
+                            <p class="card-desc">Visual network topology mapping and device status monitoring using MikroTik ecosystem.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">The Dude</span>
+                                <span class="tech-badge">MikroTik</span>
+                                <span class="tech-badge">Topology</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. Traffic Flow -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="premium-card">
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-category">Operations</span>
+                            <h3 class="card-title">Network Traffic Analysis</h3>
+                            <p class="card-desc">Deep packet and flow analysis to understand bandwidth consumption and patterns.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">Elastiflow</span>
+                                <span class="tech-badge">Netflow</span>
+                                <span class="tech-badge">Traffic Insight</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8. NetBox -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="premium-card">
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-category">Operations</span>
+                            <h3 class="card-title">IT Asset Management</h3>
+                            <p class="card-desc">Documentation of network infrastructure, IPAM, and data center assets using NetBox.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">NetBox</span>
+                                <span class="tech-badge">IPAM</span>
+                                <span class="tech-badge">DCIM</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 9. RT/RW Net -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="premium-card">
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-broadcast-tower"></i>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-category">Infrastructure</span>
+                            <h3 class="card-title">RT/RW Net Core Setup</h3>
+                            <p class="card-desc">Architectural design and core area configuration for community-based ISPs.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">Core Design</span>
+                                <span class="tech-badge">Architecture</span>
+                                <span class="tech-badge">ISP Level</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 10. Training -->
+                <div class="col-lg-4 col-md-6 mx-auto" data-aos="fade-up" data-aos-delay="400">
+                    <div class="premium-card">
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-category">Education</span>
+                            <h3 class="card-title">MikroTik Training</h3>
+                            <p class="card-desc">Technical training from basic to advanced levels for SOHO and Mid-sized ISP operations.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">Basic to Expert</span>
+                                <span class="tech-badge">ISP Mastery</span>
+                                <span class="tech-badge">Hands-on</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-5 py-4" data-aos="zoom-in">
+                <div class="p-4 rounded-4 border border-primary border-opacity-25 d-inline-block" style="background: rgba(0, 119, 204, 0.03); max-width: 800px;">
+                    <h4 class="fw-bold mb-3">Interested in collaborating?</h4>
+                    <p class="mb-0 text-muted">For inquiries regarding project implementations or custom technical training, please contact me through my social media or email.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="../script/components.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+    </script>
+    
+    <app-footer></app-footer>
+</body>
+</html>

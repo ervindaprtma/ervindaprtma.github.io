@@ -19,6 +19,7 @@ class AppNavbar extends HTMLElement {
       { name: 'Experience & Skills', url: basePath + 'content/experience_skill.html', match: 'experience_skill.html' },
       { name: 'My Certificate', url: basePath + 'content/certificate.html', match: 'certificate.html' },
       { name: 'Project & Home Lab', url: basePath + 'content/project_homelab.html', match: 'project_homelab.html' },
+      { name: 'Services', url: basePath + 'content/professional_services.html', match: 'professional_services.html' },
       { name: 'Learning Roadmap', url: basePath + 'content/learning_roadmap.html', match: 'learning_roadmap.html' },
       { name: 'Article & Research', url: basePath + 'content/article_research.html', match: 'article_research.html' }
     ];
