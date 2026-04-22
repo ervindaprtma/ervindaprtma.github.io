@@ -138,6 +138,17 @@
                 .roadmap-item.right { margin-left: 0; }
                 .node-card.text-end { text-align: left !important; }
             }
+
+            /* Custom utilities for Bootstrap 4 compatibility */
+            .bg-opacity-10 {
+                background-color: rgba(0, 119, 204, 0.1) !important;
+            }
+            [data-bs-theme="dark"] .bg-opacity-10 {
+                background-color: rgba(0, 242, 254, 0.1) !important;
+            }
+            [data-bs-theme="dark"] .text-primary {
+                color: var(--accent-color) !important;
+            }
         </style>
     </head>
 <body class="d-flex flex-column min-vh-100">

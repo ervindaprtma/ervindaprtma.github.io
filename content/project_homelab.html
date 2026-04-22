@@ -109,7 +109,7 @@
                 border-radius: 8px;
                 padding: 10px 20px;
                 font-weight: 600;
-                color: white;
+                color: white !important;
                 text-decoration: none;
                 text-align: center;
                 transition: all 0.3s ease;
@@ -120,17 +120,32 @@
                 font-size: 0.9rem;
             }
 
+            .explore-btn span, .explore-btn i {
+                color: inherit !important;
+            }
+
             [data-bs-theme="dark"] .explore-btn {
-                color: #000;
+                color: #000 !important;
             }
 
             .explore-btn:hover {
                 opacity: 0.9;
-                color: white;
+                color: white !important;
                 transform: translateY(-2px);
             }
             [data-bs-theme="dark"] .explore-btn:hover {
-                color: #000;
+                color: #000 !important;
+            }
+
+            /* Custom utilities for Bootstrap 4 compatibility */
+            .bg-opacity-10 {
+                background-color: rgba(0, 119, 204, 0.1) !important;
+            }
+            [data-bs-theme="dark"] .bg-opacity-10 {
+                background-color: rgba(0, 242, 254, 0.1) !important;
+            }
+            [data-bs-theme="dark"] .text-primary {
+                color: var(--accent-color) !important;
             }
         </style>
     </head>

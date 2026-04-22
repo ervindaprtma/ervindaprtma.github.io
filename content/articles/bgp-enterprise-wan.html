@@ -76,57 +76,300 @@
 
                 <h2>Introduction</h2>
                 <p>
-                    Border Gateway Protocol (BGP) is the routing protocol of the internet, but its role within the enterprise campus and WAN is equally critical. For an enterprise network engineer, BGP isn't just about sharing routes; it's about <strong>policy-driven path control</strong>. In a multi-homed environment where your business depends on redundant ISP links, BGP is the engine that ensures resilience.
+                    Border Gateway Protocol (BGP) is widely recognized as the routing protocol of the internet, but its value within enterprise WAN architecture is equally significant. In enterprise environments, BGP is used not only to exchange routes, but to enforce routing policy, control path selection, and preserve business continuity.
+                </p>
+                <p>
+                    In multi-homed environments that depend on two or more ISPs, BGP becomes the decision engine that determines how traffic exits the organization and how external users reach internal services.
+                </p>
+                <p>
+                    Redundant circuits without intelligent routing provide limited value. BGP transforms redundancy into operational resilience.
                 </p>
 
-                <h2>iBGP vs eBGP: The Internal/External Divide</h2>
+                <h2>Why Enterprises Use BGP</h2>
                 <p>
-                    The distinction between <strong>Internal BGP (iBGP)</strong> and <strong>External BGP (eBGP)</strong> is fundamental to how traffic enters and leaves your Autonomous System (AS).
+                    Many organizations initially rely on static routes or default routes from a single ISP. This works in simple environments, but becomes limited when businesses require:
                 </p>
                 <ul>
-                    <li><strong>eBGP:</strong> Runs between different Autonomous Systems (e.g., your Enterprise and your ISP). It expects directly connected neighbors and resets the NEXT_HOP to itself.</li>
-                    <li><strong>iBGP:</strong> Runs within your own AS. It is used to carry external routes across your internal network so that all border routers have a consistent view of the world. Crucially, iBGP does <em>not</em> change the NEXT_HOP attribute by default.</li>
+                    <li>Dual or multi-ISP internet connectivity</li>
+                    <li>Automatic failover during outage</li>
+                    <li>Traffic engineering for critical applications</li>
+                    <li>Public IP prefix advertisement</li>
+                    <li>Better SLA and provider independence</li>
+                    <li>Regional WAN edge optimization</li>
+                </ul>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Design Need</th>
+                                <th>Static Routing</th>
+                                <th>BGP</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Multi ISP failover</td>
+                                <td>Limited</td>
+                                <td>Excellent</td>
+                            </tr>
+                            <tr>
+                                <td>Path control</td>
+                                <td>Minimal</td>
+                                <td>Strong</td>
+                            </tr>
+                            <tr>
+                                <td>Prefix advertisement</td>
+                                <td>No</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>Scalability</td>
+                                <td>Low</td>
+                                <td>High</td>
+                            </tr>
+                            <tr>
+                                <td>Policy based routing decisions</td>
+                                <td>Weak</td>
+                                <td>Strong</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2>iBGP vs eBGP: Internal and External Roles</h2>
+                <p>
+                    Understanding Internal BGP (iBGP) and External BGP (eBGP) is fundamental.
+                </p>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Runs Between</th>
+                                <th>Main Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>eBGP</td>
+                                <td>Different Autonomous Systems</td>
+                                <td>Exchange routes with ISP / partners</td>
+                            </tr>
+                            <tr>
+                                <td>iBGP</td>
+                                <td>Same Autonomous System</td>
+                                <td>Distribute learned routes internally</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>eBGP Characteristics</h3>
+                <ul>
+                    <li>Used between enterprise edge router and ISP.</li>
+                    <li>Default TTL assumes directly connected neighbors.</li>
+                    <li>Typically changes NEXT_HOP to itself.</li>
+                    <li>Administrative distance often preferred over many IGP external options.</li>
                 </ul>
 
-                <h2>Control Your Egress: BGP Attributes</h2>
+                <h3>iBGP Characteristics</h3>
+                <ul>
+                    <li>Used between routers inside the same AS.</li>
+                    <li>Does <strong>not</strong> change NEXT_HOP by default.</li>
+                    <li>Requires full mesh or Route Reflector design.</li>
+                    <li>Prevents re-advertising iBGP-learned routes to another iBGP peer unless reflection/confederation exists.</li>
+                </ul>
+
+                <h2>Enterprise WAN Example Topology</h2>
+<pre><code>             ISP-A (AS100)
+                 |
+              Edge-R1
+                 |
+           iBGP / LAN Core
+                 |
+              Edge-R2
+                 |
+             ISP-B (AS200)</code></pre>
                 <p>
-                    When your enterprise has two primary internet circuits (ISP-A and ISP-B), how do you decide which one should be the preferred path for user traffic? We use <strong>BGP Attributes</strong> to influence the decision process.
+                    Both edge routers advertise enterprise prefixes and receive internet routes or default routes from providers.
                 </p>
-                
-                <h3>1. Local Preference (The Egress King)</h3>
+
+                <h2>How BGP Chooses Best Path</h2>
                 <p>
-                    Local Preference is the first attribute BGP looks at after checking the Weight (Cisco proprietary). It is shared across your entire iBGP mesh. Higher is better.
+                    BGP is a <strong>path-vector protocol</strong>. It selects the best route based on attributes rather than physical shortest path.
                 </p>
-<pre><code># Scenario: Prefer ISP-A for all outbound traffic
-router bgp 65001
- neighbor 1.1.1.1 remote-as 100  # ISP-A
+                <p>
+                    Common simplified decision sequence:
+                </p>
+                <ol>
+                    <li>Weight (Cisco proprietary)</li>
+                    <li>Local Preference</li>
+                    <li>Locally originated route</li>
+                    <li>Shortest AS Path</li>
+                    <li>Lowest Origin type</li>
+                    <li>Lowest MED</li>
+                    <li>eBGP over iBGP</li>
+                    <li>Lowest IGP metric to NEXT_HOP</li>
+                    <li>Oldest path / tie breakers</li>
+                </ol>
+                <p>
+                    BGP prioritizes routing policy over physical distance.
+                </p>
+
+                <h2>Control Egress Traffic with Local Preference</h2>
+                <p>
+                    When users inside the company browse the internet, this is <strong>outbound / egress traffic</strong>.
+                </p>
+                <p>
+                    Use <strong>Local Preference</strong> to tell all routers which ISP should be preferred.
+                </p>
+                <p>
+                    Higher value wins.
+                </p>
+
+                <h3>Scenario: Prefer ISP-A for all outbound traffic</h3>
+<pre><code>router bgp 65001
+ neighbor 1.1.1.1 remote-as 100
  neighbor 1.1.1.1 route-map PREFER-ISP-A in
 
 route-map PREFER-ISP-A permit 10
  set local-preference 200</code></pre>
-
-                <h3>2. AS-Path Prepending (The Inbound Traffic Shifter)</h3>
                 <p>
-                    Influencing inbound traffic (how the world reaches you) is harder because you are trying to influence routers you don't control. The most common tool is <strong>AS-Path Prepending</strong>. By making your path look "longer" to one ISP, the internet will naturally prefer the other.
+                    Result:
                 </p>
-<pre><code># Scenario: Make ISP-B less attractive for inbound traffic
-route-map PREPEND-ISP-B permit 10
+                <ul>
+                    <li>Routes learned from ISP-A become preferred internally.</li>
+                    <li>Users exit through ISP-A unless unavailable.</li>
+                </ul>
+
+                <h2>Influence Inbound Traffic with AS-Path Prepending</h2>
+                <p>
+                    Inbound traffic means how the internet reaches your company public services.
+                </p>
+                <p>
+                    Because external networks make their own decisions, inbound control is indirect.
+                </p>
+                <p>
+                    One common method is <strong>AS-Path Prepending</strong>.
+                </p>
+                <p>
+                    You intentionally make one route look longer so remote networks prefer another provider.
+                </p>
+
+                <h3>Scenario: Make ISP-B Less Attractive</h3>
+<pre><code>route-map PREPEND-ISP-B permit 10
  set as-path prepend 65001 65001 65001</code></pre>
-
-                <h2>Designing for High Availability</h2>
                 <p>
-                    In a resilient WAN design, we often use <strong>Multi-homing</strong>. This provides protection against ISP failure, fiber cuts, or regional routing issues.
+                    Result:
                 </p>
-                <blockquote>
-                    "Redundancy is not just having two links; it's having a protocol that knows when one is failing even before the link-light goes out."
-                </blockquote>
+                <ul>
+                    <li>Many networks prefer ISP-A path.</li>
+                    <li>ISP-B remains backup or secondary entry path.</li>
+                </ul>
+
+                <h2>MED (Multi Exit Discriminator)</h2>
+                <p>
+                    MED can suggest which entry point another AS should use when multiple links exist to the same provider.
+                </p>
+                <p>
+                    Lower MED is preferred.
+                </p>
+                <p>
+                    Use MED mainly when both circuits connect to the <strong>same ISP</strong>.
+                </p>
+
+                <h2>Designing High Availability WAN with BGP</h2>
+                <p>
+                    True WAN resilience requires more than dual circuits.
+                </p>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Failure Scenario</th>
+                                <th>BGP Response</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ISP-A outage</td>
+                                <td>Shift traffic to ISP-B</td>
+                            </tr>
+                            <tr>
+                                <td>Fiber cut</td>
+                                <td>Withdraw prefixes / reroute</td>
+                            </tr>
+                            <tr>
+                                <td>Edge router failure</td>
+                                <td>Secondary edge advertises path</td>
+                            </tr>
+                            <tr>
+                                <td>Upstream instability</td>
+                                <td>Route reconvergence</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    High availability is achieved not by the presence of multiple links alone, but by intelligent failover and controlled path selection.
+                </p>
+
+                <h2>Operational Best Practices</h2>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Recommendation</th>
+                                <th>Why</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Accept default route if full table not needed</td>
+                                <td>Saves memory/resources</td>
+                            </tr>
+                            <tr>
+                                <td>Use prefix filtering</td>
+                                <td>Prevent route leaks</td>
+                            </tr>
+                            <tr>
+                                <td>Use max-prefix limits</td>
+                                <td>Protect router stability</td>
+                            </tr>
+                            <tr>
+                                <td>Track latency/loss beyond link state</td>
+                                <td>Better failover decisions</td>
+                            </tr>
+                            <tr>
+                                <td>Use Route Reflector for scale</td>
+                                <td>Avoid iBGP full mesh complexity</td>
+                            </tr>
+                            <tr>
+                                <td>Document policy changes</td>
+                                <td>Prevent asymmetric routing surprises</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2>Common Mistakes in Enterprise BGP</h2>
+                <ul>
+                    <li>Using BGP when static default route is enough for tiny branch sites.</li>
+                    <li>No route filtering from ISP.</li>
+                    <li>Ignoring asymmetric traffic flow.</li>
+                    <li>Forgetting NEXT_HOP reachability in iBGP.</li>
+                    <li>No graceful failover testing.</li>
+                    <li>Advertising more prefixes than intended.</li>
+                </ul>
 
                 <h2>Summary / Takeaways</h2>
                 <ul>
-                    <li>BGP is a <strong>path-vector protocol</strong>, not a link-state protocol. It cares about policy, not physics.</li>
+                    <li>BGP is the strategic routing protocol for enterprise WAN multi-homing.</li>
                     <li>Use <strong>Local Preference</strong> to control how traffic leaves your network.</li>
-                    <li>Use <strong>AS-Path Prepending</strong> or <strong>MED</strong> to influence how traffic enters your network.</li>
-                    <li>Ensure your iBGP mesh is complete (or use Route Reflectors) to prevent routing loops and black holes.</li>
+                    <li>Use <strong>AS-Path Prepending</strong> or <strong>MED</strong> to influence how traffic enters.</li>
+                    <li>iBGP distributes routes internally; eBGP connects to external AS networks.</li>
+                    <li>Use Route Reflectors instead of full mesh at scale.</li>
+                    <li>BGP enables resilient enterprise connectivity when internet availability is business critical.</li>
                 </ul>
 
                 <div class="article-nav">
