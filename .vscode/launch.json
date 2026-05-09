@@ -8,7 +8,7 @@
             "type": "msedge",
             "request": "launch",
             "name": "Launch Microsoft Edge (Localhost)",
-            "url": "http://localhost:8080",
+            "url": "http://localhost/",
             "webRoot": "${workspaceFolder}",
             "resolveSourceMapLocations": [
                 "${workspaceFolder}/**",

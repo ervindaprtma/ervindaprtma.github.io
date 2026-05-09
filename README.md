@@ -1,36 +1,38 @@
-# Ervinda Pratama - Professional Portfolio
+# Ervinda Pratama - Web Portfolio
 
-Website ini merupakan representasi digital dari perjalanan profesional, riset teknis, dan eksplorasi teknologi saya sebagai seorang Network Engineer. Website ini tidak hanya berfungsi sebagai resume online, tetapi juga sebagai gudang pengetahuan (knowledge base) pribadi yang dikurasi secara profesional.
+Professional portfolio website showcasing experience, projects, articles, and professional services in Network Engineering and Cybersecurity.
 
-### Fungsi & Tujuan
-Tujuan utama dari pembuatan website ini adalah untuk:
-1. **Dokumentasi Perjalanan Karir**: Mencatat pertumbuhan dan transformasi pengalaman kerja dari NOC hingga menjadi Network Engineer L2.
-2. **Knowledge Sharing**: Berbagi hasil riset teknis dan panduan praktis kepada komunitas melalui artikel mendalam.
-3. **Eksplorasi Teknologi**: Memamerkan hasil eksperimen di Laboratorium Mandiri (Home Labs) yang mencakup bidang Networking, Cybersecurity, Artificial Intelligence, dan Blockchain.
-4. **Validasi Kompetensi**: Menyediakan akses cepat terhadap sertifikasi industri dan portofolio proyek yang telah dikerjakan.
+## ð Overview
 
----
+This website serves as a central hub for my technical journey, documenting professional experience, home lab experiments, and research notes. Built with HTML5, CSS3, and JavaScript, utilizing Bootstrap and AOS for a premium, responsive experience.
 
-### Struktur Navigasi & Konten
-Website ini dirancang secara modular dan responsif, memudahkan pengunjung untuk menjelajahi bagian-bagian berikut:
+## ð Project Structure & Pages
 
-*   **Home**: Halaman utama yang menyajikan ringkasan profil, perjalanan singkat, dan filosofi kerja saya.
-*   **About Me**: Detail lebih mendalam mengenai latar belakang, motivasi, dan visi karir saya ke depan.
-*   **Experience & Skills**: Daftar rinci pengalaman kerja profesional selama lebih dari 6 tahun beserta rincian kompetensi teknis yang dikuasai.
-*   **My Certificate**: Galeri sertifikasi digital dari berbagai institusi industri global (Fortinet, MikroTik, Hackviser, dll).
-*   **Project & Home Lab**: Dokumentasi teknis mengenai simulasi jaringan, pengujian keamanan, dan riset praktis yang dilakukan di lab pribadi.
-*   **Learning Roadmap**: Peta jalan pembelajaran mandiri yang sedang saya jalani untuk terus beradaptasi dengan teknologi masa depan.
-*   **Article & Research**: Kumpulan artikel teknis mendalam dan riset case-study seputar infrastruktur IT dan keamanan informasi.
+The core content of the portfolio is organized within the `content/` directory:
 
----
+- **Index (`index.html`)**: The landing page introducing my professional background and journey since 2018.
+- **About (`content/about.html`)**: Detailed personal profile and professional objective.
+- **Experience & Skills (`content/experience_skill.html`)**: Comprehensive breakdown of career milestones and technical stack.
+- **Professional Services (`content/professional_services.html`)**: End-to-end IT solutions including:
+    - **IT Consultation**: Personalized advisory for Networking and Security.
+    - **Firewall Infrastructure**: FortiGate deployment and NGFW policy design.
+    - **Network Monitoring**: SNMP stacks (Zabbix, LibreNMS) and visual monitoring (The Dude).
+    - **Server Hardening**: Enterprise OS installation aligned with CIS Benchmarks.
+    - **Infrastructure**: CCTV systems, RT/RW Net core setup, and office network installation.
+- **Articles & Research (`content/article_research.html`)**: A collection of deep-dives and research notes:
+    - Networking fundamentals and BGP design.
+    - FortiGate security profiles and packet flow.
+    - Enterprise segmentation strategies.
+- **Certificates (`content/certificate.html`)**: Gallery of industry certifications (MikroTik, Fortinet, etc.).
+- **Learning Roadmap (`content/learning_roadmap.html`)**: Visualized track of technical progression and future goals.
+- **Home Lab Projects (`content/project_homelab.html`)**: Documentation of hands-on experiments and infrastructure testing.
 
-### Teknologi yang Digunakan
-Website ini dibangun dengan fokus pada performa dan aksesibilitas, menggunakan kombinasi teknologi:
-*   **Struktur & Logika**: HTML5 dan JavaScript modern dengan pendekatan Web Components untuk pengelolaan navigasi dan footer yang terpusat.
-*   **Desain & UI**: CSS3 kustom dan framework Bootstrap untuk tata letak yang responsif di berbagai perangkat (Desktop, Tablet, & Mobile).
-*   **Estetika**: FontAwesome 6.4 untuk ikonografi yang tajam dan AOS (Animate On Scroll) untuk interaksi visual yang halus.
-*   **Theme**: Dukungan penuh terhadap mode Terang (Light) dan Gelap (Dark) untuk kenyamanan membaca di berbagai kondisi cahaya.
+## ð ï¸ Technology Stack
 
----
-� 2026 - Ervinda Pratama
+- **Frontend**: HTML5, CSS3 (Vanilla), JavaScript (ES6+).
+- **Frameworks/Libraries**: Bootstrap 4/5, AOS (Animate on Scroll), FontAwesome.
+- **Components**: Custom Web Components for reusable Navbar and Footer.
 
+## ð License
+
+This project is for portfolio demonstration purposes. All content and documentation are authored by Ervinda Pratama.
