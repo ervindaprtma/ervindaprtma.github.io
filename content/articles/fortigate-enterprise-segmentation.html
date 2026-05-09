@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+        <meta name="description" content="Network segmentation is one of the most effective security controls in enterprise environments. As organizations scale, unrestricted lateral movement creates risk. This article explores a large-scale design scenario with 300 divisions.">
+        <meta name="author" content="Ervinda Pratama">
+        <link rel="stylesheet" href="../../styles/main.css">
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32">
+        <title>Deep Dive Enterprise Segmentation with FortiGate — Ervinda Pratama</title>
+        <style>
+            .article-header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid #e0e0e0; margin-bottom: 2rem; }
+            body.dark-mode .article-header { border-bottom-color: #333; }
+            .article-back { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; margin-bottom:1.5rem; }
+            .article-back:hover { color:#005fa3; }
+            body.dark-mode .article-back { color:#00f2fe; }
+            .article-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:1rem; }
+            .article-tag { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; padding:2px 10px; border-radius:20px; background:rgba(0,119,204,0.1); color:#0077cc; border:1px solid rgba(0,119,204,0.25); }
+            body.dark-mode .article-tag { background:rgba(0,242,254,0.1); color:#00f2fe; border-color:rgba(0,242,254,0.25); }
+            .article-title { font-size:2rem; font-weight:800; line-height:1.25; margin-bottom:0.9rem; }
+            body.dark-mode .article-title { color:#f0f0f0; }
+            .article-meta { font-size:13px; color:#888; display:flex; flex-wrap:wrap; gap:1rem; align-items:center; }
+            body.dark-mode .article-meta { color:#666; }
+            .article-content { max-width:780px; margin:0 auto; font-size:1rem; line-height:1.8; color:#333; }
+            body.dark-mode .article-content { color:#d0d0d0; }
+            .article-content h2 { font-size:1.35rem; font-weight:700; margin-top:2.2rem; margin-bottom:0.7rem; border-left:4px solid #0077cc; padding-left:0.7rem; color:#003366; }
+            body.dark-mode .article-content h2 { border-left-color:#00f2fe; color:#00f2fe; }
+            .article-content h3 { font-size:1.1rem; font-weight:700; margin-top:1.5rem; margin-bottom:0.5rem; color:#0077cc; }
+            body.dark-mode .article-content h3 { color:#7fffff; }
+            .article-content pre, .article-content code { background:#1e1e2e; color:#a8d8a8; border-radius:6px; font-size:0.875rem; font-family:'Courier New',monospace; }
+            .article-content pre { padding:1rem 1.2rem; overflow-x:auto; margin:1.2rem 0; }
+            .article-content code { padding:2px 6px; }
+            .article-content blockquote { border-left:4px solid #0077cc; background:rgba(0,119,204,0.06); margin:1.5rem 0; padding:0.8rem 1.2rem; border-radius:0 6px 6px 0; font-style:italic; color:#555; }
+            body.dark-mode .article-content blockquote { border-left-color:#00f2fe; background:rgba(0,242,254,0.05); color:#aaa; }
+            .article-content table { width:100%; border-collapse:collapse; margin:1.2rem 0; }
+            .article-content table th, .article-content table td { border:1px solid #ddd; padding:8px 12px; font-size:0.9rem; }
+            .article-content table th { background:#f0f5ff; font-weight:700; }
+            body.dark-mode .article-content table th { background:#1a1a2e; color:#e0e0e0; }
+            body.dark-mode .article-content table td { border-color:#333; color:#d0d0d0; }
+            .article-nav { display:flex; justify-content:space-between; margin-top:3rem; padding-top:1.5rem; border-top:1px solid #e0e0e0; gap:1rem; }
+            body.dark-mode .article-nav { border-top-color:#333; }
+            .article-nav a { font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; display:flex; align-items:center; gap:6px; }
+            body.dark-mode .article-nav a { color:#00f2fe; }
+        </style>
+    </head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <app-navbar></app-navbar>
+    <section class="page-content">
+        <div class="container">
+            <div class="article-content" data-aos="fade-up">
+
+                <div class="article-header">
+                    <a href="../article_research.html" class="article-back">
+                        <i class="fas fa-arrow-left"></i> Back to Articles &amp; Research
+                    </a>
+                    <div class="article-tags">
+                        <span class="article-tag">Fortinet</span>
+                        <span class="article-tag">Security</span>
+                        <span class="article-tag">Networking</span>
+                    </div>
+                    <h1 class="article-title">Deep Dive Enterprise Segmentation with FortiGate: VLAN, Zones, VDOM and Governance Mapping to NIST &amp; ISO 27001</h1>
+                    <div class="article-meta">
+                        <span><i class="fas fa-user"></i>&nbsp; Ervinda Pratama</span>
+                        <span><i class="fas fa-calendar"></i>&nbsp; April 2026</span>
+                        <span><i class="fas fa-clock"></i>&nbsp; ~24 min read</span>
+                    </div>
+                </div>
+
+                <h2>Introduction</h2>
+                <p>
+                    Network segmentation is one of the most effective security controls in enterprise environments. As organizations scale across hundreds of business units, unrestricted lateral movement, flat addressing models, and unmanaged trust zones create significant operational and cyber risk.
+                </p>
+                <p>
+                    FortiGate provides multiple segmentation layers that can be combined into a strong enterprise architecture:
+                </p>
+                <ul>
+                    <li>VLAN segmentation</li>
+                    <li>Interface Zones</li>
+                    <li>VDOM (Virtual Domains)</li>
+                    <li>Firewall policy control</li>
+                    <li>Centralized logging and governance</li>
+                </ul>
+                <p>
+                    This article explores a large-scale design scenario with 300 divisions, distributed data centers, delegated administration, and alignment to recognized frameworks such as NIST Cybersecurity Framework and ISO/IEC 27001.
+                </p>
+
+                <h2>Enterprise Scenario</h2>
+                
+                <h3>Organization Structure</h3>
+                <ul>
+                    <li>300 divisions across the enterprise</li>
+                    <li>Every 50 divisions supported by 1 regional data center</li>
+                    <li>Total 6 active data centers</li>
+                    <li>Head Office controls shared governance and core security standards</li>
+                </ul>
+
+                <h3>Standard Assets Per Data Center</h3>
+                <ul>
+                    <li>DMZ</li>
+                    <li>Development</li>
+                    <li>Staging</li>
+                    <li>Production</li>
+                    <li>Monitoring</li>
+                </ul>
+
+                <h3>Administrative Model</h3>
+                <ul>
+                    <li>Root VDOM managed by Head of Infrastructure (Head Office)</li>
+                    <li>Each branch / regional data center has dedicated VDOM</li>
+                    <li>Local IT DC team manages internal operations inside assigned VDOM</li>
+                </ul>
+
+                <h2>What Is VDOM?</h2>
+                <p>
+                    VDOM (Virtual Domain) is FortiGate virtualization technology that divides one physical firewall into multiple logical firewalls.
+                </p>
+                <p>Each VDOM can have its own:</p>
+                <ul>
+                    <li>Interfaces / VLANs</li>
+                    <li>Routing table</li>
+                    <li>Security policies</li>
+                    <li>VPN objects</li>
+                    <li>Administrators</li>
+                    <li>Logs / management scope</li>
+                </ul>
+                <p>This enables secure multi-tenancy and delegated control without requiring separate physical appliances.</p>
+
+                <h2>Why VDOM Matters in Large Enterprises</h2>
+                <p>For a 6-data-center enterprise, separate appliances for every environment can become costly and difficult to govern.</p>
+                <p>VDOM enables:</p>
+                <ul>
+                    <li>Central ownership with delegated administration</li>
+                    <li>Strong isolation between business units</li>
+                    <li>Independent policy lifecycle per region</li>
+                    <li>Reduced hardware footprint</li>
+                    <li>Faster deployment of new divisions</li>
+                </ul>
+
+                <h2>Example VDOM Layout</h2>
+<pre><code>FortiGate Chassis / Appliance
+ ├── root        -> Head Office Shared Core / Internet / Interconnect
+ ├── dc-west     -> Regional Data Center West
+ ├── dc-east     -> Regional Data Center East
+ ├── dc-central  -> Regional Data Center Central
+ ├── dc-south    -> Regional Data Center South
+ ├── dc-north    -> Regional Data Center North
+ └── dc-dr       -> Disaster Recovery Data Center</code></pre>
+
+                <h2>VLAN Segmentation Model</h2>
+                <p>Inside each VDOM, VLANs separate internal trust boundaries.</p>
+
+                <h3>Example Per Data Center</h3>
+                <table>
+                    <tr><th>VLAN</th><th>Purpose</th></tr>
+                    <tr><td>VLAN 10</td><td>User / Office</td></tr>
+                    <tr><td>VLAN 20</td><td>Development</td></tr>
+                    <tr><td>VLAN 30</td><td>Staging</td></tr>
+                    <tr><td>VLAN 40</td><td>Production</td></tr>
+                    <tr><td>VLAN 50</td><td>Monitoring</td></tr>
+                    <tr><td>VLAN 60</td><td>DMZ</td></tr>
+                    <tr><td>VLAN 70</td><td>Management</td></tr>
+                </table>
+
+                <h3>Why VLANs Matter</h3>
+                <ul>
+                    <li>Reduce broadcast domains</li>
+                    <li>Separate workloads logically</li>
+                    <li>Simplify policy design</li>
+                    <li>Enable least-privilege access paths</li>
+                </ul>
+
+                <h2>Zone-Based Design on FortiGate</h2>
+                <p>Zones group interfaces or VLAN interfaces under common policy logic.</p>
+
+                <h3>Example Zones</h3>
+                <table>
+                    <tr><th>Zone</th><th>Members</th></tr>
+                    <tr><td>TRUSTED</td><td>User, Management</td></tr>
+                    <tr><td>SERVER</td><td>Development, Staging, Production</td></tr>
+                    <tr><td>EXTERNAL</td><td>WAN, DMZ</td></tr>
+                    <tr><td>SECURITY</td><td>Monitoring</td></tr>
+                </table>
+
+                <h3>Benefit</h3>
+                <p>Instead of many interface-to-interface rules, zones simplify scalable policy management.</p>
+
+                <h2>Combining VDOM + VLAN + Zone</h2>
+<pre><code>Physical FortiGate
+ -> VDOM = Administrative / Routing Isolation
+ -> VLAN = Layer 2 / Subnet Segmentation
+ -> Zone = Policy Abstraction Layer</code></pre>
+                <p>This creates layered segmentation across governance, network, and policy domains.</p>
+
+                <h2>Practical Security Model Per Data Center</h2>
+
+                <h3>Allowed Examples</h3>
+                <ul>
+                    <li>User VLAN -> Production HTTPS only</li>
+                    <li>Monitoring -> All servers SNMP / Syslog / Agent ports</li>
+                    <li>Development -> Git / CI systems only</li>
+                    <li>Staging -> Limited access from QA teams</li>
+                    <li>DMZ -> Public inbound through VIP only</li>
+                </ul>
+
+                <h3>Denied Examples</h3>
+                <ul>
+                    <li>Development direct access to Production database</li>
+                    <li>User VLAN direct SSH to servers</li>
+                    <li>DMZ initiating unrestricted east-west movement</li>
+                </ul>
+
+                <h2>NIST Cybersecurity Framework Mapping</h2>
+
+                <h3>Identify (ID.AM / ID.GV)</h3>
+                <ul>
+                    <li>Asset inventory by VLAN / VDOM ownership</li>
+                    <li>Governance separation between Head Office and local DC teams</li>
+                </ul>
+
+                <h3>Protect (PR.AC / PR.PT)</h3>
+                <ul>
+                    <li>Access control via firewall policies</li>
+                    <li>Segmentation with VLANs and VDOM isolation</li>
+                    <li>Administrative RBAC per VDOM</li>
+                </ul>
+
+                <h3>Detect (DE.CM)</h3>
+                <ul>
+                    <li>Monitoring VLAN and SIEM log collection</li>
+                    <li>East-west traffic anomaly detection</li>
+                </ul>
+
+                <h3>Respond (RS)</h3>
+                <ul>
+                    <li>Compromised VDOM can be isolated independently</li>
+                    <li>Incident containment through zone policy lockdown</li>
+                </ul>
+
+                <h3>Recover (RC)</h3>
+                <ul>
+                    <li>DR VDOM ready for failover operations</li>
+                    <li>Policy backup and config version control</li>
+                </ul>
+
+                <h2>ISO/IEC 27001 Mapping (Examples)</h2>
+
+                <h3>Annex A Controls (Representative)</h3>
+                <table>
+                    <tr><th>Control Theme</th><th>Relevance</th></tr>
+                    <tr><td>Access Control</td><td>Role-based admin per VDOM</td></tr>
+                    <tr><td>Network Security</td><td>VLAN / firewall segmentation</td></tr>
+                    <tr><td>Segregation of Environments</td><td>Development, Staging, Production separation</td></tr>
+                    <tr><td>Logging &amp; Monitoring</td><td>Monitoring VLAN + centralized logs</td></tr>
+                    <tr><td>Supplier / External Access</td><td>DMZ controlled exposure</td></tr>
+                    <tr><td>Business Continuity</td><td>DR VDOM / multi-site design</td></tr>
+                </table>
+
+                <h3>Important Principle</h3>
+                <p>Production, staging, and development should remain separated to reduce accidental change and security exposure.</p>
+
+                <h2>Advantages of VDOM Architecture</h2>
+                <ul>
+                    <li>Multi-tenant firewall consolidation</li>
+                    <li>Delegated administration with boundaries</li>
+                    <li>Independent routing instances</li>
+                    <li>Reduced appliance sprawl</li>
+                    <li>Cleaner compliance ownership model</li>
+                </ul>
+
+                <h2>Limitations / Considerations</h2>
+                <ul>
+                    <li>Resource planning required (CPU / memory / session allocation)</li>
+                    <li>Operational complexity increases with many VDOMs</li>
+                    <li>Inter-VDOM traffic requires deliberate design</li>
+                    <li>Logging architecture should be centralized</li>
+                    <li>Governance standards must be documented</li>
+                </ul>
+
+                <h2>Example Administrative Model</h2>
+
+                <h3>Head Office Team</h3>
+                <ul>
+                    <li>Owns root VDOM</li>
+                    <li>Global internet edge</li>
+                    <li>Inter-DC routing</li>
+                    <li>Security baseline templates</li>
+                    <li>Firmware lifecycle</li>
+                </ul>
+
+                <h3>Regional DC Team</h3>
+                <ul>
+                    <li>Owns local VDOM objects</li>
+                    <li>Local server policy changes</li>
+                    <li>VLAN onboarding</li>
+                    <li>Operational troubleshooting</li>
+                </ul>
+
+                <h2>Example CLI (Simplified)</h2>
+<pre><code class="language-bash">config system vdom
+    edit dc-west
+    next
+end
+
+config global
+config system admin
+    edit dc-west-admin
+        set vdom dc-west
+    next
+end</code></pre>
+
+                <h3>VLAN Interface Example</h3>
+<pre><code class="language-bash">config system interface
+    edit prod-vlan40
+        set vdom dc-west
+        set interface port2
+        set vlanid 40
+        set ip 10.40.0.1/24
+    next
+end</code></pre>
+
+                <h2>Recommended Governance Controls</h2>
+                <ul>
+                    <li>Standard naming convention across VDOMs</li>
+                    <li>Change approval workflow for Production policies</li>
+                    <li>Quarterly rule review</li>
+                    <li>Admin separation of duties</li>
+                    <li>Central FortiAnalyzer / SIEM retention</li>
+                    <li>Template-based deployment for consistency</li>
+                </ul>
+
+                <h2>Common Misunderstandings</h2>
+                <ul>
+                    <li>VLAN alone is not complete segmentation.</li>
+                    <li>VDOM is not only for service providers.</li>
+                    <li>Zones simplify policy management but do not replace design discipline.</li>
+                    <li>Separate environments should not rely only on naming labels.</li>
+                    <li>Delegated admin without governance creates risk.</li>
+                </ul>
+
+                <h2>Summary / Takeaways</h2>
+                <ul>
+                    <li>VDOM provides logical firewall separation with delegated administration.</li>
+                    <li>VLANs segment internal networks and reduce unnecessary trust exposure.</li>
+                    <li>Zones simplify policy scaling across many interfaces.</li>
+                    <li>Combining VDOM + VLAN + Zone creates strong layered enterprise segmentation.</li>
+                    <li>The model aligns well with NIST functions and ISO 27001 control objectives.</li>
+                    <li>Large organizations benefit from central governance with regional operational autonomy.</li>
+                    <li>Effective segmentation is both a security control and an operating model.</li>
+                </ul>
+
+                <div class="article-nav">
+                    <a href="fortigate-firewall-policy-deep-dive.html">
+                        <i class="fas fa-arrow-left"></i> Previous: FortiGate Policy Deep Dive
+                    </a>
+                    <span></span>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="../../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <app-footer></app-footer>
+    <script>AOS.init();</script>
+    <script src="../../script/components.js"></script>
+</body>
+</html>

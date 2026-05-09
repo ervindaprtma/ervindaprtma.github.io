@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+        <meta name="description" content="FortiGate firewall policy is more than an allow-or-deny rulebase. It is the enforcement point where routing decisions, NAT, SSL inspection, identity controls, and multiple security profiles converge.">
+        <meta name="author" content="Ervinda Pratama">
+        <link rel="stylesheet" href="../../styles/main.css">
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32">
+        <title>FortiGate Firewall Policy Deep Dive — Ervinda Pratama</title>
+        <style>
+            .article-header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid #e0e0e0; margin-bottom: 2rem; }
+            body.dark-mode .article-header { border-bottom-color: #333; }
+            .article-back { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; margin-bottom:1.5rem; }
+            .article-back:hover { color:#005fa3; }
+            body.dark-mode .article-back { color:#00f2fe; }
+            .article-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:1rem; }
+            .article-tag { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; padding:2px 10px; border-radius:20px; background:rgba(0,119,204,0.1); color:#0077cc; border:1px solid rgba(0,119,204,0.25); }
+            body.dark-mode .article-tag { background:rgba(0,242,254,0.1); color:#00f2fe; border-color:rgba(0,242,254,0.25); }
+            .article-title { font-size:2rem; font-weight:800; line-height:1.25; margin-bottom:0.9rem; }
+            body.dark-mode .article-title { color:#f0f0f0; }
+            .article-meta { font-size:13px; color:#888; display:flex; flex-wrap:wrap; gap:1rem; align-items:center; }
+            body.dark-mode .article-meta { color:#666; }
+            .article-content { max-width:780px; margin:0 auto; font-size:1rem; line-height:1.8; color:#333; }
+            body.dark-mode .article-content { color:#d0d0d0; }
+            .article-content h2 { font-size:1.35rem; font-weight:700; margin-top:2.2rem; margin-bottom:0.7rem; border-left:4px solid #0077cc; padding-left:0.7rem; color:#003366; }
+            body.dark-mode .article-content h2 { border-left-color:#00f2fe; color:#00f2fe; }
+            .article-content h3 { font-size:1.1rem; font-weight:700; margin-top:1.5rem; margin-bottom:0.5rem; color:#0077cc; }
+            body.dark-mode .article-content h3 { color:#7fffff; }
+            .article-content pre, .article-content code { background:#1e1e2e; color:#a8d8a8; border-radius:6px; font-size:0.875rem; font-family:'Courier New',monospace; }
+            .article-content pre { padding:1rem 1.2rem; overflow-x:auto; margin:1.2rem 0; }
+            .article-content code { padding:2px 6px; }
+            .article-content blockquote { border-left:4px solid #0077cc; background:rgba(0,119,204,0.06); margin:1.5rem 0; padding:0.8rem 1.2rem; border-radius:0 6px 6px 0; font-style:italic; color:#555; }
+            body.dark-mode .article-content blockquote { border-left-color:#00f2fe; background:rgba(0,242,254,0.05); color:#aaa; }
+            .article-content table { width:100%; border-collapse:collapse; margin:1.2rem 0; }
+            .article-content table th, .article-content table td { border:1px solid #ddd; padding:8px 12px; font-size:0.9rem; }
+            .article-content table th { background:#f0f5ff; font-weight:700; }
+            body.dark-mode .article-content table th { background:#1a1a2e; color:#e0e0e0; }
+            body.dark-mode .article-content table td { border-color:#333; color:#d0d0d0; }
+            .article-nav { display:flex; justify-content:space-between; margin-top:3rem; padding-top:1.5rem; border-top:1px solid #e0e0e0; gap:1rem; }
+            body.dark-mode .article-nav { border-top-color:#333; }
+            .article-nav a { font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; display:flex; align-items:center; gap:6px; }
+            body.dark-mode .article-nav a { color:#00f2fe; }
+        </style>
+    </head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <app-navbar></app-navbar>
+    <section class="page-content">
+        <div class="container">
+            <div class="article-content" data-aos="fade-up">
+
+                <div class="article-header">
+                    <a href="../article_research.html" class="article-back">
+                        <i class="fas fa-arrow-left"></i> Back to Articles &amp; Research
+                    </a>
+                    <div class="article-tags">
+                        <span class="article-tag">Fortinet</span>
+                        <span class="article-tag">Security</span>
+                    </div>
+                    <h1 class="article-title">FortiGate Firewall Policy Deep Dive: Packet Flow, SSL Inspection &amp; Security Profiles Design</h1>
+                    <div class="article-meta">
+                        <span><i class="fas fa-user"></i>&nbsp; Ervinda Pratama</span>
+                        <span><i class="fas fa-calendar"></i>&nbsp; April 2026</span>
+                        <span><i class="fas fa-clock"></i>&nbsp; ~28 min read</span>
+                    </div>
+                </div>
+
+                <h2>Introduction</h2>
+                <p>
+                    FortiGate firewall policy is more than an allow-or-deny rulebase. It is the enforcement point where routing decisions, NAT, SSL inspection, identity controls, and multiple security profiles converge.
+                </p>
+                <p>
+                    Modern enterprise traffic is heavily encrypted. As a result, understanding when to use certificate inspection versus deep inspection is critical for effective threat prevention.
+                </p>
+                <p>
+                    This article explains FortiGate packet flow across internal, external, and published-service scenarios, followed by practical guidance for each major security profile.
+                </p>
+
+                <h2>Core Firewall Policy Components</h2>
+                <p>A FortiGate policy commonly evaluates:</p>
+                <ul>
+                    <li>Incoming interface &amp; Outgoing interface</li>
+                    <li>Source address / identity</li>
+                    <li>Destination address</li>
+                    <li>Service / port</li>
+                    <li>Schedule</li>
+                    <li>NAT / VIP translation</li>
+                    <li>SSL inspection profile</li>
+                    <li>Security profiles</li>
+                    <li>Logging action</li>
+                </ul>
+                <p>Traffic must match policy criteria before advanced inspection profiles are applied.</p>
+
+                <h2>Simplified Packet Flow Order</h2>
+<pre><code>Ingress Interface
+ -> Session Creation
+ -> Route Lookup / VIP Match
+ -> Firewall Policy Match
+ -> NAT Decision
+ -> SSL Inspection Stage
+ -> Security Profile Inspection
+ -> Forward / Deny
+ -> Logging</code></pre>
+                <p>Exact internal processing varies by firmware version, proxy/flow mode, and feature set.</p>
+
+                <h2>Internal to Internal Traffic Flow</h2>
+                <h3>Example</h3>
+<pre><code>User VLAN -> Application VLAN HTTPS/443</code></pre>
+                <h3>Typical Controls</h3>
+                <ul>
+                    <li>East-west segmentation policy</li>
+                    <li>Application Control</li>
+                    <li>IPS</li>
+                    <li>Antivirus (if file transfer relevant)</li>
+                    <li>SSL inspection when required visibility exists</li>
+                </ul>
+                <h3>Best Practice</h3>
+                <p>Do not treat internal traffic as trusted by default. Lateral movement prevention is a major security objective.</p>
+
+                <h2>Internal to External Traffic Flow</h2>
+                <h3>Example</h3>
+<pre><code>User LAN -> Internet SaaS / Web Browsing</code></pre>
+                <h3>Typical Controls</h3>
+                <ul>
+                    <li>NAT enabled</li>
+                    <li>Web Filter</li>
+                    <li>DNS Filter</li>
+                    <li>Application Control</li>
+                    <li>IPS</li>
+                    <li>SSL inspection depending privacy/risk model</li>
+                    <li>Logging enabled</li>
+                </ul>
+                <p>This is the most common place for layered security profiles.</p>
+
+                <h2>External to Internal Traffic Flow</h2>
+                <h3>Example</h3>
+<pre><code>Internet Client -> Public VIP -> Internal Web Server</code></pre>
+                <h3>Typical Controls</h3>
+                <ul>
+                    <li>VIP / DNAT</li>
+                    <li>IPS</li>
+                    <li>Web Application Firewall (if applicable model/service)</li>
+                    <li>Geo/IP restrictions</li>
+                    <li>Rate limiting / shaping</li>
+                    <li>Bot protection controls</li>
+                </ul>
+                <p>Deep inspection is usually not applied to inbound public TLS unless FortiGate terminates TLS or acts as reverse proxy in the chosen design.</p>
+
+                <h2>SSL Inspection Modes</h2>
+                
+                <h3>Certificate Inspection (Standard SSL Inspection)</h3>
+                <p>FortiGate validates TLS handshake metadata without decrypting payload content.</p>
+                <p>Visibility typically includes:</p>
+                <ul>
+                    <li>Certificate information</li>
+                    <li>SNI / hostname visibility in many TLS flows</li>
+                    <li>Basic reputation / domain decisions</li>
+                    <li>Some policy matching context</li>
+                </ul>
+                <h4>Advantages</h4>
+                <ul>
+                    <li>Lower privacy impact</li>
+                    <li>Lower processing overhead than deep inspection</li>
+                    <li>Easier deployment</li>
+                </ul>
+                <h4>Limitations</h4>
+                <ul>
+                    <li>Cannot inspect encrypted payload malware/content deeply</li>
+                    <li>Reduced visibility into applications using TLS payloads</li>
+                </ul>
+
+                <h3>Deep Inspection (Full SSL Inspection)</h3>
+                <p>FortiGate performs TLS interception using a trusted CA certificate installed on endpoints.</p>
+                <p>Process:</p>
+<pre><code>Client trusts FortiGate CA
+Client <-> FortiGate TLS session
+FortiGate <-> Internet Server TLS session</code></pre>
+                <p>Payload can then be scanned for threats and content controls.</p>
+                <h4>Advantages</h4>
+                <ul>
+                    <li>Full web/content visibility</li>
+                    <li>Malware scanning in HTTPS downloads</li>
+                    <li>Better application identification</li>
+                    <li>Stronger DLP / URL control outcomes</li>
+                </ul>
+                <h4>Considerations</h4>
+                <ul>
+                    <li>Requires certificate deployment to endpoints</li>
+                    <li>Higher CPU/resource usage</li>
+                    <li>Some certificate-pinned apps may fail</li>
+                    <li>Privacy/legal review recommended</li>
+                </ul>
+
+                <h2>When to Use Which</h2>
+                <table>
+                    <tr><th>Use Case</th><th>Certificate Inspection</th><th>Deep Inspection</th></tr>
+                    <tr><td>General browsing baseline</td><td>Yes</td><td>Optional</td></tr>
+                    <tr><td>High-risk user groups</td><td>Optional</td><td>Yes</td></tr>
+                    <tr><td>Antivirus over HTTPS</td><td>Limited</td><td>Yes</td></tr>
+                    <tr><td>Sensitive unmanaged BYOD</td><td>Often Yes</td><td>Case-by-case</td></tr>
+                    <tr><td>SaaS visibility only</td><td>Yes</td><td>Optional</td></tr>
+                    <tr><td>Strict compliance filtering</td><td>Optional</td><td>Yes</td></tr>
+                </table>
+
+                <h2>Major Security Profiles on FortiGate</h2>
+
+                <h3>Antivirus Profile</h3>
+                <p>Scans web/file/mail transfers for malware signatures and heuristics.</p>
+                <h4>Best Placement</h4>
+                <ul>
+                    <li>User to Internet</li>
+                    <li>File transfer zones</li>
+                    <li>Remote access users</li>
+                </ul>
+                <h4>SSL Need</h4>
+                <ul>
+                    <li>HTTP: no SSL issue</li>
+                    <li>HTTPS: Deep inspection recommended for payload scanning</li>
+                </ul>
+                <h4>Example Custom</h4>
+<pre><code>Block infected files
+Quarantine suspicious archives
+Enable archive scan within performance limits</code></pre>
+
+                <h3>IPS Profile</h3>
+                <p>Detects exploit attempts, vulnerability probes, protocol abuse, command-and-control patterns.</p>
+                <h4>Best Placement</h4>
+                <ul>
+                    <li>WAN to DMZ</li>
+                    <li>Internal to server zones</li>
+                    <li>User to Internet</li>
+                </ul>
+                <h4>SSL Need</h4>
+                <p>Without decryption, IPS visibility into encrypted payload is limited. Deep inspection improves coverage for HTTPS-borne exploits.</p>
+                <h4>Example Custom</h4>
+<pre><code>Critical/High signatures block
+Medium signatures monitor initially
+Server protection signatures on DMZ policy</code></pre>
+
+                <h3>Web Filter Profile</h3>
+                <p>Controls access to URL categories, domains, safe search, content policy.</p>
+                <h4>Best Placement</h4>
+                <ul>
+                    <li>User browsing outbound traffic</li>
+                    <li>Guest networks</li>
+                    <li>Remote workforce policies</li>
+                </ul>
+                <h4>SSL Need</h4>
+                <ul>
+                    <li>Certificate inspection often enough for category/domain enforcement using hostname visibility.</li>
+                    <li>Deep inspection needed when full URL/path/content visibility is required.</li>
+                </ul>
+                <h4>Example Custom</h4>
+<pre><code>Allow Business / Education
+Warn Social Media
+Block Malware / Phishing / Newly Observed Domains</code></pre>
+
+                <h3>DNS Filter Profile</h3>
+                <p>Protects users at DNS resolution stage by blocking malicious or disallowed domain lookups.</p>
+                <h4>Important Clarification</h4>
+                <p>FortiGate does <strong>not</strong> need to become the client's DNS server in every deployment.</p>
+                <p>DNS Filter can operate when DNS traffic passes through FortiGate and the firewall can inspect DNS queries (UDP/TCP 53 or supported DNS-over-TLS/HTTPS controls depending features/version/design).</p>
+                <p>Common models:</p>
+<pre><code>Client -> External DNS through FortiGate transit path
+Client -> Internal DNS resolver through FortiGate path
+FortiGate itself as DNS service / resolver forwarder (optional design)</code></pre>
+                <h4>Best Practice</h4>
+                <p>Using FortiGate as explicit DNS server is optional, not mandatory. The key requirement is that DNS queries traverse an inspectable policy path.</p>
+                <h4>SSL Need</h4>
+                <p>Traditional DNS: no SSL requirement. DoH/DoT control may require broader policy and TLS inspection strategies.</p>
+                <h4>Example Custom</h4>
+<pre><code>Block Malware Domains
+Block Phishing Domains
+Log Newly Registered Domains
+Allow Business Exceptions List</code></pre>
+
+                <h3>Application Control Profile</h3>
+                <p>Identifies applications regardless of port when detectable.</p>
+                <h4>Best Placement</h4>
+                <ul>
+                    <li>User internet access</li>
+                    <li>WAN egress control</li>
+                    <li>Shadow IT reduction</li>
+                </ul>
+                <h4>SSL Need</h4>
+                <p>Deep inspection improves identification for many encrypted apps.</p>
+                <h4>Example Custom</h4>
+<pre><code>Block anonymizers / TOR
+Throttle streaming media
+Allow collaboration tools</code></pre>
+
+                <h3>AntiSpam / Email Security (Where Used)</h3>
+                <p>Used in email gateway scenarios.</p>
+                <h4>SSL Need</h4>
+                <p>Depends on mail architecture (SMTPS/IMAPS etc.).</p>
+
+                <h3>DLP Profile</h3>
+                <p>Prevents sensitive data exfiltration.</p>
+                <h4>SSL Need</h4>
+                <p>Deep inspection commonly required for HTTPS uploads.</p>
+                <h4>Example Custom</h4>
+<pre><code>Detect credit card patterns
+Block confidential keyword uploads
+Alert on source code exfiltration</code></pre>
+
+                <h2>Example Policy Designs</h2>
+
+                <h3>Standard User Internet Policy</h3>
+<pre><code>NAT Enabled
+Certificate Inspection
+Web Filter
+DNS Filter
+Application Control
+IPS</code></pre>
+
+                <h3>High Security Finance Users</h3>
+<pre><code>NAT Enabled
+Deep Inspection
+AV
+IPS Strict
+Web Filter Strict
+DLP
+DNS Filter</code></pre>
+
+                <h3>Public Web Server VIP</h3>
+<pre><code>VIP Enabled
+IPS Server Profile
+Geo Restriction
+Rate Limit
+Bot Controls</code></pre>
+
+                <h2>Resource Impact Considerations</h2>
+                <table>
+                    <tr><th>Feature</th><th>Relative CPU Impact</th></tr>
+                    <tr><td>Basic Policy Only</td><td>Low</td></tr>
+                    <tr><td>Certificate Inspection</td><td>Low-Medium</td></tr>
+                    <tr><td>IPS + Web Filter</td><td>Medium</td></tr>
+                    <tr><td>Deep Inspection + AV + IPS</td><td>High</td></tr>
+                    <tr><td>Multiple Full Profiles at Scale</td><td>Higher</td></tr>
+                </table>
+                <p>Hardware acceleration eligibility may vary by platform and enabled features.</p>
+
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Apply heavier profiles only where justified by risk.</li>
+                    <li>Separate server, user, guest, and admin policies.</li>
+                    <li>Start monitor mode before blocking disruptive signatures.</li>
+                    <li>Use certificate inspection as baseline when deep inspection is not feasible.</li>
+                    <li>Deploy trusted CA carefully before enabling deep inspection broadly.</li>
+                    <li>Review logs regularly and tune false positives.</li>
+                </ul>
+
+                <h2>Common Misunderstandings</h2>
+                <ul>
+                    <li>Allow policy without profiles is not full protection.</li>
+                    <li>Deep inspection is not required for every network segment.</li>
+                    <li>DNS Filter does not always require FortiGate to be DNS server.</li>
+                    <li>More profiles enabled does not always equal better security.</li>
+                    <li>Internal traffic may need inspection as much as internet traffic.</li>
+                </ul>
+
+                <h2>Summary / Takeaways</h2>
+                <ul>
+                    <li>Firewall policy is the control point where routing, NAT, SSL inspection, and threat prevention meet.</li>
+                    <li>Certificate inspection offers lighter encrypted-traffic visibility; deep inspection offers full payload inspection.</li>
+                    <li>Security profiles should be mapped to risk and traffic type, not enabled blindly everywhere.</li>
+                    <li>DNS Filter works when DNS traffic is visible through FortiGate policy path.</li>
+                    <li>East-west traffic inspection is increasingly important in enterprise environments.</li>
+                    <li>Strong FortiGate design balances protection, privacy, performance, and operational manageability.</li>
+                </ul>
+
+                <div class="article-nav">
+                    <a href="bgp-enterprise-wan.html">
+                        <i class="fas fa-arrow-left"></i> Previous: BGP Enterprise WAN
+                    </a>
+                    <a href="fortigate-enterprise-segmentation.html">
+                        Next: Enterprise Segmentation <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="../../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <app-footer></app-footer>
+    <script>AOS.init();</script>
+    <script src="../../script/components.js"></script>
+</body>
+</html>
