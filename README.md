@@ -2,11 +2,11 @@
 
 Professional portfolio website showcasing experience, projects, articles, and professional services in Network Engineering and Cybersecurity.
 
-## 🚀 Overview
+## ð Overview
 
 This website serves as a central hub for my technical journey, documenting professional experience, home lab experiments, and research notes. Built with HTML5, CSS3, and JavaScript, utilizing Bootstrap and AOS for a premium, responsive experience.
 
-## 📂 Project Structure & Pages
+## ð Project Structure & Pages
 
 The core content of the portfolio is organized within the `content/` directory:
 
@@ -27,12 +27,12 @@ The core content of the portfolio is organized within the `content/` directory:
 - **Learning Roadmap (`content/learning_roadmap.html`)**: Visualized track of technical progression and future goals.
 - **Home Lab Projects (`content/project_homelab.html`)**: Documentation of hands-on experiments and infrastructure testing.
 
-## 🛠️ Technology Stack
+## ð ï¸ Technology Stack
 
 - **Frontend**: HTML5, CSS3 (Vanilla), JavaScript (ES6+).
 - **Frameworks/Libraries**: Bootstrap 4/5, AOS (Animate on Scroll), FontAwesome.
 - **Components**: Custom Web Components for reusable Navbar and Footer.
 
-## 📝 License
+## ð License
 
 This project is for portfolio demonstration purposes. All content and documentation are authored by Ervinda Pratama.
