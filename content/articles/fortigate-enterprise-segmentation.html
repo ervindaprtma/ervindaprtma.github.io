@@ -93,6 +93,8 @@
                     This article explores a large-scale design scenario with 300 divisions, distributed data centers, delegated administration, and alignment to recognized frameworks such as NIST Cybersecurity Framework and ISO/IEC 27001.
                 </p>
 
+                <hr />
+
                 <h2>Enterprise Scenario</h2>
                 
                 <h3>Organization Structure</h3>
@@ -119,6 +121,8 @@
                     <li>Local IT DC team manages internal operations inside assigned VDOM</li>
                 </ul>
 
+                <hr />
+
                 <h2>What Is VDOM?</h2>
                 <p>
                     VDOM (Virtual Domain) is FortiGate virtualization technology that divides one physical firewall into multiple logical firewalls.
@@ -134,6 +138,8 @@
                 </ul>
                 <p>This enables secure multi-tenancy and delegated control without requiring separate physical appliances.</p>
 
+                <hr />
+
                 <h2>Why VDOM Matters in Large Enterprises</h2>
                 <p>For a 6-data-center enterprise, separate appliances for every environment can become costly and difficult to govern.</p>
                 <p>VDOM enables:</p>
@@ -145,6 +151,8 @@
                     <li>Faster deployment of new divisions</li>
                 </ul>
 
+                <hr />
+
                 <h2>Example VDOM Layout</h2>
 <pre><code>FortiGate Chassis / Appliance
  ├── root        -> Head Office Shared Core / Internet / Interconnect
@@ -155,20 +163,28 @@
  ├── dc-north    -> Regional Data Center North
  └── dc-dr       -> Disaster Recovery Data Center</code></pre>
 
+                <hr />
+
                 <h2>VLAN Segmentation Model</h2>
                 <p>Inside each VDOM, VLANs separate internal trust boundaries.</p>
 
                 <h3>Example Per Data Center</h3>
-                <table>
-                    <tr><th>VLAN</th><th>Purpose</th></tr>
-                    <tr><td>VLAN 10</td><td>User / Office</td></tr>
-                    <tr><td>VLAN 20</td><td>Development</td></tr>
-                    <tr><td>VLAN 30</td><td>Staging</td></tr>
-                    <tr><td>VLAN 40</td><td>Production</td></tr>
-                    <tr><td>VLAN 50</td><td>Monitoring</td></tr>
-                    <tr><td>VLAN 60</td><td>DMZ</td></tr>
-                    <tr><td>VLAN 70</td><td>Management</td></tr>
-                </table>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr><th>VLAN</th><th>Purpose</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>VLAN 10</td><td>User / Office</td></tr>
+                            <tr><td>VLAN 20</td><td>Development</td></tr>
+                            <tr><td>VLAN 30</td><td>Staging</td></tr>
+                            <tr><td>VLAN 40</td><td>Production</td></tr>
+                            <tr><td>VLAN 50</td><td>Monitoring</td></tr>
+                            <tr><td>VLAN 60</td><td>DMZ</td></tr>
+                            <tr><td>VLAN 70</td><td>Management</td></tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <h3>Why VLANs Matter</h3>
                 <ul>
@@ -178,27 +194,83 @@
                     <li>Enable least-privilege access paths</li>
                 </ul>
 
+                <hr />
+
                 <h2>Zone-Based Design on FortiGate</h2>
-                <p>Zones group interfaces or VLAN interfaces under common policy logic.</p>
+                <p>Zones on FortiGate are commonly misunderstood. In enterprise segmentation design, using one large multi-member zone for many VLANs may reduce policy visibility and increase the risk of misconfiguration.</p>
+                <p>A more controlled and auditable approach is assigning one dedicated zone per VLAN or trust boundary.</p>
 
-                <h3>Example Zones</h3>
-                <table>
-                    <tr><th>Zone</th><th>Members</th></tr>
-                    <tr><td>TRUSTED</td><td>User, Management</td></tr>
-                    <tr><td>SERVER</td><td>Development, Staging, Production</td></tr>
-                    <tr><td>EXTERNAL</td><td>WAN, DMZ</td></tr>
-                    <tr><td>SECURITY</td><td>Monitoring</td></tr>
-                </table>
+                <h3>Recommended Enterprise Design Principle</h3>
+                <blockquote>
+                    1 VLAN = 1 Interface = 1 Zone
+                </blockquote>
 
-                <h3>Benefit</h3>
-                <p>Instead of many interface-to-interface rules, zones simplify scalable policy management.</p>
+                <h3>Example Dedicated Zones</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr><th>Zone</th><th>VLAN</th><th>Purpose</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>ZONE-USER</td><td>VLAN 10</td><td>User / Office</td></tr>
+                            <tr><td>ZONE-DEV</td><td>VLAN 20</td><td>Development</td></tr>
+                            <tr><td>ZONE-STAGING</td><td>VLAN 30</td><td>Staging</td></tr>
+                            <tr><td>ZONE-PROD</td><td>VLAN 40</td><td>Production</td></tr>
+                            <tr><td>ZONE-MONITORING</td><td>VLAN 50</td><td>Monitoring</td></tr>
+                            <tr><td>ZONE-DMZ</td><td>VLAN 60</td><td>DMZ</td></tr>
+                            <tr><td>ZONE-MGMT</td><td>VLAN 70</td><td>Management</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Example Risk of Multi-Member Zone</h3>
+<pre><code>ZONE-SERVER contains:
+- Development
+- Staging
+- Production
+
+Firewall Policy:
+SOURCE = ZONE-SERVER
+DESTINATION = ZONE-SERVER
+SERVICE = ALL
+ACTION = ACCEPT</code></pre>
+                <p>This may unintentionally permit east-west traffic between environments that should remain isolated, expanding lateral movement and making compliance auditing difficult.</p>
+
+                <hr />
+
+                <h2>Zone Intra-Traffic Control</h2>
+                <p>FortiGate zones support intra-zone traffic settings. If a zone is intended to enforce segmentation boundaries, intra-zone traffic should generally be denied.</p>
+
+                <h3>Example Configuration</h3>
+<pre><code>config system zone
+    edit "ZONE-PROD"
+        set intrazone deny
+        set interface "prod-vlan40"
+    next
+end</code></pre>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr><th>Setting</th><th>Result</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>intrazone allow</td><td>Interfaces inside same zone may communicate</td></tr>
+                            <tr><td>intrazone deny</td><td>Communication blocked unless explicitly permitted</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <hr />
 
                 <h2>Combining VDOM + VLAN + Zone</h2>
 <pre><code>Physical FortiGate
  -> VDOM = Administrative / Routing Isolation
  -> VLAN = Layer 2 / Subnet Segmentation
- -> Zone = Policy Abstraction Layer</code></pre>
-                <p>This creates layered segmentation across governance, network, and policy domains.</p>
+ -> Zone = Security Policy Abstraction Layer</code></pre>
+                <p>Combining these three layers creates strong layered enterprise segmentation, improving readability, compliance, and least-privilege enforcement.</p>
+
+                <hr />
 
                 <h2>Practical Security Model Per Data Center</h2>
 
@@ -218,91 +290,67 @@
                     <li>DMZ initiating unrestricted east-west movement</li>
                 </ul>
 
+                <hr />
+
                 <h2>NIST Cybersecurity Framework Mapping</h2>
 
-                <h3>Identify (ID.AM / ID.GV)</h3>
+                <h3>Identify & Protect</h3>
                 <ul>
-                    <li>Asset inventory by VLAN / VDOM ownership</li>
-                    <li>Governance separation between Head Office and local DC teams</li>
+                    <li><strong>Asset Inventory</strong>: Organized by VLAN / VDOM ownership.</li>
+                    <li><strong>Governance</strong>: Separation between Head Office and local DC teams.</li>
+                    <li><strong>Access Control</strong>: Enforcement via firewall policies and VDOM isolation.</li>
                 </ul>
 
-                <h3>Protect (PR.AC / PR.PT)</h3>
+                <h3>Detect, Respond & Recover</h3>
                 <ul>
-                    <li>Access control via firewall policies</li>
-                    <li>Segmentation with VLANs and VDOM isolation</li>
-                    <li>Administrative RBAC per VDOM</li>
+                    <li><strong>Detection</strong>: Monitoring VLAN and SIEM log collection.</li>
+                    <li><strong>Containment</strong>: Compromised VDOMs can be isolated independently.</li>
+                    <li><strong>Recovery</strong>: DR VDOM ready for failover with policy version control.</li>
                 </ul>
 
-                <h3>Detect (DE.CM)</h3>
-                <ul>
-                    <li>Monitoring VLAN and SIEM log collection</li>
-                    <li>East-west traffic anomaly detection</li>
-                </ul>
+                <hr />
 
-                <h3>Respond (RS)</h3>
-                <ul>
-                    <li>Compromised VDOM can be isolated independently</li>
-                    <li>Incident containment through zone policy lockdown</li>
-                </ul>
+                <h2>ISO/IEC 27001 Mapping (Annex A)</h2>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr><th>Control Theme</th><th>Relevance</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Access Control</td><td>Role-based admin per VDOM</td></tr>
+                            <tr><td>Network Security</td><td>VLAN / firewall segmentation</td></tr>
+                            <tr><td>Segregation of Environments</td><td>Dev, Staging, Prod separation</td></tr>
+                            <tr><td>Logging & Monitoring</td><td>Centralized logs via Monitoring VLAN</td></tr>
+                            <tr><td>Business Continuity</td><td>DR VDOM / multi-site design</td></tr>
+                        </tbody>
+                    </table>
+                </div>
 
-                <h3>Recover (RC)</h3>
-                <ul>
-                    <li>DR VDOM ready for failover operations</li>
-                    <li>Policy backup and config version control</li>
-                </ul>
-
-                <h2>ISO/IEC 27001 Mapping (Examples)</h2>
-
-                <h3>Annex A Controls (Representative)</h3>
-                <table>
-                    <tr><th>Control Theme</th><th>Relevance</th></tr>
-                    <tr><td>Access Control</td><td>Role-based admin per VDOM</td></tr>
-                    <tr><td>Network Security</td><td>VLAN / firewall segmentation</td></tr>
-                    <tr><td>Segregation of Environments</td><td>Development, Staging, Production separation</td></tr>
-                    <tr><td>Logging &amp; Monitoring</td><td>Monitoring VLAN + centralized logs</td></tr>
-                    <tr><td>Supplier / External Access</td><td>DMZ controlled exposure</td></tr>
-                    <tr><td>Business Continuity</td><td>DR VDOM / multi-site design</td></tr>
-                </table>
-
-                <h3>Important Principle</h3>
-                <p>Production, staging, and development should remain separated to reduce accidental change and security exposure.</p>
-
-                <h2>Advantages of VDOM Architecture</h2>
-                <ul>
-                    <li>Multi-tenant firewall consolidation</li>
-                    <li>Delegated administration with boundaries</li>
-                    <li>Independent routing instances</li>
-                    <li>Reduced appliance sprawl</li>
-                    <li>Cleaner compliance ownership model</li>
-                </ul>
-
-                <h2>Limitations / Considerations</h2>
-                <ul>
-                    <li>Resource planning required (CPU / memory / session allocation)</li>
-                    <li>Operational complexity increases with many VDOMs</li>
-                    <li>Inter-VDOM traffic requires deliberate design</li>
-                    <li>Logging architecture should be centralized</li>
-                    <li>Governance standards must be documented</li>
-                </ul>
+                <hr />
 
                 <h2>Example Administrative Model</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>Head Office Team</h3>
+                        <ul>
+                            <li>Owns root VDOM</li>
+                            <li>Global internet edge</li>
+                            <li>Inter-DC routing</li>
+                            <li>Security baselines</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h3>Regional DC Team</h3>
+                        <ul>
+                            <li>Owns local VDOM objects</li>
+                            <li>Local server policies</li>
+                            <li>VLAN onboarding</li>
+                            <li>Local troubleshooting</li>
+                        </ul>
+                    </div>
+                </div>
 
-                <h3>Head Office Team</h3>
-                <ul>
-                    <li>Owns root VDOM</li>
-                    <li>Global internet edge</li>
-                    <li>Inter-DC routing</li>
-                    <li>Security baseline templates</li>
-                    <li>Firmware lifecycle</li>
-                </ul>
-
-                <h3>Regional DC Team</h3>
-                <ul>
-                    <li>Owns local VDOM objects</li>
-                    <li>Local server policy changes</li>
-                    <li>VLAN onboarding</li>
-                    <li>Operational troubleshooting</li>
-                </ul>
+                <hr />
 
                 <h2>Example CLI (Simplified)</h2>
 <pre><code class="language-bash">config system vdom
@@ -317,51 +365,34 @@ config system admin
     next
 end</code></pre>
 
-                <h3>VLAN Interface Example</h3>
-<pre><code class="language-bash">config system interface
-    edit prod-vlan40
-        set vdom dc-west
-        set interface port2
-        set vlanid 40
-        set ip 10.40.0.1/24
-    next
-end</code></pre>
-
-                <h2>Recommended Governance Controls</h2>
-                <ul>
-                    <li>Standard naming convention across VDOMs</li>
-                    <li>Change approval workflow for Production policies</li>
-                    <li>Quarterly rule review</li>
-                    <li>Admin separation of duties</li>
-                    <li>Central FortiAnalyzer / SIEM retention</li>
-                    <li>Template-based deployment for consistency</li>
-                </ul>
+                <hr />
 
                 <h2>Common Misunderstandings</h2>
                 <ul>
-                    <li>VLAN alone is not complete segmentation.</li>
-                    <li>VDOM is not only for service providers.</li>
-                    <li>Zones simplify policy management but do not replace design discipline.</li>
-                    <li>Separate environments should not rely only on naming labels.</li>
-                    <li>Delegated admin without governance creates risk.</li>
+                    <li>VLAN alone is not complete segmentation; routing-enabled VLANs still need policy.</li>
+                    <li>VDOM is for any enterprise requiring administrative or routing isolation, not just ISPs.</li>
+                    <li>Multi-member zones can unintentionally expand trust boundaries if not carefully managed.</li>
+                    <li>Effective segmentation is both a security control and an operating model.</li>
                 </ul>
+
+                <hr />
 
                 <h2>Summary / Takeaways</h2>
                 <ul>
                     <li>VDOM provides logical firewall separation with delegated administration.</li>
                     <li>VLANs segment internal networks and reduce unnecessary trust exposure.</li>
-                    <li>Zones simplify policy scaling across many interfaces.</li>
-                    <li>Combining VDOM + VLAN + Zone creates strong layered enterprise segmentation.</li>
+                    <li>Dedicated zones improve segmentation visibility and policy clarity.</li>
                     <li>The model aligns well with NIST functions and ISO 27001 control objectives.</li>
                     <li>Large organizations benefit from central governance with regional operational autonomy.</li>
-                    <li>Effective segmentation is both a security control and an operating model.</li>
                 </ul>
 
                 <div class="article-nav">
-                    <a href="fortigate-firewall-policy-deep-dive.html">
-                        <i class="fas fa-arrow-left"></i> Previous: FortiGate Policy Deep Dive
+                    <a href="bgp-enterprise-wan.html">
+                        <i class="fas fa-arrow-left"></i> Previous: BGP Enterprise WAN
                     </a>
-                    <span></span>
+                    <a href="fortigate-firewall-policy-deep-dive.html">
+                        Next: FortiGate Policy Deep Dive <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
 
             </div>
