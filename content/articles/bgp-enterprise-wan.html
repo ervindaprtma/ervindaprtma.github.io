@@ -1,51 +1,228 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
-        <meta name="description" content="Breaking down BGP attributes, AS path, and iBGP vs eBGP from the lens of an enterprise network engineer designing resilient multi-homed WAN connectivity.">
-        <meta name="author" content="Ervinda Pratama">
-        <link rel="stylesheet" href="../../styles/main.css">
-        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
-        <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32">
-        <title>Understanding BGP for Enterprise WAN Design — Ervinda Pratama</title>
-        <style>
-            .article-header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid #e0e0e0; margin-bottom: 2rem; }
-            body.dark-mode .article-header { border-bottom-color: #333; }
-            .article-back { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; margin-bottom:1.5rem; }
-            .article-back:hover { color:#005fa3; }
-            body.dark-mode .article-back { color:#00f2fe; }
-            .article-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:1rem; }
-            .article-tag { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; padding:2px 10px; border-radius:20px; background:rgba(0,119,204,0.1); color:#0077cc; border:1px solid rgba(0,119,204,0.25); }
-            body.dark-mode .article-tag { background:rgba(0,242,254,0.1); color:#00f2fe; border-color:rgba(0,242,254,0.25); }
-            .article-title { font-size:2rem; font-weight:800; line-height:1.25; margin-bottom:0.9rem; }
-            body.dark-mode .article-title { color:#f0f0f0; }
-            .article-meta { font-size:13px; color:#888; display:flex; flex-wrap:wrap; gap:1rem; align-items:center; }
-            body.dark-mode .article-meta { color:#666; }
-            .article-content { max-width: 780px; margin: 0 auto; font-size: 1rem; line-height: 1.8; color: #333; }
-            body.dark-mode .article-content { color: #d0d0d0; }
-            .article-content h2 { font-size:1.35rem; font-weight:700; margin-top:2.2rem; margin-bottom:0.7rem; border-left:4px solid #0077cc; padding-left:0.7rem; color:#003366; }
-            body.dark-mode .article-content h2 { border-left-color:#00f2fe; color:#00f2fe; }
-            .article-content h3 { font-size:1.1rem; font-weight:700; margin-top:1.5rem; margin-bottom:0.5rem; color:#0077cc; }
-            body.dark-mode .article-content h3 { color:#7fffff; }
-            .article-content pre, .article-content code { background:#1e1e2e; color:#a8d8a8; border-radius:6px; font-size:0.875rem; font-family:'Courier New',monospace; }
-            .article-content pre { padding:1rem 1.2rem; overflow-x:auto; margin:1.2rem 0; }
-            .article-content code { padding:2px 6px; }
-            .article-content blockquote { border-left:4px solid #0077cc; background:rgba(0,119,204,0.06); margin:1.5rem 0; padding:0.8rem 1.2rem; border-radius:0 6px 6px 0; font-style:italic; color:#555; }
-            body.dark-mode .article-content blockquote { border-left-color:#00f2fe; background:rgba(0,242,254,0.05); color:#aaa; }
-            .article-content table { width:100%; border-collapse:collapse; margin:1.2rem 0; }
-            .article-content table th, .article-content table td { border:1px solid #ddd; padding:8px 12px; font-size:0.9rem; }
-            .article-content table th { background:#f0f5ff; font-weight:700; }
-            body.dark-mode .article-content table th { background:#1a1a2e; color:#e0e0e0; }
-            body.dark-mode .article-content table td { border-color:#333; color:#d0d0d0; }
-            .article-nav { display:flex; justify-content:space-between; margin-top:3rem; padding-top:1.5rem; border-top:1px solid #e0e0e0; gap:1rem; }
-            body.dark-mode .article-nav { border-top-color:#333; }
-            .article-nav a { font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; display:flex; align-items:center; gap:6px; }
-            body.dark-mode .article-nav a { color:#00f2fe; }
-        </style>
-    </head>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+    <meta name="description"
+        content="Breaking down BGP attributes, AS path, and iBGP vs eBGP from the lens of an enterprise network engineer designing resilient multi-homed WAN connectivity.">
+    <meta name="author" content="Ervinda Pratama">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32">
+    <title>Understanding BGP for Enterprise WAN Design — Ervinda Pratama</title>
+    <style>
+        .article-header {
+            padding: 2.5rem 0 1.5rem;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 2rem;
+        }
+
+        body.dark-mode .article-header {
+            border-bottom-color: #333;
+        }
+
+        .article-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #0077cc;
+            text-decoration: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-back:hover {
+            color: #005fa3;
+        }
+
+        body.dark-mode .article-back {
+            color: #00f2fe;
+        }
+
+        .article-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 1rem;
+        }
+
+        .article-tag {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 2px 10px;
+            border-radius: 20px;
+            background: rgba(0, 119, 204, 0.1);
+            color: #0077cc;
+            border: 1px solid rgba(0, 119, 204, 0.25);
+        }
+
+        body.dark-mode .article-tag {
+            background: rgba(0, 242, 254, 0.1);
+            color: #00f2fe;
+            border-color: rgba(0, 242, 254, 0.25);
+        }
+
+        .article-title {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.25;
+            margin-bottom: 0.9rem;
+        }
+
+        body.dark-mode .article-title {
+            color: #f0f0f0;
+        }
+
+        .article-meta {
+            font-size: 13px;
+            color: #888;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        body.dark-mode .article-meta {
+            color: #666;
+        }
+
+        .article-content {
+            max-width: 780px;
+            margin: 0 auto;
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        body.dark-mode .article-content {
+            color: #d0d0d0;
+        }
+
+        .article-content h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-top: 2.2rem;
+            margin-bottom: 0.7rem;
+            border-left: 4px solid #0077cc;
+            padding-left: 0.7rem;
+            color: #003366;
+        }
+
+        body.dark-mode .article-content h2 {
+            border-left-color: #00f2fe;
+            color: #00f2fe;
+        }
+
+        .article-content h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #0077cc;
+        }
+
+        body.dark-mode .article-content h3 {
+            color: #7fffff;
+        }
+
+        .article-content pre,
+        .article-content code {
+            background: #1e1e2e;
+            color: #a8d8a8;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .article-content pre {
+            padding: 1rem 1.2rem;
+            overflow-x: auto;
+            margin: 1.2rem 0;
+        }
+
+        .article-content code {
+            padding: 2px 6px;
+        }
+
+        .article-content blockquote {
+            border-left: 4px solid #0077cc;
+            background: rgba(0, 119, 204, 0.06);
+            margin: 1.5rem 0;
+            padding: 0.8rem 1.2rem;
+            border-radius: 0 6px 6px 0;
+            font-style: italic;
+            color: #555;
+        }
+
+        body.dark-mode .article-content blockquote {
+            border-left-color: #00f2fe;
+            background: rgba(0, 242, 254, 0.05);
+            color: #aaa;
+        }
+
+        .article-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.2rem 0;
+        }
+
+        .article-content table th,
+        .article-content table td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+
+        .article-content table th {
+            background: #f0f5ff;
+            font-weight: 700;
+        }
+
+        body.dark-mode .article-content table th {
+            background: #1a1a2e;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .article-content table td {
+            border-color: #333;
+            color: #d0d0d0;
+        }
+
+        .article-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e0e0e0;
+            gap: 1rem;
+        }
+
+        body.dark-mode .article-nav {
+            border-top-color: #333;
+        }
+
+        .article-nav a {
+            font-size: 13px;
+            font-weight: 600;
+            color: #0077cc;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        body.dark-mode .article-nav a {
+            color: #00f2fe;
+        }
+    </style>
+</head>
+
 <body>
     <script>
         if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -69,25 +246,31 @@
                     <h1 class="article-title">Understanding BGP for Enterprise WAN Design</h1>
                     <div class="article-meta">
                         <span><i class="fas fa-user"></i>&nbsp; Ervinda Pratama</span>
-                        <span><i class="fas fa-calendar"></i>&nbsp; March 2025</span>
+                        <span><i class="fas fa-calendar"></i>&nbsp; April 2026</span>
                         <span><i class="fas fa-clock"></i>&nbsp; ~12 min read</span>
                     </div>
                 </div>
 
                 <h2>Introduction</h2>
                 <p>
-                    Border Gateway Protocol (BGP) is widely recognized as the routing protocol of the internet, but its value within enterprise WAN architecture is equally significant. In enterprise environments, BGP is used not only to exchange routes, but to enforce routing policy, control path selection, and preserve business continuity.
+                    Border Gateway Protocol (BGP) is widely recognized as the routing protocol of the internet, but its
+                    value within enterprise WAN architecture is equally significant. In enterprise environments, BGP is
+                    used not only to exchange routes, but to enforce routing policy, control path selection, and
+                    preserve business continuity.
                 </p>
                 <p>
-                    In multi-homed environments that depend on two or more ISPs, BGP becomes the decision engine that determines how traffic exits the organization and how external users reach internal services.
+                    In multi-homed environments that depend on two or more ISPs, BGP becomes the decision engine that
+                    determines how traffic exits the organization and how external users reach internal services.
                 </p>
                 <p>
-                    Redundant circuits without intelligent routing provide limited value. BGP transforms redundancy into operational resilience.
+                    Redundant circuits without intelligent routing provide limited value. BGP transforms redundancy into
+                    operational resilience.
                 </p>
 
                 <h2>Why Enterprises Use BGP</h2>
                 <p>
-                    Many organizations initially rely on static routes or default routes from a single ISP. This works in simple environments, but becomes limited when businesses require:
+                    Many organizations initially rely on static routes or default routes from a single ISP. This works
+                    in simple environments, but becomes limited when businesses require:
                 </p>
                 <ul>
                     <li>Dual or multi-ISP internet connectivity</li>
@@ -177,11 +360,12 @@
                     <li>Used between routers inside the same AS.</li>
                     <li>Does <strong>not</strong> change NEXT_HOP by default.</li>
                     <li>Requires full mesh or Route Reflector design.</li>
-                    <li>Prevents re-advertising iBGP-learned routes to another iBGP peer unless reflection/confederation exists.</li>
+                    <li>Prevents re-advertising iBGP-learned routes to another iBGP peer unless reflection/confederation
+                        exists.</li>
                 </ul>
 
                 <h2>Enterprise WAN Example Topology</h2>
-<pre><code>             ISP-A (AS100)
+                <pre><code>             ISP-A (AS100)
                  |
               Edge-R1
                  |
@@ -191,12 +375,14 @@
                  |
              ISP-B (AS200)</code></pre>
                 <p>
-                    Both edge routers advertise enterprise prefixes and receive internet routes or default routes from providers.
+                    Both edge routers advertise enterprise prefixes and receive internet routes or default routes from
+                    providers.
                 </p>
 
                 <h2>How BGP Chooses Best Path</h2>
                 <p>
-                    BGP is a <strong>path-vector protocol</strong>. It selects the best route based on attributes rather than physical shortest path.
+                    BGP is a <strong>path-vector protocol</strong>. It selects the best route based on attributes rather
+                    than physical shortest path.
                 </p>
                 <p>
                     Common simplified decision sequence:
@@ -218,7 +404,8 @@
 
                 <h2>Control Egress Traffic with Local Preference</h2>
                 <p>
-                    When users inside the company browse the internet, this is <strong>outbound / egress traffic</strong>.
+                    When users inside the company browse the internet, this is <strong>outbound / egress
+                        traffic</strong>.
                 </p>
                 <p>
                     Use <strong>Local Preference</strong> to tell all routers which ISP should be preferred.
@@ -228,7 +415,7 @@
                 </p>
 
                 <h3>Scenario: Prefer ISP-A for all outbound traffic</h3>
-<pre><code>router bgp 65001
+                <pre><code>router bgp 65001
  neighbor 1.1.1.1 remote-as 100
  neighbor 1.1.1.1 route-map PREFER-ISP-A in
 
@@ -257,7 +444,7 @@ route-map PREFER-ISP-A permit 10
                 </p>
 
                 <h3>Scenario: Make ISP-B Less Attractive</h3>
-<pre><code>route-map PREPEND-ISP-B permit 10
+                <pre><code>route-map PREPEND-ISP-B permit 10
  set as-path prepend 65001 65001 65001</code></pre>
                 <p>
                     Result:
@@ -269,7 +456,8 @@ route-map PREFER-ISP-A permit 10
 
                 <h2>MED (Multi Exit Discriminator)</h2>
                 <p>
-                    MED can suggest which entry point another AS should use when multiple links exist to the same provider.
+                    MED can suggest which entry point another AS should use when multiple links exist to the same
+                    provider.
                 </p>
                 <p>
                     Lower MED is preferred.
@@ -311,7 +499,8 @@ route-map PREFER-ISP-A permit 10
                     </table>
                 </div>
                 <p>
-                    High availability is achieved not by the presence of multiple links alone, but by intelligent failover and controlled path selection.
+                    High availability is achieved not by the presence of multiple links alone, but by intelligent
+                    failover and controlled path selection.
                 </p>
 
                 <h2>Operational Best Practices</h2>
@@ -366,10 +555,12 @@ route-map PREFER-ISP-A permit 10
                 <ul>
                     <li>BGP is the strategic routing protocol for enterprise WAN multi-homing.</li>
                     <li>Use <strong>Local Preference</strong> to control how traffic leaves your network.</li>
-                    <li>Use <strong>AS-Path Prepending</strong> or <strong>MED</strong> to influence how traffic enters.</li>
+                    <li>Use <strong>AS-Path Prepending</strong> or <strong>MED</strong> to influence how traffic enters.
+                    </li>
                     <li>iBGP distributes routes internally; eBGP connects to external AS networks.</li>
                     <li>Use Route Reflectors instead of full mesh at scale.</li>
-                    <li>BGP enables resilient enterprise connectivity when internet availability is business critical.</li>
+                    <li>BGP enables resilient enterprise connectivity when internet availability is business critical.
+                    </li>
                 </ul>
 
                 <div class="article-nav">
@@ -392,4 +583,5 @@ route-map PREFER-ISP-A permit 10
     <script>AOS.init({ once: true, duration: 800 });</script>
     <script src="../../script/components.js"></script>
 </body>
+
 </html>
