@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+        <meta name="description" content="Understanding FortiGate Traffic Shaping: Interface Limits, Policy Control, NP Offload & Data Center Use Cases">
+        <meta name="author" content="Ervinda Pratama">
+        <link rel="stylesheet" href="../../styles/main.css">
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32">
+        <title>FortiGate Traffic Shaping Deep Dive — Ervinda Pratama</title>
+        <style>
+            .article-header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid #e0e0e0; margin-bottom: 2rem; }
+            body.dark-mode .article-header { border-bottom-color: #333; }
+            .article-back { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; margin-bottom:1.5rem; }
+            .article-back:hover { color:#005fa3; }
+            body.dark-mode .article-back { color:#00f2fe; }
+            .article-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:1rem; }
+            .article-tag { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; padding:2px 10px; border-radius:20px; background:rgba(0,119,204,0.1); color:#0077cc; border:1px solid rgba(0,119,204,0.25); }
+            body.dark-mode .article-tag { background:rgba(0,242,254,0.1); color:#00f2fe; border-color:rgba(0,242,254,0.25); }
+            .article-title { font-size:2rem; font-weight:800; line-height:1.25; margin-bottom:0.9rem; }
+            body.dark-mode .article-title { color:#f0f0f0; }
+            .article-meta { font-size:13px; color:#888; display:flex; flex-wrap:wrap; gap:1rem; align-items:center; }
+            body.dark-mode .article-meta { color:#666; }
+            .article-content { max-width:780px; margin:0 auto; font-size:1rem; line-height:1.8; color:#333; }
+            body.dark-mode .article-content { color:#d0d0d0; }
+            .article-content h2 { font-size:1.35rem; font-weight:700; margin-top:2.2rem; margin-bottom:0.7rem; border-left:4px solid #0077cc; padding-left:0.7rem; color:#003366; }
+            body.dark-mode .article-content h2 { border-left-color:#00f2fe; color:#00f2fe; }
+            .article-content h3 { font-size:1.1rem; font-weight:700; margin-top:1.5rem; margin-bottom:0.5rem; color:#0077cc; }
+            body.dark-mode .article-content h3 { color:#7fffff; }
+            .article-content pre, .article-content code { background:#1e1e2e; color:#a8d8a8; border-radius:6px; font-size:0.875rem; font-family:'Courier New',monospace; }
+            .article-content pre { padding:1rem 1.2rem; overflow-x:auto; margin:1.2rem 0; }
+            .article-content code { padding:2px 6px; }
+            .article-content blockquote { border-left:4px solid #0077cc; background:rgba(0, 119, 204, 0.06); margin:1.5rem 0; padding:0.8rem 1.2rem; border-radius:0 6px 6px 0; font-style:italic; color:#555; }
+            body.dark-mode .article-content blockquote { border-left-color:#00f2fe; background:rgba(0, 242, 254, 0.05); color:#aaa; }
+            .article-content table { width:100%; border-collapse:collapse; margin:1.2rem 0; }
+            .article-content table th, .article-content table td { border:1px solid #ddd; padding:8px 12px; font-size:0.9rem; }
+            .article-content table th { background:#f0f5ff; font-weight:700; }
+            body.dark-mode .article-content table th { background:#1a1a2e; color:#e0e0e0; }
+            body.dark-mode .article-content table td { border-color:#333; color:#d0d0d0; }
+            .article-nav { display:flex; justify-content:space-between; margin-top:3rem; padding-top:1.5rem; border-top:1px solid #e0e0e0; gap:1rem; }
+            body.dark-mode .article-nav { border-top-color:#333; }
+            .article-nav a { font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; display:flex; align-items:center; gap:6px; }
+            body.dark-mode .article-nav a { color:#00f2fe; }
+        </style>
+    </head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <app-navbar></app-navbar>
+    <section class="page-content">
+        <div class="container">
+            <div class="article-content" data-aos="fade-up">
+
+                <div class="article-header">
+                    <a href="../article_research.html" class="article-back">
+                        <i class="fas fa-arrow-left"></i> Back to Articles &amp; Research
+                    </a>
+                    <div class="article-tags">
+                        <span class="article-tag">Fortinet</span>
+                        <span class="article-tag">Security</span>
+                        <span class="article-tag">Traffic Engineering</span>
+                    </div>
+                    <h1 class="article-title">Understanding FortiGate Traffic Shaping: Interface Limits, Policy Control, NP Offload &amp; Data Center Use Cases</h1>
+                    <div class="article-meta">
+                        <span><i class="fas fa-user"></i>&nbsp; Ervinda Pratama</span>
+                        <span><i class="fas fa-calendar"></i>&nbsp; June 2026</span>
+                        <span><i class="fas fa-clock"></i>&nbsp; ~22 min read</span>
+                    </div>
+                </div>
+
+                <h2>Introduction</h2>
+                <p>
+                    Traffic shaping on FortiGate is used to control bandwidth consumption, protect critical applications, and prevent congestion from degrading user experience. In production environments, shaping is not only about limiting speed. It is a method of enforcing business priority across shared links.
+                </p>
+                <p>
+                    FortiGate offers multiple shaping approaches ranging from simple interface controls to advanced policy-based shaping with application awareness.
+                </p>
+                <p>
+                    Selecting the correct method requires understanding both traffic behavior and hardware resource impact.
+                </p>
+
+                <h2>Why Traffic Shaping Matters</h2>
+                <p>Without shaping, aggressive flows may consume available bandwidth first.</p>
+                <p>Common impacts:</p>
+                <ul>
+                    <li>Backup traffic saturates internet links</li>
+                    <li>Guest users affect business applications</li>
+                    <li>Large downloads increase latency</li>
+                    <li>Public-facing services become unstable during spikes</li>
+                    <li>Branch links experience poor voice quality</li>
+                </ul>
+                <p>Traffic shaping transforms raw bandwidth into controlled service delivery.</p>
+
+                <h2>FortiGate Traffic Control Models</h2>
+                <table>
+                    <thead>
+                        <tr><th>Method</th><th>Primary Use Case</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Interface Bandwidth Limits</td><td>Simple ingress/egress caps</td></tr>
+                        <tr><td>Per-Policy Traffic Shaping</td><td>User / subnet / service control</td></tr>
+                        <tr><td>Shared Shaper</td><td>Shared pool for many sessions</td></tr>
+                        <tr><td>Per-IP Shaper</td><td>Fairness per client IP</td></tr>
+                        <tr><td>Application Control + Shaping</td><td>App-aware prioritization</td></tr>
+                        <tr><td>SD-WAN Rule Steering</td><td>Path optimization, not pure shaping</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Interface-Level Limitation</h2>
+                <p>
+                    FortiGate interfaces can apply ingress and egress estimated bandwidth values and interface shaping depending on model/features.
+                </p>
+                <p>This is useful when a WAN circuit has fixed provider capacity.</p>
+
+                <h3>Example</h3>
+<pre><code class="language-bash">config system interface
+    edit "wan1"
+        set estimated-upstream-bandwidth 100000
+        set estimated-downstream-bandwidth 100000
+    next
+end</code></pre>
+
+                <h3>Best Use Cases</h3>
+                <ul>
+                    <li>ISP handoff 100 Mbps link</li>
+                    <li>Metro-E leased line cap</li>
+                    <li>SD-WAN member reference bandwidth</li>
+                </ul>
+
+                <h3>Limitations</h3>
+                <ul>
+                    <li>Not granular by user or service</li>
+                    <li>Does not prioritize applications by itself</li>
+                </ul>
+
+                <h2>Policy-Based Traffic Shaping</h2>
+                <p>The most common enterprise method is attaching a shaper to firewall policy.</p>
+
+                <h3>Example: Limit Guest VLAN to 20 Mbps</h3>
+<pre><code class="language-bash">config firewall shaper traffic-shaper
+    edit "guest-20m"
+        set maximum-bandwidth 20000
+    next
+end
+
+config firewall policy
+    edit 0
+        set name "Guest-Internet"
+        set srcaddr "Guest-VLAN"
+        set dstaddr "all"
+        set service "ALL"
+        set traffic-shaper "guest-20m"
+    next
+end</code></pre>
+
+                <h3>Benefits</h3>
+                <ul>
+                    <li>Granular control</li>
+                    <li>Easy mapping to firewall policy</li>
+                    <li>Good for tenant or VLAN segmentation</li>
+                </ul>
+
+                <h2>Shared Shaper vs Per-IP Shaper</h2>
+
+                <h3>Shared Shaper</h3>
+                <p>One total pool shared by matching users.</p>
+<pre><code>100 users share total 50 Mbps</code></pre>
+
+                <h3>Per-IP Shaper</h3>
+                <p>Each source IP receives individual cap.</p>
+<pre><code>Each user max 5 Mbps</code></pre>
+
+                <h3>Example</h3>
+<pre><code class="language-bash">config firewall shaper per-ip-shaper
+    edit "user-5m"
+        set maximum-bandwidth 5000
+    next
+end</code></pre>
+
+                <h2>Advanced Traffic Shaping Menu</h2>
+                <p>FortiGate advanced shaping can combine:</p>
+                <ul>
+                    <li>Source identity / subnet</li>
+                    <li>Destination object</li>
+                    <li>Service / port</li>
+                    <li>Application signatures</li>
+                    <li>DSCP marking</li>
+                    <li>Reverse shaping</li>
+                    <li>Guaranteed bandwidth (on supported modes/models)</li>
+                </ul>
+
+                <h3>Example: Prioritize VoIP, Limit Backup</h3>
+<pre><code>VoIP UDP/RTP -> high priority
+Backup TCP/443 -> capped 50 Mbps
+Guest traffic -> standard queue</code></pre>
+
+                <h2>Comparing FortiGate Shaping Methods</h2>
+                <table>
+                    <thead>
+                        <tr><th>Method</th><th>Granularity</th><th>Complexity</th><th>Resource Impact</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Interface Cap</td><td>Low</td><td>Low</td><td>Very Low</td></tr>
+                        <tr><td>Policy Shaper</td><td>Medium</td><td>Low</td><td>Low</td></tr>
+                        <tr><td>Shared/Per-IP</td><td>Medium-High</td><td>Medium</td><td>Medium</td></tr>
+                        <tr><td>App-Aware Shaping</td><td>High</td><td>Medium-High</td><td>Higher</td></tr>
+                        <tr><td>Deep Inspection + Shaping</td><td>Highest</td><td>High</td><td>Highest</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>CPU, NP and Resource Optimization</h2>
+                <p>
+                    FortiGate hardware models often include Network Processors (NP) and Content Processors (CP), depending on platform family.
+                </p>
+
+                <h3>Simplified Roles</h3>
+                <table>
+                    <thead>
+                        <tr><th>Component</th><th>Function</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>NP (Network Processor)</td><td>Fast-path forwarding / acceleration</td></tr>
+                        <tr><td>Main CPU Cores</td><td>Control plane, sessions, policy logic</td></tr>
+                        <tr><td>CP / Security ASIC (model dependent)</td><td>Security inspection acceleration</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Why It Matters</h3>
+                <p>
+                    Some shaping or inspection features may reduce hardware offload eligibility depending on platform, firmware, and policy features.
+                </p>
+                <p>When sessions stay in accelerated path:</p>
+                <ul>
+                    <li>Lower CPU usage</li>
+                    <li>Higher throughput</li>
+                    <li>Better session scale</li>
+                </ul>
+                <p>When sessions require software path:</p>
+                <ul>
+                    <li>More CPU core utilization</li>
+                    <li>Lower maximum throughput potential</li>
+                    <li>Higher sensitivity during spikes</li>
+                </ul>
+
+                <h3>Common Causes of Reduced Offload</h3>
+                <ul>
+                    <li>Deep SSL inspection</li>
+                    <li>Certain proxy features</li>
+                    <li>Complex shaping combinations</li>
+                    <li>Unsupported feature combinations for NP path</li>
+                    <li>Logging / UTM intensive workloads</li>
+                </ul>
+                <p>Always validate with platform documentation and diagnostics.</p>
+
+                <h2>Useful Diagnostics</h2>
+<pre><code class="language-bash">diagnose sys session list
+get system performance status
+diagnose npu np6 session-stats</code></pre>
+                <p><em>(Model commands vary by FortiGate family.)</em></p>
+
+                <h2>Data Center Scenario 1: Server DC to Internet</h2>
+
+                <h3>Objective</h3>
+                <p>Limit outbound backup traffic from servers so business APIs remain responsive.</p>
+
+                <h3>Flow</h3>
+<pre><code>Backup Server -> Internet Object Storage
+API Servers   -> Internet SaaS</code></pre>
+
+                <h3>Design</h3>
+                <ul>
+                    <li>Backup subnet capped at 200 Mbps</li>
+                    <li>API traffic prioritized</li>
+                    <li>Monitoring traffic guaranteed minimal bandwidth</li>
+                </ul>
+
+                <h3>Example</h3>
+<pre><code class="language-bash">Policy A: Backup VLAN -> WAN -> shaper 200 Mbps
+Policy B: App VLAN -> WAN -> priority high</code></pre>
+
+                <h2>Data Center Scenario 2: Customer Access to Server via VIP</h2>
+
+                <h3>Objective</h3>
+                <p>Protect public application behind Virtual IP (DNAT) from abuse or traffic spikes.</p>
+
+                <h3>Flow</h3>
+<pre><code>Internet Users -> VIP Public IP -> Internal Web Server</code></pre>
+
+                <h3>Design Options</h3>
+                <ul>
+                    <li>Shared shaper total 500 Mbps for public service</li>
+                    <li>Per-IP shaper 10 Mbps each client</li>
+                    <li>Priority for premium customer source ranges</li>
+                </ul>
+
+                <h3>Example</h3>
+<pre><code class="language-bash">VIP Policy -> traffic-shaper public-500m
+VIP Policy -> per-ip-shaper client-10m</code></pre>
+
+                <h3>Benefit</h3>
+                <ul>
+                    <li>Prevent one client exhausting bandwidth</li>
+                    <li>Preserve fair access</li>
+                    <li>Protect backend servers from volumetric saturation</li>
+                </ul>
+
+                <h2>Interconnection Limitation Scenario</h2>
+
+                <h3>Between Two Data Centers</h3>
+<pre><code>DC1 <-> DC2 1 Gbps MPLS / IPsec Link</code></pre>
+                <p>Need to reserve bandwidth for:</p>
+                <ul>
+                    <li>Database replication</li>
+                    <li>Voice signaling</li>
+                    <li>User file copy</li>
+                    <li>Backup jobs</li>
+                </ul>
+                <p>Traffic shaping prevents replication from consuming all inter-site capacity.</p>
+
+                <h2>Common Misunderstandings</h2>
+                <ul>
+                    <li>More bandwidth alone does not replace shaping.</li>
+                    <li>Interface bandwidth settings are not equal to policy QoS.</li>
+                    <li>Per-IP shaping is different from shared shaping.</li>
+                    <li>Hardware acceleration behavior varies by model and feature set.</li>
+                    <li>Public VIP traffic also needs fairness controls.</li>
+                </ul>
+
+                <h2>Design Recommendations</h2>
+                <table>
+                    <thead>
+                        <tr><th>Environment</th><th>Recommended Method</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Small Branch</td><td>Interface + policy shaper</td></tr>
+                        <tr><td>Campus</td><td>Policy + per-IP shaping</td></tr>
+                        <tr><td>ISP Edge</td><td>Shared pools + fairness logic</td></tr>
+                        <tr><td>Data Center</td><td>Service-aware shaping + NP optimization</td></tr>
+                        <tr><td>Public Services</td><td>VIP shaping + abuse protection</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Summary / Takeaways</h2>
+                <ul>
+                    <li>FortiGate supports multiple traffic shaping methods from simple caps to granular policy control.</li>
+                    <li>Interface limits are useful for circuit references but not enough for application prioritization.</li>
+                    <li>Policy shaping provides practical enterprise control.</li>
+                    <li>Shared and per-IP shapers improve fairness for many users.</li>
+                    <li>Resource impact depends on inspection depth and hardware offload eligibility.</li>
+                    <li>In data centers, shaping protects outbound links and public-facing services.</li>
+                    <li>Effective shaping design balances bandwidth control, user experience, and platform efficiency.</li>
+                </ul>
+
+                <div class="article-nav">
+                    <a href="traffic-flow-ephemeral-port-qos.html">
+                        <i class="fas fa-arrow-left"></i> Previous: Traffic Flow &amp; QoS
+                    </a>
+                    <a href="vlan-deep-dive-modern-switching.html">
+                        Next: VLAN Deep Dive <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="../../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <app-footer></app-footer>
+    <script>AOS.init();</script>
+    <script src="../../script/components.js"></script>
+</body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+        <meta name="description" content="MikroTik QoS Deep Dive: Simple Queue, Queue Tree, Burst & HTB Design">
+        <meta name="author" content="Ervinda Pratama">
+        <link rel="stylesheet" href="../../styles/main.css">
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32">
+        <title>MikroTik QoS Deep Dive: Simple Queue, Queue Tree, Burst &amp; HTB Design — Ervinda Pratama</title>
+        <style>
+            .article-header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid #e0e0e0; margin-bottom: 2rem; }
+            body.dark-mode .article-header { border-bottom-color: #333; }
+            .article-back { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; margin-bottom:1.5rem; }
+            .article-back:hover { color:#005fa3; }
+            body.dark-mode .article-back { color:#00f2fe; }
+            .article-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:1rem; }
+            .article-tag { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; padding:2px 10px; border-radius:20px; background:rgba(0,119,204,0.1); color:#0077cc; border:1px solid rgba(0,119,204,0.25); }
+            body.dark-mode .article-tag { background:rgba(0,242,254,0.1); color:#00f2fe; border-color:rgba(0,242,254,0.25); }
+            .article-title { font-size:2rem; font-weight:800; line-height:1.25; margin-bottom:0.9rem; }
+            body.dark-mode .article-title { color:#f0f0f0; }
+            .article-meta { font-size:13px; color:#888; display:flex; flex-wrap:wrap; gap:1rem; align-items:center; }
+            body.dark-mode .article-meta { color:#666; }
+            .article-content { max-width:780px; margin:0 auto; font-size:1rem; line-height:1.8; color:#333; }
+            body.dark-mode .article-content { color:#d0d0d0; }
+            .article-content h2 { font-size:1.35rem; font-weight:700; margin-top:2.2rem; margin-bottom:0.7rem; border-left:4px solid #0077cc; padding-left:0.7rem; color:#003366; }
+            body.dark-mode .article-content h2 { border-left-color:#00f2fe; color:#00f2fe; }
+            .article-content h3 { font-size:1.1rem; font-weight:700; margin-top:1.5rem; margin-bottom:0.5rem; color:#0077cc; }
+            body.dark-mode .article-content h3 { color:#7fffff; }
+            .article-content pre, .article-content code { background:#1e1e2e; color:#a8d8a8; border-radius:6px; font-size:0.875rem; font-family:'Courier New',monospace; }
+            .article-content pre { padding:1rem 1.2rem; overflow-x:auto; margin:1.2rem 0; }
+            .article-content code { padding:2px 6px; }
+            .article-content blockquote { border-left:4px solid #0077cc; background:rgba(0, 119, 204, 0.06); margin:1.5rem 0; padding:0.8rem 1.2rem; border-radius:0 6px 6px 0; font-style:italic; color:#555; }
+            body.dark-mode .article-content blockquote { border-left-color:#00f2fe; background:rgba(0, 242, 254, 0.05); color:#aaa; }
+            .article-content table { width:100%; border-collapse:collapse; margin:1.2rem 0; }
+            .article-content table th, .article-content table td { border:1px solid #ddd; padding:8px 12px; font-size:0.9rem; }
+            .article-content table th { background:#f0f5ff; font-weight:700; }
+            body.dark-mode .article-content table th { background:#1a1a2e; color:#e0e0e0; }
+            body.dark-mode .article-content table td { border-color:#333; color:#d0d0d0; }
+            .article-nav { display:flex; justify-content:space-between; margin-top:3rem; padding-top:1.5rem; border-top:1px solid #e0e0e0; gap:1rem; }
+            body.dark-mode .article-nav { border-top-color:#333; }
+            .article-nav a { font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; display:flex; align-items:center; gap:6px; }
+            body.dark-mode .article-nav a { color:#00f2fe; }
+        </style>
+    </head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <app-navbar></app-navbar>
+    <section class="page-content">
+        <div class="container">
+            <div class="article-content" data-aos="fade-up">
+
+                <div class="article-header">
+                    <a href="../article_research.html" class="article-back">
+                        <i class="fas fa-arrow-left"></i> Back to Articles &amp; Research
+                    </a>
+                    <div class="article-tags">
+                        <span class="article-tag">MikroTik</span>
+                        <span class="article-tag">Networking</span>
+                        <span class="article-tag">Traffic Engineering</span>
+                    </div>
+                    <h1 class="article-title">MikroTik QoS Deep Dive: Simple Queue, Queue Tree, Burst &amp; HTB Design</h1>
+                    <div class="article-meta">
+                        <span><i class="fas fa-user"></i>&nbsp; Ervinda Pratama</span>
+                        <span><i class="fas fa-calendar"></i>&nbsp; June 2026</span>
+                        <span><i class="fas fa-clock"></i>&nbsp; ~20 min read</span>
+                    </div>
+                </div>
+
+                <h2>Introduction</h2>
+                <p>
+                    Quality of Service (QoS) on MikroTik is one of the most powerful features available for bandwidth control, subscriber fairness, and traffic prioritization. In production environments, QoS is not only about limiting speed. It is about controlling congestion, preserving application performance, and distributing shared capacity intelligently.
+                </p>
+                <p>
+                    MikroTik provides two major queue models:
+                </p>
+                <ul>
+                    <li>Simple Queue</li>
+                    <li>Queue Tree</li>
+                </ul>
+                <p>
+                    Both rely on HTB (Hierarchical Token Bucket), the traffic shaping engine used to allocate bandwidth with parent-child hierarchy, guarantees, priorities, and burst behavior.
+                </p>
+
+                <h2>Why QoS Matters</h2>
+                <p>Without QoS, bandwidth is usually consumed by the most aggressive traffic flows.</p>
+                <p>This often creates:</p>
+                <ul>
+                    <li>Voice jitter during downloads</li>
+                    <li>Backup jobs saturating uplinks</li>
+                    <li>One customer consuming shared ISP bandwidth</li>
+                    <li>High latency during congestion</li>
+                    <li>Unfair distribution among users</li>
+                </ul>
+                <p>QoS transforms bandwidth from shared chaos into controlled service delivery.</p>
+
+                <h2>Core MikroTik Queue Models</h2>
+                <table>
+                    <thead>
+                        <tr><th>Queue Type</th><th>Best Use Case</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Simple Queue</td><td>Per-user / per-subnet shaping</td></tr>
+                        <tr><td>Queue Tree</td><td>Advanced classification and hierarchical policies</td></tr>
+                        <tr><td>PCQ Queue Type</td><td>Shared fairness for many users</td></tr>
+                        <tr><td>Interface Queue</td><td>Hardware/software transmit queue</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Simple Queue Deep Dive</h2>
+                <p>Simple Queue is the fastest method to apply bandwidth control to users, subnets, or IP ranges.</p>
+
+                <h3>Example: Limit One Customer to 20 Mbps</h3>
+<pre><code class="language-bash">/queue simple
+add name="Cust-A" target=10.10.10.10 max-limit=20M/20M</code></pre>
+
+                <h3>Example: Branch Office Limit</h3>
+<pre><code class="language-bash">/queue simple
+add name="Branch-Users" target=192.168.10.0/24 max-limit=50M/50M</code></pre>
+
+                <h3>Advantages</h3>
+                <ul>
+                    <li>Easy deployment</li>
+                    <li>Fast troubleshooting</li>
+                    <li>Suitable for SMB / WISP subscriber management</li>
+                </ul>
+
+                <h3>Limitations</h3>
+                <ul>
+                    <li>Less granular than Queue Tree</li>
+                    <li>Large scale with many entries needs structured design</li>
+                </ul>
+
+                <h2>Queue Tree Deep Dive</h2>
+                <p>Queue Tree is designed for advanced QoS where traffic is classified first, then controlled under parent-child hierarchy.</p>
+                <p>Typical inputs:</p>
+                <ul>
+                    <li>Packet marks from Mangle</li>
+                    <li>Interface parent</li>
+                    <li>Parent queue hierarchy</li>
+                    <li>Priority levels</li>
+                    <li>CIR / MIR style allocation</li>
+                </ul>
+
+                <h3>Example Flow</h3>
+<pre><code>Mangle marks VoIP packets -> queue tree high priority
+Mangle marks Backup traffic -> queue tree low priority</code></pre>
+
+                <h3>Example Configuration</h3>
+<pre><code class="language-bash">/queue tree
+add name="WAN-TOTAL" parent=ether1 max-limit=200M
+add name="VOICE" parent="WAN-TOTAL" packet-mark=voice priority=1 limit-at=20M max-limit=50M
+add name="BACKUP" parent="WAN-TOTAL" packet-mark=backup priority=8 max-limit=80M</code></pre>
+
+                <h2>Understanding HTB (Hierarchical Token Bucket)</h2>
+                <p>HTB is the queue scheduler used by MikroTik to shape traffic through token-bucket mathematics. Instead of sending packets without control, HTB allows packets to transmit only when enough tokens are available in the bucket.</p>
+                <p>A token represents permission to send a quantity of bytes. Tokens are continuously added to the bucket at a configured rate. When traffic consumes tokens faster than they refill, throughput is reduced to the defined shaping rate.</p>
+
+                <h3>Core Token-Bucket Mechanics</h3>
+<pre><code>Bucket fills over time -> tokens accumulate
+Packets transmit -> tokens are consumed
+Bucket empty -> traffic must wait for refill</code></pre>
+
+                <p>This mechanism smooths bursts while still enforcing bandwidth policy.</p>
+
+                <h3>MikroTik Bucket-Size Default = 0.1</h3>
+                <p>In MikroTik queues, each rule includes a bucket-size parameter. The commonly used default value is <strong>0.1</strong>.</p>
+
+                <h3>Meaning of 0.1</h3>
+                <p>Bucket-size is a multiplier of the configured max-limit (or available rate context) used to calculate temporary token storage.</p>
+                <p>Simplified model:</p>
+<pre><code>Bucket Capacity ≈ max-limit × bucket-size</code></pre>
+
+                <p>So if max-limit is 100 Mbps:</p>
+<pre><code>100 Mbps × 0.1 = 10 Mb worth of token capacity</code></pre>
+                <p>This means the queue may temporarily accumulate enough tokens to send short bursts before settling back to sustained shaping limits.</p>
+
+                <h3>Traffic Impact of Default 0.1</h3>
+                <table>
+                    <thead>
+                        <tr><th>Value</th><th>Effect</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>0.1</td><td>Balanced default, moderate responsiveness</td></tr>
+                        <tr><td>Lower (0.01)</td><td>Tighter control, fewer bursts</td></tr>
+                        <tr><td>Higher (1.0)</td><td>Larger bursts, faster short transfers</td></tr>
+                        <tr><td>Too High</td><td>Possible unfairness / micro-burst behavior</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Why It Matters</h3>
+                <ul>
+                    <li>Small bucket = smoother but stricter traffic control</li>
+                    <li>Larger bucket = more responsive short downloads/uploads</li>
+                    <li>Oversized bucket = traffic spikes may affect latency-sensitive flows</li>
+                </ul>
+
+                <h3>Calculation Example 1: Simple Queue</h3>
+<pre><code class="language-bash">/queue simple
+add name="User1" target=10.10.10.10 max-limit=20M/20M bucket-size=0.1/0.1</code></pre>
+                <p>Approximate token storage per direction:</p>
+<pre><code>20 Mbps × 0.1 = 2 Mb token capacity</code></pre>
+                <p>The user can momentarily transmit faster in short intervals until tokens normalize.</p>
+
+                <h3>Calculation Example 2: Queue Tree Parent</h3>
+<pre><code class="language-bash">/queue tree
+add name="WAN" parent=ether1 max-limit=200M bucket-size=0.1</code></pre>
+                <p>Approximate parent bucket:</p>
+<pre><code>200 Mbps × 0.1 = 20 Mb token capacity</code></pre>
+                <p>Useful for absorbing short aggregate bursts across child queues.</p>
+
+                <h3>Custom Bucket Design Guidance</h3>
+                <table>
+                    <thead>
+                        <tr><th>Scenario</th><th>Suggested Bucket</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>VoIP / Real-time</td><td>0.01 to 0.05</td></tr>
+                        <tr><td>General Office</td><td>0.1</td></tr>
+                        <tr><td>Residential Browsing</td><td>0.1 to 0.3</td></tr>
+                        <tr><td>Bulk Transfer</td><td>0.3 to 1.0</td></tr>
+                        <tr><td>Datacenter Replication</td><td>Case-by-case testing</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Example: Low Latency Voice Queue</h3>
+<pre><code class="language-bash">/queue tree
+add name="VOICE" parent=WAN max-limit=20M priority=1 bucket-size=0.02</code></pre>
+                <p>Small bucket reduces burst spikes and helps latency consistency.</p>
+
+                <h3>Example: Fast Web Experience Queue</h3>
+<pre><code class="language-bash">/queue simple
+add name="Users" target=192.168.10.0/24 max-limit=100M/100M bucket-size=0.25/0.25</code></pre>
+                <p>Larger bucket improves short web/object transfers.</p>
+
+                <h3>Practical Tuning Steps</h3>
+<pre><code>1. Start with default 0.1
+2. Measure latency during congestion
+3. Reduce bucket for voice / interactive traffic
+4. Increase bucket for user browsing responsiveness
+5. Re-test with real workloads</code></pre>
+
+                <h3>Important Notes</h3>
+                <ul>
+                    <li>bucket-size is not guaranteed bandwidth.</li>
+                    <li>It controls token storage behavior.</li>
+                    <li>limit-at and max-limit still define rate policy.</li>
+                    <li>Parent and child queues may interact during congestion.</li>
+                </ul>
+
+                <h2>Burst Limit Deep Dive</h2>
+                <p>Burst allows temporary higher throughput when average traffic remains below threshold.</p>
+                <p>Useful for:</p>
+                <ul>
+                    <li>Fast web page loading</li>
+                    <li>Short file transfers</li>
+                    <li>Better user responsiveness</li>
+                    <li>Controlled oversubscription environments</li>
+                </ul>
+
+                <h3>Example Queue with Burst</h3>
+<pre><code class="language-bash">/queue simple
+add name="User1" target=10.10.10.11 \
+max-limit=10M/10M \
+burst-limit=20M/20M \
+burst-threshold=8M/8M \
+burst-time=30s/30s</code></pre>
+
+                <h3>How It Works</h3>
+                <p>If average usage over 30 seconds stays below 8 Mbps, the user may burst to 20 Mbps temporarily.</p>
+                <p>Once sustained usage rises above threshold, traffic returns toward normal max-limit policy behavior.</p>
+
+                <h2>Default vs Custom HTB Design</h2>
+
+                <h3>Default / Basic Deployment</h3>
+<pre><code>Single parent queue
+Few child queues
+Default pfifo queue type
+No marking logic</code></pre>
+                <p>Suitable for small offices.</p>
+
+                <h3>Custom Enterprise Deployment</h3>
+<pre><code>Traffic classification by mangle
+Separate voice / business / guest / backup classes
+Guaranteed bandwidth
+Priority hierarchy
+Burst policies
+PCQ fairness for user pools</code></pre>
+                <p>Suitable for providers, campuses, and data centers.</p>
+
+                <h2>Provider Scenario (WISP / ISP)</h2>
+
+                <h3>Objective</h3>
+                <p>Deliver fair shared internet to 500 subscribers on 1 Gbps uplink.</p>
+
+                <h3>Recommended Design</h3>
+                <ul>
+                    <li>Parent queue = 1 Gbps</li>
+                    <li>PCQ child queues per subscriber tier</li>
+                    <li>Burst for residential responsiveness</li>
+                    <li>Priority for business customers</li>
+                </ul>
+
+                <h3>Example</h3>
+<pre><code>Business Clients -> Higher priority + guaranteed CIR
+Residential -> PCQ fairness
+Night Backup -> Lower priority</code></pre>
+
+                <h3>Operational Benefit</h3>
+                <ul>
+                    <li>Prevent one user saturating link</li>
+                    <li>Better customer experience</li>
+                    <li>Sell premium tiers efficiently</li>
+                </ul>
+
+                <h2>Data Center Scenario</h2>
+
+                <h3>Objective</h3>
+                <p>Protect business applications during congestion.</p>
+
+                <h3>Example Hierarchy</h3>
+<pre><code>WAN/DC Edge 500 Mbps
+ ├── Voice Gateway        priority 1
+ ├── ERP / API           priority 2
+ ├── Replication         priority 6
+ └── Guest Internet      priority 8</code></pre>
+
+                <h3>Benefit</h3>
+                <ul>
+                    <li>Replication never breaks voice</li>
+                    <li>ERP remains responsive</li>
+                    <li>Guest traffic uses excess bandwidth only</li>
+                </ul>
+
+                <h2>Queue Tree + Mangle Example</h2>
+<pre><code class="language-bash">/ip firewall mangle
+add chain=forward protocol=udp dst-port=5060 action=mark-packet new-packet-mark=voice passthrough=yes
+add chain=forward dst-address=10.20.30.0/24 action=mark-packet new-packet-mark=erp passthrough=yes</code></pre>
+                <p>Then attach packet marks to Queue Tree.</p>
+
+                <h2>Common Misunderstandings</h2>
+                <ul>
+                    <li>max-limit is not guaranteed bandwidth.</li>
+                    <li>priority only matters during congestion.</li>
+                    <li>Burst is temporary, not permanent speed boost.</li>
+                    <li>Simple Queue is not always best at scale.</li>
+                    <li>Queue Tree without good marking loses precision.</li>
+                </ul>
+
+                <h2>Troubleshooting Tips</h2>
+                <table>
+                    <thead>
+                        <tr><th>Symptom</th><th>Check</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Users slow at peak hours</td><td>Parent saturation</td></tr>
+                        <tr><td>Voice poor quality</td><td>Missing priority / queue drops</td></tr>
+                        <tr><td>Burst not working</td><td>Threshold or time window wrong</td></tr>
+                        <tr><td>Queue Tree idle</td><td>Packet marks missing</td></tr>
+                        <tr><td>Unfair bandwidth</td><td>Wrong PCQ / hierarchy design</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Summary / Takeaways</h2>
+                <ul>
+                    <li>Simple Queue is ideal for straightforward user-based shaping.</li>
+                    <li>Queue Tree provides enterprise-grade hierarchical QoS control.</li>
+                    <li>HTB enables guarantees, borrowing, and priority scheduling.</li>
+                    <li>Burst improves user responsiveness for short-duration traffic.</li>
+                    <li>Providers use QoS for fairness and service tiers.</li>
+                    <li>Data centers use QoS to protect business-critical applications.</li>
+                    <li>Strong MikroTik engineers design queues based on traffic behavior, not only speed limits.</li>
+                </ul>
+
+                <div class="article-nav">
+                    <a href="understanding-internet-structure-bgp.html">
+                        <i class="fas fa-arrow-left"></i> Previous: Internet Structure &amp; BGP
+                    </a>
+                    <a href="cisco-eigrp-deep-dive.html">
+                        Next: EIGRP Deep Dive <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="../../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <app-footer></app-footer>
+    <script>AOS.init();</script>
+    <script src="../../script/components.js"></script>
+</body>
+</html>

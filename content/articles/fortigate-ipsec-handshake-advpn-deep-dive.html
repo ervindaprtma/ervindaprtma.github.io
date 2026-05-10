@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+        <meta name="description" content="FortiGate IPsec Deep Dive: Packet Handshake, Debug Flow, Hub-Spoke & ADVPN 2.0">
+        <meta name="author" content="Ervinda Pratama">
+        <link rel="stylesheet" href="../../styles/main.css">
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32">
+        <title>FortiGate IPsec Deep Dive: Packet Handshake, Debug Flow, Hub-Spoke &amp; ADVPN 2.0 — Ervinda Pratama</title>
+        <style>
+            .article-header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid #e0e0e0; margin-bottom: 2rem; }
+            body.dark-mode .article-header { border-bottom-color: #333; }
+            .article-back { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; margin-bottom:1.5rem; }
+            .article-back:hover { color:#005fa3; }
+            body.dark-mode .article-back { color:#00f2fe; }
+            .article-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:1rem; }
+            .article-tag { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; padding:2px 10px; border-radius:20px; background:rgba(0,119,204,0.1); color:#0077cc; border:1px solid rgba(0,119,204,0.25); }
+            body.dark-mode .article-tag { background:rgba(0,242,254,0.1); color:#00f2fe; border-color:rgba(0,242,254,0.25); }
+            .article-title { font-size:2rem; font-weight:800; line-height:1.25; margin-bottom:0.9rem; }
+            body.dark-mode .article-title { color:#f0f0f0; }
+            .article-meta { font-size:13px; color:#888; display:flex; flex-wrap:wrap; gap:1rem; align-items:center; }
+            body.dark-mode .article-meta { color:#666; }
+            .article-content { max-width:780px; margin:0 auto; font-size:1rem; line-height:1.8; color:#333; }
+            body.dark-mode .article-content { color:#d0d0d0; }
+            .article-content h2 { font-size:1.35rem; font-weight:700; margin-top:2.2rem; margin-bottom:0.7rem; border-left:4px solid #0077cc; padding-left:0.7rem; color:#003366; }
+            body.dark-mode .article-content h2 { border-left-color:#00f2fe; color:#00f2fe; }
+            .article-content h3 { font-size:1.1rem; font-weight:700; margin-top:1.5rem; margin-bottom:0.5rem; color:#0077cc; }
+            body.dark-mode .article-content h3 { color:#7fffff; }
+            .article-content pre, .article-content code { background:#1e1e2e; color:#a8d8a8; border-radius:6px; font-size:0.875rem; font-family:'Courier New',monospace; }
+            .article-content pre { padding:1rem 1.2rem; overflow-x:auto; margin:1.2rem 0; }
+            .article-content code { padding:2px 6px; }
+            .article-content blockquote { border-left:4px solid #0077cc; background:rgba(0, 119, 204, 0.06); margin:1.5rem 0; padding:0.8rem 1.2rem; border-radius:0 6px 6px 0; font-style:italic; color:#555; }
+            body.dark-mode .article-content blockquote { border-left-color:#00f2fe; background:rgba(0, 242, 254, 0.05); color:#aaa; }
+            .article-content table { width:100%; border-collapse:collapse; margin:1.2rem 0; }
+            .article-content table th, .article-content table td { border:1px solid #ddd; padding:8px 12px; font-size:0.9rem; }
+            .article-content table th { background:#f0f5ff; font-weight:700; }
+            body.dark-mode .article-content table th { background:#1a1a2e; color:#e0e0e0; }
+            body.dark-mode .article-content table td { border-color:#333; color:#d0d0d0; }
+            .article-nav { display:flex; justify-content:space-between; margin-top:3rem; padding-top:1.5rem; border-top:1px solid #e0e0e0; gap:1rem; }
+            body.dark-mode .article-nav { border-top-color:#333; }
+            .article-nav a { font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; display:flex; align-items:center; gap:6px; }
+            body.dark-mode .article-nav a { color:#00f2fe; }
+        </style>
+    </head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <app-navbar></app-navbar>
+    <section class="page-content">
+        <div class="container">
+            <div class="article-content" data-aos="fade-up">
+
+                <div class="article-header">
+                    <a href="../article_research.html" class="article-back">
+                        <i class="fas fa-arrow-left"></i> Back to Articles &amp; Research
+                    </a>
+                    <div class="article-tags">
+                        <span class="article-tag">Fortinet</span>
+                        <span class="article-tag">Security</span>
+                        <span class="article-tag">VPN</span>
+                    </div>
+                    <h1 class="article-title">FortiGate IPsec Deep Dive: Packet Handshake, Debug Flow, Hub-Spoke &amp; ADVPN 2.0</h1>
+                    <div class="article-meta">
+                        <span><i class="fas fa-user"></i>&nbsp; Ervinda Pratama</span>
+                        <span><i class="fas fa-calendar"></i>&nbsp; July 2026</span>
+                        <span><i class="fas fa-clock"></i>&nbsp; ~22 min read</span>
+                    </div>
+                </div>
+
+                <h2>Introduction</h2>
+                <p>Understanding IPsec only from GUI configuration is not enough for production engineers. Real operational mastery comes from understanding what happens at packet level during tunnel establishment, route learning, and traffic forwarding.</p>
+                <p>This article breaks down FortiGate IPsec behavior in three common enterprise scenarios:</p>
+                <ol>
+                    <li>Static peer IPsec between two firewalls</li>
+                    <li>Hub-and-Spoke IPsec (without ADVPN)</li>
+                    <li>Hub-and-Spoke IPsec with ADVPN / ADVPN 2.0 shortcut tunnels</li>
+                </ol>
+                <p>This article also covers packet handshake stages, debug commands, and SD-WAN transport-group behavior in ADVPN 2.0.</p>
+
+                <h2>Core IPsec Handshake Sequence</h2>
+                <p>Regardless of topology, most FortiGate IPsec sessions follow this sequence:</p>
+<pre><code>1. Interesting traffic detected OR always-up tunnel starts
+2. IKE Phase 1 negotiation begins
+3. DH key exchange performed
+4. Peer authentication (PSK / certificate)
+5. IKE SA established
+6. Phase 2 selectors negotiated
+7. IPsec SA established
+8. Encrypted ESP traffic starts</code></pre>
+
+                <h2>Useful FortiGate Debug Commands</h2>
+<pre><code class="language-bash">diagnose vpn ike log-filter clear
+diagnose debug reset
+diagnose debug application ike -1
+diagnose debug enable
+
+get vpn ipsec tunnel summary
+diagnose vpn tunnel list</code></pre>
+
+                <p>For dataplane policy/session checks:</p>
+<pre><code class="language-bash">diagnose debug flow filter addr x.x.x.x
+diagnose debug flow trace start 50</code></pre>
+                <p>Disable debug after testing.</p>
+
+                <h2>Scenario 1: Static Peer IPsec Between Two Firewalls</h2>
+                <h3>Topology</h3>
+<pre><code>LAN-A --- FGT-A === Internet === FGT-B --- LAN-B</code></pre>
+
+                <h3>Packet-Level Handshake</h3>
+<pre><code>FGT-A -> UDP 500 -> FGT-B   (IKE_SA_INIT / proposal)
+FGT-B -> UDP 500 -> FGT-A   (proposal accepted)
+DH exchange occurs
+FGT-A &lt;-&gt; FGT-B authenticate PSK/cert
+IKE SA established
+Phase2 Quick Mode / CHILD SA negotiated
+ESP (Proto 50) traffic begins</code></pre>
+
+                <h3>Debug View (Typical)</h3>
+<pre><code>initiating Main Mode / IKEv2 exchange
+proposal chosen
+peer authenticated
+IPsec SA established</code></pre>
+
+                <h3>Traffic Flow After Tunnel Up</h3>
+<pre><code>HostA 10.1.0.10 -> HostB 10.2.0.10
+FGT-A encrypts -> Internet -> FGT-B decrypts -> LAN-B</code></pre>
+
+                <h2>Scenario 2: Hub-and-Spoke IPsec (Without ADVPN)</h2>
+                <h3>Topology</h3>
+<pre><code>Spoke1 === Hub === Spoke2</code></pre>
+                <p>Each spoke only forms tunnel to Hub.</p>
+
+                <h3>Initial Routing Behavior</h3>
+                <ul>
+                    <li>Spoke1 learns Spoke2 LAN via Hub.</li>
+                    <li>Spoke2 learns Spoke1 LAN via Hub.</li>
+                    <li>Traffic always traverses Hub.</li>
+                </ul>
+
+                <h3>Packet Path</h3>
+<pre><code>Host-S1 -> FGT-Spoke1 -> IPsec to Hub
+Hub decrypts / re-routes
+Hub re-encrypts to Spoke2
+FGT-Spoke2 decrypts -> destination</code></pre>
+
+                <h3>Operational Impact</h3>
+                <table>
+                    <thead>
+                        <tr><th>Topic</th><th>Result</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Latency</td><td>Higher</td></tr>
+                        <tr><td>Hub CPU</td><td>Increased</td></tr>
+                        <tr><td>Simplicity</td><td>High</td></tr>
+                        <tr><td>East-West Scale</td><td>Limited</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Debug Flow Example at Hub</h3>
+<pre><code>Received ESP from Spoke1
+Decrypt packet
+Route lookup destination Spoke2 subnet
+Match policy Hub->Spoke2
+Encrypt and forward ESP to Spoke2</code></pre>
+
+                <h2>Scenario 3: Hub-and-Spoke With ADVPN</h2>
+                <h3>Topology</h3>
+<pre><code>        Hub
+       /   \
+   Spoke1  Spoke2
+      \     /
+   Dynamic Shortcut Tunnel</code></pre>
+                <p>ADVPN allows spokes to dynamically establish direct spoke-to-spoke shortcuts after initial discovery through the hub.</p>
+
+                <h3>Initial Session Behavior</h3>
+                <p>First packets often traverse Hub, then shortcut creation begins.</p>
+
+                <h3>Packet Sequence</h3>
+<pre><code>1. Spoke1 sends traffic to Spoke2 via Hub
+2. Hub helps discovery / NHS-like broker role in Fortinet design
+3. Spokes learn reachable peer underlay info
+4. Shortcut IKE negotiation starts directly
+5. Direct IPsec tunnel established
+6. Subsequent traffic uses shortcut tunnel</code></pre>
+
+                <h3>Result</h3>
+                <ul>
+                    <li>Lower latency</li>
+                    <li>Lower hub load</li>
+                    <li>Better east-west branch performance</li>
+                </ul>
+
+                <h2>ADVPN 2.0 Enhancements</h2>
+                <p>Fortinet documents that ADVPN 2.0 introduced <strong>edge discovery and path management</strong>, with shortcut decisions made by spokes based on available underlays and health criteria. It reduces dependence on older routing design constraints such as route reflection or per-overlay BGP models. (<a href="https://docs2.fortinet.com/document/fortigate/7.6.6/administration-guide/637049?utm_source=chatgpt.com" target="_blank">docs2.fortinet.com</a>)</p>
+                <p>ADVPN 2.0 also supports multiple shortcuts for load-balancing decisions depending on health and transport grouping. (<a href="https://docs.fortinet.com/document/fortigate/7.6.0/new-features/905667/advpn-2-0-enhancements?utm_source=chatgpt.com" target="_blank">docs.fortinet.com</a>)</p>
+
+                <h2>Transport Groups (ADVPN 2.0)</h2>
+                <p>Transport groups operate under the following model:</p>
+                <p>Transport groups classify overlay members that belong to the same interconnected transport type (for example Internet-to-Internet, MPLS-to-MPLS). Shortcuts are not attempted between segregated transports assigned to different groups. (<a href="https://docs.fortinet.com/document/fortigate/7.6.0/sd-wan-architecture-for-enterprise/522962/transport-groups?utm_source=chatgpt.com" target="_blank">docs.fortinet.com</a>)</p>
+
+                <h3>Example</h3>
+                <table>
+                    <thead>
+                        <tr><th>Overlay Member</th><th>Transport</th><th>Group</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>WAN1 Broadband</td><td>Internet</td><td>1</td></tr>
+                        <tr><td>WAN2 LTE</td><td>Internet</td><td>1</td></tr>
+                        <tr><td>MPLS1</td><td>MPLS</td><td>2</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Meaning</h3>
+                <ul>
+                    <li>Spoke broadband can shortcut to remote LTE (both internet group).</li>
+                    <li>Broadband to MPLS shortcut is normally not selected when groups differ.</li>
+                </ul>
+
+                <h3>Example Config</h3>
+<pre><code class="language-bash">config system sdwan
+ config members
+  edit 1
+   set interface "HUB_INET"
+   set transport-group 1
+  next
+  edit 2
+   set interface "HUB_MPLS"
+   set transport-group 2
+  next
+ end
+end</code></pre>
+
+                <h2>Debug Flow: ADVPN Shortcut Creation</h2>
+                <p>Typical observable sequence:</p>
+<pre><code>Traffic enters hub path
+Spoke evaluates remote spoke reachability
+Shortcut query / discovery triggered
+IKE negotiation direct between spokes
+New child SA installed
+Routing/session migrates to shortcut path</code></pre>
+
+                <h2>Routing Behavior Summary</h2>
+                <table>
+                    <thead>
+                        <tr><th>Design</th><th>Path Between Spokes</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Static Site-to-Site</td><td>Direct fixed tunnel only</td></tr>
+                        <tr><td>Hub-Spoke no ADVPN</td><td>Via Hub</td></tr>
+                        <tr><td>Hub-Spoke ADVPN</td><td>Via Hub initially, then direct shortcut</td></tr>
+                        <tr><td>ADVPN 2.0</td><td>Direct shortcut chosen using path logic</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Important Troubleshooting Checks</h2>
+                <ul>
+                    <li>PSK mismatch</li>
+                    <li>Wrong selectors</li>
+                    <li>BGP/OSPF routes missing across overlay</li>
+                    <li>SD-WAN rule preference incorrect</li>
+                    <li>NAT-T blocked UDP 4500</li>
+                    <li>Shortcut disabled on phase1</li>
+                    <li>Transport-group mismatch expectation</li>
+                    <li>Session pinned to old path until re-evaluation</li>
+                </ul>
+
+                <h2>Verification Commands</h2>
+<pre><code class="language-bash">get router info routing-table all
+get vpn ipsec tunnel summary
+diagnose vpn ike gateway list
+diagnose sys sdwan service</code></pre>
+
+                <p>For ADVPN:</p>
+<pre><code class="language-bash">diagnose vpn tunnel list</code></pre>
+                <p>Review the output for dynamically created shortcut tunnels.</p>
+
+                <h2>Summary / Takeaways</h2>
+                <ul>
+                    <li>Static peer IPsec creates direct permanent tunnels between known peers.</li>
+                    <li>Traditional hub-and-spoke sends spoke-to-spoke traffic through the hub.</li>
+                    <li>ADVPN dynamically builds direct shortcut tunnels after discovery.</li>
+                    <li>ADVPN 2.0 improves spoke intelligence, path management, and transport-aware shortcut decisions.</li>
+                    <li>Transport groups help ensure shortcuts use compatible underlay transports.</li>
+                    <li>Debugging FortiGate IPsec requires understanding both control-plane (IKE) and data-plane (flow/session) behavior.</li>
+                </ul>
+                <p>Effective VPN operations require understanding not only tunnel status, but also why the tunnel formed and how traffic is forwarded across it.</p>
+
+                <div class="article-nav">
+                    <a href="fortigate-ipsec-vpn-deep-dive.html">
+                        <i class="fas fa-arrow-left"></i> Previous: FortiGate IPsec Deep Dive
+                    </a>
+                    <a href="fortigate-automation-stitch-sslvpn-defense.html">
+                        Next: FortiGate SSL VPN Defense <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="../../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <app-footer></app-footer>
+    <script>AOS.init();</script>
+    <script src="../../script/components.js"></script>
+</body>
+</html>

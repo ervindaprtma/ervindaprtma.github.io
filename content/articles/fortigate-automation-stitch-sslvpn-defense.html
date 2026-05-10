@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+        <meta name="description" content="FortiGate Automation Stitch: Multi-Layer SSL VPN Defense Against Brute-Force, Geo-Location, and ASN-Based Attacks">
+        <meta name="author" content="Ervinda Pratama">
+        <link rel="stylesheet" href="../../styles/main.css">
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32">
+        <title>FortiGate SSL VPN Defense: Automation &amp; Multi-Layer Security — Ervinda Pratama</title>
+        <style>
+            .article-header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid #e0e0e0; margin-bottom: 2rem; }
+            body.dark-mode .article-header { border-bottom-color: #333; }
+            .article-back { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; margin-bottom:1.5rem; }
+            .article-back:hover { color:#005fa3; }
+            body.dark-mode .article-back { color:#00f2fe; }
+            .article-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:1rem; }
+            .article-tag { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; padding:2px 10px; border-radius:20px; background:rgba(0,119,204,0.1); color:#0077cc; border:1px solid rgba(0,119,204,0.25); }
+            body.dark-mode .article-tag { background:rgba(0,242,254,0.1); color:#00f2fe; border-color:rgba(0,242,254,0.25); }
+            .article-title { font-size:2rem; font-weight:800; line-height:1.25; margin-bottom:0.9rem; }
+            body.dark-mode .article-title { color:#f0f0f0; }
+            .article-meta { font-size:13px; color:#888; display:flex; flex-wrap:wrap; gap:1rem; align-items:center; }
+            body.dark-mode .article-meta { color:#666}
+            .article-content { max-width:780px; margin:0 auto; font-size:1rem; line-height:1.8; color:#333; }
+            body.dark-mode .article-content { color:#d0d0d0; }
+            .article-content h2 { font-size:1.35rem; font-weight:700; margin-top:2.2rem; margin-bottom:0.7rem; border-left:4px solid #0077cc; padding-left:0.7rem; color:#003366; }
+            body.dark-mode .article-content h2 { border-left-color:#00f2fe; color:#00f2fe; }
+            .article-content h3 { font-size:1.1rem; font-weight:700; margin-top:1.5rem; margin-bottom:0.5rem; color:#0077cc; }
+            body.dark-mode .article-content h3 { color:#7fffff; }
+            .article-content pre, .article-content code { background:#1e1e2e; color:#a8d8a8; border-radius:6px; font-size:0.875rem; font-family:'Courier New',monospace; }
+            .article-content pre { padding:1rem 1.2rem; overflow-x:auto; margin:1.2rem 0; }
+            .article-content code { padding:2px 6px; }
+            .article-content blockquote { border-left:4px solid #0077cc; background:rgba(0, 119, 204, 0.06); margin:1.5rem 0; padding:0.8rem 1.2rem; border-radius:0 6px 6px 0; font-style:italic; color:#555; }
+            body.dark-mode .article-content blockquote { border-left-color:#00f2fe; background:rgba(0, 242, 254, 0.05); color:#aaa; }
+            .article-content table { width:100%; border-collapse:collapse; margin:1.2rem 0; }
+            .article-content table th, .article-content table td { border:1px solid #ddd; padding:8px 12px; font-size:0.9rem; }
+            .article-content table th { background:#f0f5ff; font-weight:700; }
+            body.dark-mode .article-content table th { background:#1a1a2e; color:#e0e0e0; }
+            body.dark-mode .article-content table td { border-color:#333; color:#d0d0d0; }
+            .article-nav { display:flex; justify-content:space-between; margin-top:3rem; padding-top:1.5rem; border-top:1px solid #e0e0e0; gap:1rem; }
+            body.dark-mode .article-nav { border-top-color:#333; }
+            .article-nav a { font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; display:flex; align-items:center; gap:6px; }
+            body.dark-mode .article-nav a { color:#00f2fe; }
+        </style>
+    </head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <app-navbar></app-navbar>
+    <section class="page-content">
+        <div class="container">
+            <div class="article-content" data-aos="fade-up">
+
+                <div class="article-header">
+                    <a href="../article_research.html" class="article-back">
+                        <i class="fas fa-arrow-left"></i> Back to Articles &amp; Research
+                    </a>
+                    <div class="article-tags">
+                        <span class="article-tag">Fortinet</span>
+                        <span class="article-tag">Security</span>
+                        <span class="article-tag">Automation</span>
+                    </div>
+                    <h1 class="article-title">FortiGate SSL VPN Defense: Automation Stitch &amp; Multi-Layer Security</h1>
+                    <div class="article-meta">
+                        <span><i class="fas fa-user"></i>&nbsp; Ervinda Pratama</span>
+                        <span><i class="fas fa-calendar"></i>&nbsp; July 2026</span>
+                        <span><i class="fas fa-clock"></i>&nbsp; ~18 min read</span>
+                    </div>
+                </div>
+
+                <h2>Overview</h2>
+                <p>SSL VPN remains one of the most targeted enterprise services. Threat actors continuously scan for public-facing VPN portals to launch brute-force attacks, credential stuffing, and vulnerability exploitation. While standard password complexity and MFA are essential, they do not prevent the noise and resource consumption of persistent login attempts.</p>
+                <p>This article explores advanced defensive strategies using <strong>FortiGate Automation Stitches</strong> to automatically block brute-force attackers, combined with <strong>Geo-Location</strong> and <strong>ASN-based</strong> filtering to reduce the attack surface before authentication even begins.</p>
+
+                <hr>
+
+                <h2>Section 1 — Defensive Strategy: The "Block First" Mindset</h2>
+                <p>Effective SSL VPN security should follow a layered approach:</p>
+                <ol>
+                    <li><strong>Surface Reduction:</strong> Block countries where you have no business presence (Geo-IP).</li>
+                    <li><strong>Infrastructure Filtering:</strong> Block traffic from hosting providers, VPNs, and Tor exit nodes (ASN blocking).</li>
+                    <li><strong>Rate Limiting:</strong> Limit how many login attempts can occur within a timeframe.</li>
+                    <li><strong>Reactive Automation:</strong> Automatically ban IPs that trigger multiple failed logins (Automation Stitch).</li>
+                    <li><strong>Authentication:</strong> Enforce strong MFA for all users.</li>
+                </ol>
+
+                <hr>
+
+                <h2>Section 2 — Implementing Geo-IP and ASN Filtering</h2>
+                <p>Most brute-force attacks originate from data centers (AWS, DigitalOcean, Linode) or specific geographic regions. We can use <code>firewall address</code> objects to block these proactively.</p>
+
+                <h3>Geo-IP Blocking</h3>
+<pre><code class="language-bash">config firewall address
+    edit "COUNTRY_BLOCK_LIST"
+        set type geography
+        set country "CN" "RU" "IR" "KP"
+    next
+end</code></pre>
+
+                <h3>ASN Blocking (The Real Power Move)</h3>
+                <p>Real users connect from residential ISPs. Attackers often connect from cloud infrastructure. By blocking ASNs of major cloud providers, you eliminate a significant portion of automated bot traffic.</p>
+<pre><code class="language-bash">config firewall address
+    edit "ASN_BLOCK_LIST"
+        set type asn
+        set asn 16509 14061 15169  # Amazon, DigitalOcean, Google Cloud
+    next
+end</code></pre>
+
+                <hr>
+
+                <h2>Section 3 — FortiGate Automation Stitch for Brute-Force Defense</h2>
+                <p>Automation Stitches consist of a <strong>Trigger</strong> (an event in the system log) and an <strong>Action</strong> (a command or notification).</p>
+
+                <h3>1. The Trigger: SSL VPN Login Failure</h3>
+                <p>We look for the log event ID related to SSL VPN login failures.</p>
+<pre><code class="language-bash">config system automation-trigger
+    edit "Trigger_SSLVPN_Fail"
+        set event-type event-log
+        set logid 39426  # SSL VPN login failed
+    next
+end</code></pre>
+
+                <h3>2. The Action: Ban IP</h3>
+                <p>The action will execute a CLI script to add the offending IP to a quarantine list.</p>
+<pre><code class="language-bash">config system automation-action
+    edit "Action_Ban_IP"
+        set action-type cli-script
+        set script "diagnose user quarantine add src4 %%log.remip%% 60 'Auto-ban by Automation Stitch'"
+        set accprofile "super_admin"
+    next
+end</code></pre>
+
+                <h3>3. The Stitch: Combining Trigger and Action</h3>
+<pre><code class="language-bash">config system automation-stitch
+    edit "Stitch_SSLVPN_Defense"
+        set trigger "Trigger_SSL_VPN_Login_Failed"
+        set action "Action_Ban_IP"
+    next
+end</code></pre>
+
+                <hr>
+
+                <h2>Section 4 — Monitoring and Verification</h2>
+                <p>You can verify the active bans using the following CLI command:</p>
+<pre><code class="language-bash">diagnose user quarantine list</code></pre>
+                <p>And check the automation execution history:</p>
+<pre><code class="language-bash">diagnose system automation history</code></pre>
+
+                <hr>
+
+                <h2>Summary / Takeaways</h2>
+                <ul>
+                    <li><strong>Automation Stitches</strong> turn passive logs into active defense by reacting to threats in real-time.</li>
+                    <li><strong>ASN Blocking</strong> is often more effective than Geo-IP blocking because it targets the infrastructure used by botnets.</li>
+                    <li>Layering Geo-IP, ASN, and Automation creates a "Hostile Environment" for attackers, forcing them to move to easier targets.</li>
+                    <li>Always ensure your legitimate IP ranges are excluded from auto-ban scripts to prevent accidental lockout of valid employees.</li>
+                </ul>
+                
+                <p><em>Security is not a single feature; it is a continuous cycle of hardening, detecting, and responding.</em></p>
+
+                <div class="article-nav">
+                    <a href="fortigate-ipsec-handshake-advpn-deep-dive.html">
+                        <i class="fas fa-arrow-left"></i> Previous: FortiGate IPsec Deep Dive (Part 2)
+                    </a>
+                    <span></span>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="../../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <app-footer></app-footer>
+    <script>AOS.init();</script>
+    <script src="../../script/components.js"></script>
+</body>
+</html>

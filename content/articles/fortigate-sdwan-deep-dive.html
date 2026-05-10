@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+        <meta name="description" content="FortiGate SD-WAN Deep Dive: Load Balance, Failover, Performance SLA & Policy Steering">
+        <meta name="author" content="Ervinda Pratama">
+        <link rel="stylesheet" href="../../styles/main.css">
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32">
+        <title>FortiGate SD-WAN Deep Dive — Ervinda Pratama</title>
+        <style>
+            .article-header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid #e0e0e0; margin-bottom: 2rem; }
+            body.dark-mode .article-header { border-bottom-color: #333; }
+            .article-back { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; margin-bottom:1.5rem; }
+            .article-back:hover { color:#005fa3; }
+            body.dark-mode .article-back { color:#00f2fe; }
+            .article-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:1rem; }
+            .article-tag { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; padding:2px 10px; border-radius:20px; background:rgba(0,119,204,0.1); color:#0077cc; border:1px solid rgba(0,119,204,0.25); }
+            body.dark-mode .article-tag { background:rgba(0,242,254,0.1); color:#00f2fe; border-color:rgba(0,242,254,0.25); }
+            .article-title { font-size:2rem; font-weight:800; line-height:1.25; margin-bottom:0.9rem; }
+            body.dark-mode .article-title { color:#f0f0f0; }
+            .article-meta { font-size:13px; color:#888; display:flex; flex-wrap:wrap; gap:1rem; align-items:center; }
+            body.dark-mode .article-meta { color:#666; }
+            .article-content { max-width:780px; margin:0 auto; font-size:1rem; line-height:1.8; color:#333; }
+            body.dark-mode .article-content { color:#d0d0d0; }
+            .article-content h2 { font-size:1.35rem; font-weight:700; margin-top:2.2rem; margin-bottom:0.7rem; border-left:4px solid #0077cc; padding-left:0.7rem; color:#003366; }
+            body.dark-mode .article-content h2 { border-left-color:#00f2fe; color:#00f2fe; }
+            .article-content h3 { font-size:1.1rem; font-weight:700; margin-top:1.5rem; margin-bottom:0.5rem; color:#0077cc; }
+            body.dark-mode .article-content h3 { color:#7fffff; }
+            .article-content pre, .article-content code { background:#1e1e2e; color:#a8d8a8; border-radius:6px; font-size:0.875rem; font-family:'Courier New',monospace; }
+            .article-content pre { padding:1rem 1.2rem; overflow-x:auto; margin:1.2rem 0; }
+            .article-content code { padding:2px 6px; }
+            .article-content blockquote { border-left:4px solid #0077cc; background:rgba(0,119,204,0.06); margin:1.5rem 0; padding:0.8rem 1.2rem; border-radius:0 6px 6px 0; font-style:italic; color:#555; }
+            body.dark-mode .article-content blockquote { border-left-color:#00f2fe; background:rgba(0,242,254,0.05); color:#aaa; }
+            .article-content table { width:100%; border-collapse:collapse; margin:1.2rem 0; }
+            .article-content table th, .article-content table td { border:1px solid #ddd; padding:8px 12px; font-size:0.9rem; }
+            .article-content table th { background:#f0f5ff; font-weight:700; }
+            body.dark-mode .article-content table th { background:#1a1a2e; color:#e0e0e0; }
+            body.dark-mode .article-content table td { border-color:#333; color:#d0d0d0; }
+            .article-nav { display:flex; justify-content:space-between; margin-top:3rem; padding-top:1.5rem; border-top:1px solid #e0e0e0; gap:1rem; }
+            body.dark-mode .article-nav { border-top-color:#333; }
+            .article-nav a { font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; display:flex; align-items:center; gap:6px; }
+            body.dark-mode .article-nav a { color:#00f2fe; }
+        </style>
+    </head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <app-navbar></app-navbar>
+    <section class="page-content">
+        <div class="container">
+            <div class="article-content" data-aos="fade-up">
+
+                <div class="article-header">
+                    <a href="../article_research.html" class="article-back">
+                        <i class="fas fa-arrow-left"></i> Back to Articles &amp; Research
+                    </a>
+                    <div class="article-tags">
+                        <span class="article-tag">Fortinet</span>
+                        <span class="article-tag">Security</span>
+                        <span class="article-tag">SD-WAN</span>
+                    </div>
+                    <h1 class="article-title">FortiGate SD-WAN Deep Dive: Load Balance, Failover, Performance SLA &amp; Policy Steering</h1>
+                    <div class="article-meta">
+                        <span><i class="fas fa-user"></i>&nbsp; Ervinda Pratama</span>
+                        <span><i class="fas fa-calendar"></i>&nbsp; May 2026</span>
+                        <span><i class="fas fa-clock"></i>&nbsp; ~22 min read</span>
+                    </div>
+                </div>
+
+                <h2>Introduction</h2>
+                <p>
+                    FortiGate SD-WAN is more than combining multiple WAN links into one logical interface. It is an intelligent path-selection system that continuously evaluates link quality, steers sessions according to business intent, and automates failover when connectivity degrades.
+                </p>
+                <p>
+                    In practical deployments, FortiGate SD-WAN becomes powerful because it merges routing awareness, real-time link health monitoring, application steering, and security enforcement in one platform.
+                </p>
+                <p>
+                    Traditional WAN architectures select a route; SD-WAN architectures select the most suitable user experience based on policy and path quality.
+                </p>
+
+                <h2>What Makes FortiGate SD-WAN Powerful?</h2>
+                <table>
+                    <thead>
+                        <tr><th>Capability</th><th>Benefit</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Multiple WAN members</td><td>Fiber + Broadband + LTE + MPLS</td></tr>
+                        <tr><td>Dynamic path steering</td><td>Best link per application</td></tr>
+                        <tr><td>Load balancing</td><td>Use multiple circuits efficiently</td></tr>
+                        <tr><td>Automatic failover</td><td>Faster outage response</td></tr>
+                        <tr><td>Performance SLA</td><td>Decisions based on latency/loss/jitter</td></tr>
+                        <tr><td>Application awareness</td><td>Prioritize business traffic</td></tr>
+                        <tr><td>Native firewall integration</td><td>Security + routing in one device</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Core SD-WAN Components on FortiGate</h2>
+                <table>
+                    <thead>
+                        <tr><th>Component</th><th>Function</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>SD-WAN Members</td><td>Physical WAN or VPN interfaces</td></tr>
+                        <tr><td>SD-WAN Zone</td><td>Logical container for members</td></tr>
+                        <tr><td>Performance SLA</td><td>Health probes and quality checks</td></tr>
+                        <tr><td>SD-WAN Rules</td><td>Session steering decisions</td></tr>
+                        <tr><td>Static/Dynamic Routes</td><td>Reachability to destinations</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>How Load Balancing Works</h2>
+                <p>
+                    FortiGate SD-WAN rules can distribute sessions across eligible members depending on strategy. Fortinet documents strategies such as automatic, manual, best quality, lowest cost (SLA), and maximize bandwidth (load-balance). (<a href="https://docs.fortinet.com/document/fortigate/7.2.4/administration-guide/716691/sd-wan-rules" target="_blank">docs.fortinet.com</a>)
+                </p>
+
+                <h3>Common Load Balance Modes</h3>
+                <table>
+                    <thead>
+                        <tr><th>Strategy</th><th>Behavior</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Maximize Bandwidth</td><td>Uses all links meeting SLA</td></tr>
+                        <tr><td>Manual Priority</td><td>Preferred link order</td></tr>
+                        <tr><td>Best Quality</td><td>Selects link with best measured quality</td></tr>
+                        <tr><td>Lowest Cost (SLA)</td><td>Selects lowest cost among links meeting SLA</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Example Use Case</h3>
+                <ul>
+                    <li>WAN1 Fiber 200 Mbps</li>
+                    <li>WAN2 Broadband 100 Mbps</li>
+                    <li>WAN3 LTE Backup</li>
+                </ul>
+                <p>
+                    Web traffic may use WAN1 + WAN2, while voice stays on lowest-latency WAN1.
+                </p>
+
+                <h2>How Failover Works</h2>
+                <p>
+                    Failover is not only interface-down detection.
+                </p>
+                <p>
+                    If a circuit remains electrically up but upstream internet is unreachable, normal routing may still use it. Performance SLA solves this by probing targets and marking links degraded or dead.
+                </p>
+
+                <h3>Example</h3>
+                <pre><code>WAN1 link up, but packet loss 90%
+Performance SLA fails
+SD-WAN rule moves sessions to WAN2</code></pre>
+                <p>
+                    This gives better real-world resiliency than static route priority alone.
+                </p>
+
+                <h2>Performance SLA Deep Dive</h2>
+                <p>
+                    FortiGate Performance SLA continuously tests remote targets and records quality metrics such as latency, jitter, and packet loss. Fortinet also supports passive measurements and FortiGuard SLA target databases on supported versions/licenses. (<a href="https://docs.fortinet.com/document/fortigate/7.2.9/administration-guide/716691/sd-wan-rules" target="_blank">docs.fortinet.com</a>)
+                </p>
+
+                <h3>Metrics Measured</h3>
+                <table>
+                    <thead>
+                        <tr><th>Metric</th><th>Meaning</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Latency</td><td>Round-trip delay</td></tr>
+                        <tr><td>Jitter</td><td>Variation in delay</td></tr>
+                        <tr><td>Packet Loss</td><td>Dropped probes</td></tr>
+                        <tr><td>MOS (selected scenarios)</td><td>Voice quality estimate</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Supported Probe Types / Targets</h3>
+                <p>Depending on FortiOS version and feature set, commonly used probe methods include:</p>
+                <table>
+                    <thead>
+                        <tr><th>Probe Method</th><th>Typical Use</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>ICMP</td><td>Basic reachability</td></tr>
+                        <tr><td>TCP Echo / TCP Connect</td><td>Service reachability by port</td></tr>
+                        <tr><td>HTTP / HTTPS</td><td>Web application validation</td></tr>
+                        <tr><td>DNS</td><td>DNS response validation</td></tr>
+                        <tr><td>TWAMP</td><td>Advanced path measurement</td></tr>
+                        <tr><td>Passive Health Measurement</td><td>Real traffic observation</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Example Targets</h3>
+                <ul>
+                    <li>8.8.8.8 (internet reachability)</li>
+                    <li>SaaS application VIP/FQDN</li>
+                    <li>HQ loopback IP over VPN</li>
+                    <li>ISP next-hop / upstream target</li>
+                    <li>Internal data center service IP</li>
+                </ul>
+
+                <h2>SD-WAN Rules vs Routing Decision</h2>
+                <p>The forwarding model operates as follows:</p>
+                <p>
+                    SD-WAN rules do <strong>not</strong> replace the need for routing tables. A valid route (static, policy route, or dynamic route) must still exist for destination reachability. After destination matching and session classification, SD-WAN rules steer the session to the most suitable eligible member/path within the SD-WAN construct. Fortinet describes SD-WAN rules as identifying traffic of interest and routing traffic based on strategy and link conditions. (<a href="https://docs.fortinet.com/document/fortigate/7.2.4/administration-guide/716691/sd-wan-rules" target="_blank">docs.fortinet.com</a>)
+                </p>
+
+                <h3>Practical Meaning</h3>
+                <pre><code>1. Route exists to destination via SD-WAN zone
+2. Session matches SD-WAN rule
+3. Rule selects member/path based on strategy + SLA
+4. Traffic exits chosen WAN member</code></pre>
+                <p>
+                    SD-WAN policy steering operates within the forwarding decision process, while reachability still depends on valid routing information.
+                </p>
+
+                <h2>Why SD-WAN Rules Are Powerful</h2>
+                <p>Rules can match based on:</p>
+                <ul>
+                    <li>Source address/user group</li>
+                    <li>Destination subnet/FQDN/application category</li>
+                    <li>Internet services</li>
+                    <li>DSCP tags</li>
+                    <li>Protocol/ports</li>
+                    <li>Schedule</li>
+                    <li>SLA association</li>
+                </ul>
+
+                <h3>Example Business Intent</h3>
+                <table>
+                    <thead>
+                        <tr><th>Traffic Type</th><th>Preferred Path</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Microsoft Teams</td><td>Lowest latency link</td></tr>
+                        <tr><td>Backup Replication</td><td>Cheapest broadband</td></tr>
+                        <tr><td>Guest Browsing</td><td>Load balanced links</td></tr>
+                        <tr><td>ERP to HQ</td><td>MPLS or IPsec primary</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Example Rule Order Design</h2>
+                <pre><code>1. Voice / Teams -> Best Quality + SLA-VOICE
+2. IPsec to HQ -> Manual Priority WAN1 then WAN2
+3. SaaS Apps -> Lowest Cost (SLA)
+4. Guest Internet -> Maximize Bandwidth
+5. Implicit Rule -> Remaining traffic</code></pre>
+                <p>
+                    Rule order is important because the first matching rule generally governs session steering.
+                </p>
+
+                <h2>Example CLI Configuration</h2>
+                <h3>Members</h3>
+                <pre><code class="language-bash">config system sdwan
+ config members
+  edit 1
+   set interface "wan1"
+  next
+  edit 2
+   set interface "wan2"
+  next
+ end
+end</code></pre>
+
+                <h3>Performance SLA</h3>
+                <pre><code class="language-bash">config system sdwan
+ config health-check
+  edit "Google-DNS"
+   set server "8.8.8.8"
+   set protocol ping
+   set members 1 2
+  next
+ end
+end</code></pre>
+
+                <h3>SD-WAN Rule</h3>
+                <pre><code class="language-bash">config system sdwan
+ config service
+  edit 1
+   set name "Internet-General"
+   set mode load-balance
+   set dst "all"
+   set priority-members 1 2
+  next
+ end
+end</code></pre>
+
+                <h2>Optimization Best Practices</h2>
+                <h3>Main SD-WAN Design</h3>
+                <table>
+                    <thead>
+                        <tr><th>Recommendation</th><th>Why</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Use diverse carriers</td><td>Reduce common failure risk</td></tr>
+                        <tr><td>Mix bandwidth profiles</td><td>Cost efficiency</td></tr>
+                        <tr><td>Include LTE backup</td><td>Disaster resilience</td></tr>
+                        <tr><td>Use zones cleanly</td><td>Easier operations</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Performance SLA Tuning</h3>
+                <table>
+                    <thead>
+                        <tr><th>Recommendation</th><th>Why</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Probe business destinations</td><td>Realistic decisions</td></tr>
+                        <tr><td>Tune thresholds per circuit type</td><td>Fiber ≠ LTE ≠ Satellite</td></tr>
+                        <tr><td>Use multiple targets</td><td>Better accuracy</td></tr>
+                        <tr><td>Avoid unrealistic thresholds</td><td>Prevent route flapping</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>SD-WAN Rule Tuning (Most Important)</h3>
+                <table>
+                    <thead>
+                        <tr><th>Recommendation</th><th>Why</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Separate voice/data/backup rules</td><td>Better intent control</td></tr>
+                        <tr><td>Put critical apps first</td><td>Priority enforcement</td></tr>
+                        <tr><td>Use best-quality for real-time apps</td><td>Better UX</td></tr>
+                        <tr><td>Use load-balance for bulk traffic</td><td>Better bandwidth usage</td></tr>
+                        <tr><td>Review session stickiness</td><td>Stable flows</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Troubleshooting Commands</h2>
+                <pre><code class="language-bash">diagnose sys sdwan health-check
+diagnose sys sdwan service
+get router info routing-table all
+diagnose debug flow</code></pre>
+
+                <h2>Common Misunderstandings</h2>
+                <ul>
+                    <li>SD-WAN is not limited to load balancing.</li>
+                    <li>Link up does not always mean usable internet.</li>
+                    <li>SLA thresholds must be realistic per circuit type.</li>
+                    <li>Routing still matters; SD-WAN does not remove reachability logic.</li>
+                    <li>Using a single generic rule for all traffic often underutilizes SD-WAN capabilities.</li>
+                </ul>
+
+                <h2>Summary / Takeaways</h2>
+                <ul>
+                    <li>FortiGate SD-WAN combines routing, quality monitoring, and application steering.</li>
+                    <li>Performance SLA enables failover based on real path health, not only interface status.</li>
+                    <li>Rules dynamically select links using strategies such as best quality or load balance.</li>
+                    <li>Routing provides destination reachability; SD-WAN rules optimize path choice.</li>
+                    <li>The biggest optimization gains usually come from well-designed SD-WAN rules.</li>
+                    <li>Properly tuned FortiGate SD-WAN can outperform static WAN designs in both uptime and user experience.</li>
+                </ul>
+
+                <div class="article-nav">
+                    <a href="fortigate-firewall-policy-deep-dive.html">
+                        <i class="fas fa-arrow-left"></i> Previous: Firewall Policy Deep Dive
+                    </a>
+                    <a href="traffic-flow-ephemeral-port-qos.html">
+                        Next: Traffic Flow &amp; QoS <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="../../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <app-footer></app-footer>
+    <script>AOS.init();</script>
+    <script src="../../script/components.js"></script>
+</body>
+</html>

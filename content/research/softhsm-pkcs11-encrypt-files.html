@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+        <meta name="description" content="KMS Secure File Archive: SoftHSM + PKCS#11 + Hybrid Encryption">
+        <meta name="author" content="MasVin22">
+        <link rel="stylesheet" href="../../styles/main.css">
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32">
+        <title>KMS Secure File Archive — Ervinda Pratama</title>
+        <style>
+            .article-header{padding:2.5rem 0 1.5rem;border-bottom:1px solid #e0e0e0;margin-bottom:2rem}
+            body.dark-mode .article-header{border-bottom-color:#333}
+            .article-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#0077cc;text-decoration:none;margin-bottom:1.5rem}
+            .article-back:hover{color:#005fa3}
+            body.dark-mode .article-back{color:#00f2fe}
+            .article-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem}
+            .article-tag{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;padding:2px 10px;border-radius:20px;background:rgba(111,66,193,.1);color:#6f42c1;border:1px solid rgba(111,66,193,.25)}
+            body.dark-mode .article-tag{background:rgba(232,62,140,.1);color:#e83e8c;border-color:rgba(232,62,140,.25)}
+            .article-title{font-size:2rem;font-weight:800;line-height:1.25;margin-bottom:.9rem}
+            body.dark-mode .article-title{color:#f0f0f0}
+            .article-meta{font-size:13px;color:#888;display:flex;flex-wrap:wrap;gap:1rem;align-items:center}
+            body.dark-mode .article-meta{color:#666}
+            .article-content{max-width:800px;margin:0 auto;font-size:1rem;line-height:1.8;color:#333}
+            body.dark-mode .article-content{color:#d0d0d0}
+            .article-content h2{font-size:1.35rem;font-weight:700;margin-top:2.2rem;margin-bottom:.7rem;border-left:4px solid #6f42c1;padding-left:.7rem;color:#3b0068}
+            body.dark-mode .article-content h2{border-left-color:#e83e8c;color:#e83e8c}
+            .article-content h3{font-size:1.1rem;font-weight:700;margin-top:1.5rem;margin-bottom:.5rem;color:#6f42c1}
+            body.dark-mode .article-content h3{color:#d4a0ff}
+            .article-content pre,.article-content code{background:#1e1e2e;color:#a8d8a8;border-radius:6px;font-size:.875rem;font-family:'Courier New',monospace}
+            .article-content pre{padding:1rem 1.2rem;overflow-x:auto;margin:1.2rem 0}
+            .article-content code{padding:2px 6px}
+            .article-content blockquote{border-left:4px solid #6f42c1;background:rgba(111,66,193,.06);margin:1.5rem 0;padding:.8rem 1.2rem;border-radius:0 6px 6px 0;font-style:italic;color:#555}
+            body.dark-mode .article-content blockquote{border-left-color:#e83e8c;background:rgba(232,62,140,.05);color:#aaa}
+            .article-content table{width:100%;border-collapse:collapse;margin:1.2rem 0}
+            .article-content table th,.article-content table td{border:1px solid #ddd;padding:8px 12px;font-size:.9rem;vertical-align:top}
+            .article-content table th{background:#f5f0ff;font-weight:700}
+            body.dark-mode .article-content table th{background:#1a1030;color:#e0e0e0}
+            body.dark-mode .article-content table td{border-color:#333;color:#d0d0d0}
+            .article-content ul li{margin-bottom:.35rem}
+            .article-nav{display:flex;justify-content:space-between;margin-top:3rem;padding-top:1.5rem;border-top:1px solid #e0e0e0;gap:1rem}
+            body.dark-mode .article-nav{border-top-color:#333}
+            .article-nav a{font-size:13px;font-weight:600;color:#6f42c1;text-decoration:none;display:flex;align-items:center;gap:6px}
+            body.dark-mode .article-nav a{color:#e83e8c}
+        </style>
+    </head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <app-navbar></app-navbar>
+    <section class="page-content">
+        <div class="container">
+            <div class="article-content" data-aos="fade-up">
+
+                <div class="article-header">
+                    <a href="../article_research.html" class="article-back">
+                        <i class="fas fa-arrow-left"></i> Back to Articles &amp; Research
+                    </a>
+                    <div class="article-tags">
+                        <span class="article-tag">Security</span>
+                        <span class="article-tag">PKI</span>
+                        <span class="article-tag">HSM</span>
+                    </div>
+                    <h1 class="article-title">KMS Secure File Archive: SoftHSM + PKCS#11 + Hybrid Encryption</h1>
+                    <div class="article-meta">
+                        <span><i class="fas fa-user"></i>&nbsp; MasVin22 — Network Security Strategist</span>
+                        <span><i class="fas fa-calendar"></i>&nbsp; June 2026</span>
+                        <span><i class="fas fa-clock"></i>&nbsp; ~18 min read</span>
+                        <span><i class="fas fa-tag"></i>&nbsp; Implementation Note</span>
+                    </div>
+                </div>
+
+                <h2>Overview</h2>
+                <p>
+                    KMS is a hybrid cryptography-based secure file encryption implementation that combines AES-256-GCM for data encryption and RSA-OAEP-SHA256 for key wrapping, with the private key fully managed by SoftHSM through the PKCS#11 interface.
+                </p>
+                <p>
+                    The system consists of three primary components:
+                </p>
+                <ul>
+                    <li><code>encrypt_test.py</code> — file encryption, reading full configuration from <code>.env</code></li>
+                    <li><code>check_metadata.py</code> — metadata inspection for <code>.enc</code> files without decryption and without HSM access</li>
+                    <li><code>decrypt_test.py</code> — file decryption, reading key identity directly from <code>.enc</code> metadata</li>
+                </ul>
+                <p>
+                    The output of the encryption process is a KMS envelope file — a verified binary structure that stores all cryptographic materials required for decryption except for the private key itself.
+                </p>
+
+                <h2>Prerequisites and Configuration</h2>
+
+                <h3>Dependency Installation</h3>
+<pre><code class="language-bash"># SoftHSM2
+sudo dnf install softhsm        # RHEL / CentOS / Fedora
+sudo apt install softhsm2       # Debian / Ubuntu
+
+# Python
+pip install python-pkcs11 cryptography python-dotenv</code></pre>
+
+                <h3><code>.env</code> File</h3>
+                <p>
+                    The <code>.env</code> file is fully used by <code>encrypt_test.py</code>. <code>decrypt_test.py</code> only reads <code>PKCS11_LIB</code>. <code>check_metadata.py</code> only reads <code>SECURITY_POLICY</code>.
+                </p>
+<pre><code class="language-ini">PKCS11_LIB=/usr/lib64/softhsm/libsofthsm.so
+PKCS11_TOKEN_LABEL=Test-Labels
+PKCS11_USER_PIN=12341234
+PKCS11_KEY_LABEL=RSA_WRAP_TEST
+PKCS11_KEY_ID=00000002
+
+# strict   = minimum RSA 3072-bit, hard exit if not compliant
+# standard = minimum RSA 2048-bit, warning if < 3072-bit (DEFAULT)
+# legacy   = minimum RSA 1024-bit, always displays warning
+SECURITY_POLICY=standard</code></pre>
+
+                <h3>Security Policy Table</h3>
+                <table>
+                    <thead>
+                        <tr><th>Policy</th><th>Minimum RSA</th><th>Recommended RSA</th><th>Behaviour Below Minimum</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>strict</code></td><td>3072-bit</td><td>4096-bit</td><td><code>sys.exit(1)</code> — hard fail</td></tr>
+                        <tr><td><code>standard</code></td><td>2048-bit</td><td>3072-bit</td><td>Warning, operation continues</td></tr>
+                        <tr><td><code>legacy</code></td><td>1024-bit</td><td>2048-bit</td><td>Warning always displayed</td></tr>
+                    </tbody>
+                </table>
+                <p>
+                    Any invalid <code>SECURITY_POLICY</code> value (for example: <code>srict</code>) immediately triggers <code>sys.exit(1)</code> to prevent silent security downgrades.
+                </p>
+
+                <h2>Section 1 — Generate RSA Key Pair</h2>
+                <p>
+                    <strong>Tool:</strong> <code>pkcs11-tool</code> (OpenSC)<br>
+                    <strong>No Python script involved</strong> — this stage is purely HSM infrastructure preparation.
+                </p>
+
+                <h3>Token Initialization</h3>
+                <p>If the token does not yet exist, initialize it first:</p>
+<pre><code class="language-bash">softhsm2-util --init-token \
+  --slot 0 \
+  --label "Test-Labels" \
+  --pin 12341234 \
+  --so-pin 00000000</code></pre>
+                <p>
+                    <code>--label</code> must match <code>PKCS11_TOKEN_LABEL</code>, <code>--pin</code> must match <code>PKCS11_USER_PIN</code>, and <code>--so-pin</code> is the Security Officer PIN used for token administration.
+                </p>
+
+                <h3>Generate Key Pair</h3>
+<pre><code class="language-bash">pkcs11-tool \
+  --module /usr/lib64/softhsm/libsofthsm.so \
+  --login --pin 12341234 \
+  --token-label Test-Labels \
+  --keypairgen --key-type rsa:2048 \
+  --id 00000002 \
+  --label RSA_WRAP_TEST</code></pre>
+                <table>
+                    <thead>
+                        <tr><th>Parameter</th><th>Value</th><th>Description</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>--module</code></td><td><code>/usr/lib64/softhsm/libsofthsm.so</code></td><td>Must match <code>PKCS11_LIB</code></td></tr>
+                        <tr><td><code>--pin</code></td><td><code>12341234</code></td><td>Must match <code>PKCS11_USER_PIN</code></td></tr>
+                        <tr><td><code>--token-label</code></td><td><code>Test-Labels</code></td><td>Must match <code>PKCS11_TOKEN_LABEL</code></td></tr>
+                        <tr><td><code>--key-type</code></td><td><code>rsa:2048</code></td><td>2048-bit RSA modulus</td></tr>
+                        <tr><td><code>--id</code></td><td><code>00000002</code></td><td>Hexadecimal key ID, must match <code>PKCS11_KEY_ID</code></td></tr>
+                        <tr><td><code>--label</code></td><td><code>RSA_WRAP_TEST</code></td><td>Must match <code>PKCS11_KEY_LABEL</code></td></tr>
+                    </tbody>
+                </table>
+                <p>
+                    A 2048-bit key passes under <code>standard</code> and <code>legacy</code> policies. For <code>strict</code> policy (minimum 3072-bit), use <code>--key-type rsa:3072</code> or <code>rsa:4096</code>.
+                </p>
+
+                <h3>Verify Generated Objects</h3>
+<pre><code class="language-bash">pkcs11-tool \
+  --module /usr/lib64/softhsm/libsofthsm.so \
+  --list-objects \
+  --login --pin 12341234</code></pre>
+                <p>Expected output:</p>
+<pre><code>Public Key Object; RSA 2048 bits
+  label:      RSA_WRAP_TEST
+  ID:         00000002
+  Usage:      encrypt, verify, wrap
+  Access:     none
+
+Private Key Object; RSA
+  label:      RSA_WRAP_TEST
+  ID:         00000002
+  Usage:      decrypt, sign, unwrap
+  Access:     sensitive, always sensitive, never extractable, local</code></pre>
+                <p>
+                    The <code>never extractable</code> attribute guarantees that the private key never leaves the HSM boundary in plaintext form.
+                </p>
+
+                <h3>Key ID Normalization</h3>
+                <p>SoftHSM stores Key IDs with inconsistent leading-null padding. <code>encrypt_test.py</code> handles this through <code>normalize_key_id()</code>:</p>
+<pre><code class="language-python">def normalize_key_id(key_id_hex):
+    binary_id = bytes.fromhex(key_id_hex)        # "00000002" -> b'\x00\x00\x00\x02'
+    binary_id = binary_id.lstrip(b'\x00')         # -> b'\x02'
+    if len(binary_id) < 4:
+        binary_id = b'\x00' * (4 - len(binary_id)) + binary_id  # -> b'\x00\x00\x00\x02'
+    return binary_id</code></pre>
+                <p>During decryption, <code>decrypt_test.py</code> attempts three ID variations to accommodate vendor inconsistencies:</p>
+<pre><code class="language-python">for search_id in [normalized_id, key_id_bin, b'\x00' + normalized_id]:
+    objs = list(session.get_objects({...ID: search_id}))
+    if objs:
+        priv_key = objs[0]
+        break</code></pre>
+
+                <h2>Section 2 — File Encryption (<code>encrypt_test.py</code>)</h2>
+                <p>
+                    <strong>Reads:</strong> Full <code>.env</code> — all <code>PKCS11_*</code> variables and <code>SECURITY_POLICY</code><br>
+                    <strong>Output:</strong> <code>.enc</code> file using KMS envelope format
+                </p>
+
+                <h3>Usage</h3>
+<pre><code class="language-bash"># Default output: secret.pdf -> secret.pdf.enc
+python3 encrypt_test.py secret.pdf
+
+# Explicit output
+python3 encrypt_test.py secret.pdf output.enc
+
+# Check version
+python3 encrypt_test.py --version</code></pre>
+
+                <h3>Process Flow</h3>
+<pre><code>[START]
+   |
+   +-> parse_args()                   CLI validation: input must exist, output ≠ input
+   +-> load_dotenv()                  Read .env; exit if any PKCS11_* variable is missing
+   +-> get_security_policy()          Read SECURITY_POLICY; exit if invalid
+   +-> normalize_key_id(KEY_ID_HEX)   Normalize hex ID for SoftHSM compatibility
+   +-> get_pkcs11_lib(PKCS11_LIB)     Initialize library via singleton (prevent CKR_ALREADY_INIT)
+   +-> lib.get_token(token_label)     Verify HSM token exists (fail-fast)
+   +-> calculate_sha256(INPUT_FILE)   Calculate and display plaintext SHA-256 hash
+   +-> [LARGE FILE CHECK]             Warning if > 512 MB (AES-GCM requires ~2x RAM)
+   +-> read file -> memoryview(bytearray)
+   |
+   +-> os.urandom(32) -> aes_key      Generate 256-bit AES session key
+   +-> os.urandom(12) -> data_iv      Generate 96-bit IV/nonce
+   +-> AESGCM.encrypt()               Encrypt + generate 128-bit GCM auth tag
+   |
+   +-> token.open(session)
+       +-> session.get_key(PUBLIC_KEY)     Retrieve public key from HSM
+       +-> enforce_key_size_policy()       Validate key size against active policy
+       +-> RSAPublicNumbers.public_key()   Reconstruct public key from HSM attributes
+       +-> public_key.encrypt(OAEP)        Wrap AES key using RSA-OAEP-SHA256
+   |
+   +-> Metadata.build_envelope()      Build KMS envelope
+   +-> Metadata.validate_envelope()   Self-check structure before writing
+   +-> tempfile -> os.replace()       Atomic write (prevent partial file on crash)
+   +-> calculate_sha256(OUTPUT_FILE)  Display encrypted file SHA-256 hash
+   |
+   +-> [FINALLY] SecureMemory.wipe()  Wipe aes_key, data_iv, plaintext from memory
+[END]</code></pre>
+
+                <h3>KMS Envelope Structure</h3>
+                <p>The generated <code>.enc</code> file uses the following binary layout:</p>
+<pre><code>Offset   Size    Field           Description
+------   ----    -----           -----------
+0        4       Magic Prefix    b'KMS' (0x4B4D5332)
+4        2       Version         0x0002 (METADATA_VERSION = 2)
+6        2       Flags           0x0001 (authenticated encryption)
+8        4       Timestamp       Unix timestamp (big-endian uint32)
+12       4       Footer          0x53454346 = b'SECF'
+[Header = 16 bytes total]
+
+16       4       algo_len        Always 4
+20       2       sym_algo        0x0001 = AES-256-GCM
+22       2       asym_algo       0x0002 = RSA-OAEP-SHA256
+
+24       4       key_id_len      Length of key ID string
+28       N       key_id          "{KEY_LABEL}:{KEY_ID_HEX}" in UTF-8
+
+28+N     12      IV              AES-GCM nonce 96-bit (fixed size)
+40+N     4       wrapped_key_len Length of encrypted AES key (256 for RSA-2048)
+44+N     256     wrapped_key     AES session key wrapped with RSA-OAEP-SHA256
+300+N    16      GCM Tag         128-bit authentication tag (fixed size)
+316+N    4       ciphertext_len  Ciphertext length
+320+N    M       ciphertext      Encrypted file data</code></pre>
+
+                <h3>Secure Memory Handling</h3>
+                <p>
+                    All sensitive materials are stored as mutable <code>bytearray</code> objects so they can be overwritten in-place. Immutable <code>bytes</code> objects are intentionally avoided for sensitive data.
+                </p>
+<pre><code class="language-python">aes_key = bytearray(os.urandom(AES_KEY_SIZE))   # 32 bytes
+data_iv = bytearray(os.urandom(IV_SIZE))         # 12 bytes</code></pre>
+                <p>Wiping is performed inside a <code>finally</code> block using three-pass overwrite:</p>
+<pre><code class="language-python">for pattern in [b'\x00', b'\xFF', os.urandom(1)]:
+    for i in range(len(buffer)):
+        buffer[i] = pattern[0]</code></pre>
+                <p>
+                    Python does not guarantee full memory elimination due to garbage collection and internal string interning. This implementation is best-effort and not equivalent to Rust or C for complete memory safety.
+                </p>
+
+                <h2>Section 3 — Metadata Inspection (<code>check_metadata.py</code>)</h2>
+                <p>
+                    <strong>Reads:</strong> Only <code>SECURITY_POLICY</code> from <code>.env</code> — does not require any <code>PKCS11_*</code> variables<br>
+                    <strong>No</strong> decryption, private key access, or disk write operations
+                </p>
+
+                <h3>Usage</h3>
+<pre><code class="language-bash"># Basic inspection
+python3 check_metadata.py backup.enc
+
+# Verify encrypted file hash
+python3 check_metadata.py backup.enc --expected-hash e3b0c44...
+
+# Debug mode (byte offsets, parsing trace)
+python3 check_metadata.py backup.enc --debug</code></pre>
+
+                <h3>Process Flow</h3>
+<pre><code>[START]
+   |
+   +-> parse_args()
+   +-> load_dotenv()                  Only SECURITY_POLICY is relevant
+   +-> get_security_policy()          Exit if invalid
+   +-> verify_hash(encrypted_file)    Calculate SHA-256 of .enc file via streaming (4096-byte chunks)
+       +-> compare vs --expected-hash if provided
+   |
+   +-> parse_metadata(encrypted_file)
+       +-> validate_header_structure()
+           - Magic prefix b'KMS'
+           - Version in [1, 2]
+           - Flags == 0x0001
+           - Footer == 0x53454346 (SECF)
+       +-> Parse algo_ids, key_id, IV, wrapped_key, GCM tag, ciphertext
+       +-> Check for extra bytes after ciphertext (warning if present)
+   |
+   +-> detect_rsa_key_size(wrapped_key_len)
+   +-> check_key_policy_compliance(rsa_bits, policy)
+   +-> format_metadata() -> print to stdout
+[END]</code></pre>
+
+                <h3>RSA Size Inference</h3>
+                <p>RSA key size is inferred from the <code>wrapped_key</code> length rather than retrieved from the HSM or stored inside the envelope.</p>
+                <table>
+                    <thead>
+                        <tr><th>Wrapped Key Length</th><th>RSA Size</th><th>Description</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>128 bytes</td><td>1024-bit</td><td>INSECURE — below all policy minimums</td></tr>
+                        <tr><td>256 bytes</td><td>2048-bit</td><td>Secure until ~2030 (NIST SP 800-131A)</td></tr>
+                        <tr><td>384 bytes</td><td>3072-bit</td><td>Long-term secure per NIST recommendations</td></tr>
+                        <tr><td>512 bytes</td><td>4096-bit</td><td>Maximum security, future-proof</td></tr>
+                    </tbody>
+                </table>
+                <p>All values are displayed with the annotation <code>(inferred from wrapped key length)</code> to avoid misleading assumptions.</p>
+
+                <h3>Sample Output</h3>
+<pre><code>===== ENCRYPTED FILE METADATA INSPECTOR =====
+File            : backup.tar.gz.enc
+File Size       : 10485920 bytes
+Security Policy : STANDARD (min RSA: 2048-bit, recommended: 3072-bit)
+
+[ Header Validation ]
+    |__ Magic Prefix : VALID ('KMS')
+    |__ Version      : 2 (supported)
+    |__ Flags        : 0x0001 (authenticated encryption)
+    |__ Created At   : 2026-05-09 10:30:45 UTC
+    |__ Footer       : VALID (0x53454346 = 'SECF')
+
+[ Encryption Algorithms ]
+    |__ Data Encrypt : AES-256-GCM
+    |__ Key Wrapping : RSA-OAEP-SHA256
+
+[ Key Management ]
+    |__ Key ID (raw) : RSA_WRAP_TEST:00000002
+    |__ Key Label    : RSA_WRAP_TEST
+    |__ Key ID Hex   : 00000002
+    |__ RSA Key Size : 2048-bit RSA [Secure until ~2030] (inferred from wrapped key length)
+    |__ Policy Check : [WARN] 2048-bit meets minimum but is below recommended (3072-bit)
+
+[ IV / Nonce ]
+    |__ Value        : a1b2c3d4e5f6... (12 bytes)
+
+[ Integrity ]
+    |__ GCM Auth Tag : e5f6a7b8c9d0... (16 bytes)
+
+[ Payload ]
+    |__ Ciphertext   : 10485744 bytes
+    |__ Structure    : COMPLETE (no extra bytes)
+
+[ Hash Verification ]
+    |__ SHA-256      : 4a7f3c9... [MATCH]
+==============================================</code></pre>
+
+                <h2>Section 4 — File Decryption (<code>decrypt_test.py</code>)</h2>
+                <p>
+                    <strong>Reads from <code>.enc</code> metadata:</strong> Key label and Key ID (not from <code>.env</code>)<br>
+                    <strong>Reads from <code>.env</code>:</strong> Only <code>PKCS11_LIB</code> as fallback library path<br>
+                    <strong>PIN:</strong> Entered interactively through <code>getpass</code> — never stored in environment variables
+                </p>
+
+                <h3>Usage</h3>
+<pre><code class="language-bash"># Default output: backup.enc -> backup
+python3 decrypt_test.py backup.enc
+
+# Explicit output
+python3 decrypt_test.py backup.enc output.pdf
+
+# Decrypt + integrity verification against original plaintext hash
+python3 decrypt_test.py backup.enc output.pdf \
+  --expected-original-hash sha256_of_original_plaintext</code></pre>
+
+                <h3>Decoupling Key Identity from Configuration</h3>
+                <p>
+                    <code>decrypt_test.py</code> does not read <code>PKCS11_KEY_LABEL</code> or <code>PKCS11_KEY_ID</code> from <code>.env</code>. The key identity is read directly from metadata inside the <code>.enc</code> file:
+                </p>
+<pre><code class="language-python">metadata = parse_metadata(encrypted_file)
+key_label, key_id_hex = metadata["key_id"].split(":", 1)
+# Example: "RSA_WRAP_TEST:00000002"
+# key_label  = "RSA_WRAP_TEST"
+# key_id_hex = "00000002"</code></pre>
+                <p>
+                    This is an intentional design decision. The <code>.enc</code> file carries its own key identity, allowing receivers to decrypt files without needing access to the sender's <code>.env</code> configuration.
+                </p>
+
+                <h3>Process Flow</h3>
+<pre><code>[START]
+   |
+   +-> parse_args()
+   +-> load_dotenv()                  Optional, only for PKCS11_LIB
+   +-> parse_metadata(encrypted_file)
+       +-> _validate_header_structure()  Full validation: magic, version, flags, footer
+       +-> Extract: key_label, key_id_hex, iv, wrapped_key, tag, ciphertext
+   |
+   +-> Detect PKCS11_LIB path
+       1. PKCS11_LIB from environment / .env
+       2. Fallback ordered list:
+          /usr/lib64/softhsm/libsofthsm2.so  (RHEL/Fedora)
+          /usr/lib64/softhsm/libsofthsm.so   (RHEL variant)
+          /usr/lib/softhsm/libsofthsm2.so    (Debian/Ubuntu)
+          /usr/lib/x86_64-linux-gnu/softhsm/libsofthsm2.so
+   |
+   +-> get_pkcs11_lib(pkcs11_lib)     Initialize library via singleton
+   +-> lib.get_tokens()               Enumerate tokens; interactive selection if multiple exist
+   |
+   +-> [PIN RETRY LOOP — maximum 3 attempts]
+       |
+       +-> getpass.getpass()          PIN input without terminal echo
+       +-> token.open(user_pin)       Open HSM session
+       |
+       +-> Locate Private Key inside HSM
+           Attempt ID variations sequentially:
+           - normalized_id (strip leading zeros)
+           - key_id_bin (raw from metadata)
+           - b'\x00' + normalized_id
+       |
+       +-> [HYBRID UNWRAP PHASE]
+       |   |
+       |   +-> ATTEMPT 1 — Hardware OAEP
+       |   |   priv_key.decrypt(
+       |   |     mechanism=RSA_PKCS_OAEP,
+       |   |     mechanism_param=(SHA256, MGF.SHA256, None)
+       |   |   )
+       |   |   -> Success: aes_key = bytearray(raw_aes_key)
+       |   |
+       |   +-> ATTEMPT 2 — Software OAEP Fallback (if Attempt 1 fails)
+       |       priv_key.decrypt(mechanism=RSA_X_509)  <- Raw RSA without padding
+       |       -> software_unpad_oaep_sha256(raw_rsa_block)
+       |          1. Validate em length (minimum 2*hLen+2 bytes)
+       |          2. Validate first byte == 0x00
+       |          3. Recover seed via MGF1-SHA256
+       |          4. Recover DB via MGF1-SHA256
+       |          5. Validate lHash == SHA256(b"") [constant-time comparison]
+       |          6. Locate separator 0x01, extract AES key
+       |       -> aes_key = bytearray(raw_aes_key)
+       |
+       +-> AES-256-GCM Decrypt
+           aesgcm.decrypt(iv, ciphertext + tag, None)
+           -> Automatic exception if GCM tag is invalid
+           -> plaintext = bytearray(decrypted_output)
+       |
+       +-> open(output_file, "xb")    Exclusive create — error if file already exists (prevent TOCTOU)
+       +-> calculate_sha256(output_file)
+           +-> compare vs --expected-original-hash if provided
+               MATCH    -> [OK] integrity confirmed
+               MISMATCH -> [WARNING] + sys.exit(1)
+       |
+       +-> [pkcs11.PinIncorrect] -> warning for remaining attempts; exit after limit reached
+   |
+   +-> [FINALLY]
+       _wipe_bytearray(aes_key)
+       _wipe_bytearray(plaintext)
+[END]</code></pre>
+
+                <h3>OAEP Fallback — Technical Details</h3>
+                <p>
+                    Some SoftHSM builds and PKCS#11 implementations reject specific OAEP parameters (SHA-256 + MGF1-SHA256). The system handles this through a two-stage fallback mechanism:
+                </p>
+<pre><code>Scenario Normal — Hardware OAEP:
+  HSM:    RSA decrypt + OAEP unpadding  ->  AES session key
+  Risk:   Minimal (all operations remain inside HSM boundary)
+
+Scenario Fallback — Software OAEP:
+  HSM:    RSA decrypt without padding (RSA_X_509)  ->  raw RSA block
+  Python: OAEP unpadding in memory                 ->  AES session key
+
+  Advantages:
+  + Private key remains inside HSM
+  + Constant-time comparison mitigates timing oracle attacks (Bleichenbacher-style)
+
+  Risks:
+  - Raw RSA block temporarily exposed in Python memory
+  - Slightly larger attack surface compared to pure hardware unwrap</code></pre>
+
+                <h3>End-to-End Integrity Verification</h3>
+<pre><code class="language-bash"># Original plaintext hash is available from encrypt_test.py output
+ORIGINAL_HASH="abc123..."
+
+python3 decrypt_test.py backup.enc recovered.pdf \
+  --expected-original-hash ${ORIGINAL_HASH}
+
+# Success:
+#   |__ Status : [MATCH] Integrity Validation Successful
+
+# Failure (corruption / incorrect key):
+#   |__ Status : [MISMATCH] Warning: Decrypted file is not identical!
+#   (exit code 1)</code></pre>
+
+                <h2>End-to-End Workflow Summary</h2>
+<pre><code>[SETUP]
+softhsm2-util --init-token --label "Test-Labels"
+pkcs11-tool --keypairgen rsa:2048 --id 00000002 --label RSA_WRAP_TEST
+    |
+    v
+    Private Key (never extractable)    Public Key
+    remains inside HSM                 readable through PKCS#11 session
+
+[ENCRYPT]   encrypt_test.py + full .env
+    +-> Read public key from HSM
+    +-> Generate 256-bit AES session key (random, single-use)
+    +-> Encrypt file -> AES-256-GCM ciphertext + 128-bit GCM tag
+    +-> Wrap AES key -> RSA-OAEP-SHA256
+    +-> Build KMS envelope -> file.enc
+    +-> Wipe all sensitive materials from memory
+
+[INSPECT]   check_metadata.py file.enc  (anytime, without HSM)
+    +-> Parse and validate KMS envelope (read-only, no decryption)
+    +-> Display header, algorithms, key ID, IV, RSA size, policy compliance
+    +-> Calculate and verify SHA-256 of file.enc
+
+[DECRYPT]   decrypt_test.py file.enc + interactive PIN
+    +-> Read key_label + key_id from file.enc metadata
+    +-> Locate private key inside HSM using label + ID
+    +-> Unwrap AES key (hardware OAEP or software fallback)
+    +-> Decrypt ciphertext via AES-256-GCM
+    +-> Verify GCM tag automatically (exception if invalid)
+    +-> Write plaintext to output file (exclusive create)
+    +-> Wipe AES key + plaintext from memory</code></pre>
+
+                <h2>Security Notes</h2>
+
+                <h3>Existing Implementations</h3>
+                <table>
+                    <thead>
+                        <tr><th>Aspect</th><th>Mechanism</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Key isolation</td><td>Private RSA key marked <code>never extractable</code> inside HSM</td></tr>
+                        <tr><td>Session key</td><td>New AES key generated per encryption, never reused</td></tr>
+                        <tr><td>Tamper detection</td><td>128-bit GCM authentication tag — automatic exception if modified</td></tr>
+                        <tr><td>Timing oracle</td><td>Constant-time comparison during OAEP hash validation</td></tr>
+                        <tr><td>Atomicity</td><td><code>tempfile + os.replace()</code> during encryption; <code>"xb"</code> flag during decryption</td></tr>
+                        <tr><td>Brute force mitigation</td><td>PIN retry limit (3 attempts) with exit before HSM lockout</td></tr>
+                        <tr><td>Policy safety</td><td>Invalid <code>SECURITY_POLICY</code> = <code>sys.exit(1)</code>, no silent fallback</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Areas for Improvement</h3>
+                <p>
+                    <code>decrypt_test.py</code> does not enforce RSA security policy checks — only <code>encrypt_test.py</code> and <code>check_metadata.py</code> currently implement them. Python cannot guarantee complete memory sanitization because of garbage collection and internal string interning; for high-assurance environments, consider C or Rust wrappers. The implementation currently lacks audit logging integration with syslog or SIEM platforms, key rotation workflows, and multi-user authorization (M-of-N).
+                </p>
+                <p>
+                    SoftHSM is not a replacement for a physical HSM in production environments. It does not provide tamper resistance, hardware entropy generation, or compliance certification.
+                </p>
+
+                <h2>Summary / Takeaways</h2>
+                <ul>
+                    <li>KMS uses hybrid encryption: AES-256-GCM for data encryption and RSA-OAEP-SHA256 for key wrapping, with the private key fully isolated inside SoftHSM through PKCS#11.</li>
+                    <li>The <code>.enc</code> file is a KMS envelope — a self-contained binary structure storing IV, wrapped AES key, GCM tag, and ciphertext inside a single verified file.</li>
+                    <li><code>check_metadata.py</code> operates entirely without HSM access and without decryption — only metadata parsing and structural validation.</li>
+                    <li><code>decrypt_test.py</code> reads key identity (label and ID) directly from metadata inside the <code>.enc</code> file rather than <code>.env</code>, enabling decoupling between sender and receiver.</li>
+                    <li>The OAEP fallback (<code>RSA_X_509</code> + software unpadding) addresses PKCS#11 inconsistencies across certain vendors while using constant-time hash comparison to mitigate timing oracle attacks.</li>
+                    <li>Security policies (<code>strict</code> / <code>standard</code> / <code>legacy</code>) are implemented as hard enforcement — invalid values immediately terminate execution without silent fallback.</li>
+                    <li>SoftHSM is highly effective for validating PKCS#11 workflows in laboratory environments. For production deployments, migration to physical HSM platforms such as Thales Luna, Utimaco, or Nitrokey is necessary to achieve real tamper resistance and hardware-backed key custody.</li>
+                </ul>
+
+                <div class="article-nav">
+                    <a href="pkcs11-overview.html" class="research"><i class="fas fa-arrow-left"></i> Previous: PKCS#11 Overview</a>
+                    <a href="thales-luna-hsm-fundamentals.html" class="research">
+                        Next: Thales Luna HSM <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="../../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <app-footer></app-footer>
+    <script>AOS.init();</script>
+    <script src="../../script/components.js"></script>
+</body>
+</html>
