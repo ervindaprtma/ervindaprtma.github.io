@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+        <meta name="description" content="Understanding PKCS#11: Architecture, Cryptographic Operations, and Enterprise HSM Integration">
+        <meta name="author" content="Ervinda Pratama">
+        <link rel="stylesheet" href="../../styles/main.css">
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32">
+        <title>Understanding PKCS#11 — Ervinda Pratama</title>
+        <style>
+            .article-header{padding:2.5rem 0 1.5rem;border-bottom:1px solid #e0e0e0;margin-bottom:2rem}
+            body.dark-mode .article-header{border-bottom-color:#333}
+            .article-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#0077cc;text-decoration:none;margin-bottom:1.5rem}
+            .article-back:hover{color:#005fa3}
+            body.dark-mode .article-back{color:#00f2fe}
+            .article-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem}
+            .article-tag{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;padding:2px 10px;border-radius:20px;background:rgba(111,66,193,.1);color:#6f42c1;border:1px solid rgba(111,66,193,.25)}
+            body.dark-mode .article-tag{background:rgba(232,62,140,.1);color:#e83e8c;border-color:rgba(232,62,140,.25)}
+            .article-title{font-size:2rem;font-weight:800;line-height:1.25;margin-bottom:.9rem}
+            body.dark-mode .article-title{color:#f0f0f0}
+            .article-meta{font-size:13px;color:#888;display:flex;flex-wrap:wrap;gap:1rem;align-items:center}
+            body.dark-mode .article-meta{color:#666}
+            .article-content{max-width:800px;margin:0 auto;font-size:1rem;line-height:1.8;color:#333}
+            body.dark-mode .article-content{color:#d0d0d0}
+            .article-content h2{font-size:1.35rem;font-weight:700;margin-top:2.2rem;margin-bottom:.7rem;border-left:4px solid #6f42c1;padding-left:.7rem;color:#3b0068}
+            body.dark-mode .article-content h2{border-left-color:#e83e8c;color:#e83e8c}
+            .article-content h3{font-size:1.1rem;font-weight:700;margin-top:1.5rem;margin-bottom:.5rem;color:#6f42c1}
+            body.dark-mode .article-content h3{color:#d4a0ff}
+            .article-content pre,.article-content code{background:#1e1e2e;color:#a8d8a8;border-radius:6px;font-size:.875rem;font-family:'Courier New',monospace}
+            .article-content pre{padding:1rem 1.2rem;overflow-x:auto;margin:1.2rem 0}
+            .article-content code{padding:2px 6px}
+            .article-content blockquote{border-left:4px solid #6f42c1;background:rgba(111,66,193,.06);margin:1.5rem 0;padding:.8rem 1.2rem;border-radius:0 6px 6px 0;font-style:italic;color:#555}
+            body.dark-mode .article-content blockquote{border-left-color:#e83e8c;background:rgba(232,62,140,.05);color:#aaa}
+            .article-content table{width:100%;border-collapse:collapse;margin:1.2rem 0}
+            .article-content table th,.article-content table td{border:1px solid #ddd;padding:8px 12px;font-size:.9rem;vertical-align:top}
+            .article-content table th{background:#f5f0ff;font-weight:700}
+            body.dark-mode .article-content table th{background:#1a1030;color:#e0e0e0}
+            body.dark-mode .article-content table td{border-color:#333;color:#d0d0d0}
+            .article-content ul li{margin-bottom:.35rem}
+            .article-nav{display:flex;justify-content:space-between;margin-top:3rem;padding-top:1.5rem;border-top:1px solid #e0e0e0;gap:1rem}
+            body.dark-mode .article-nav{border-top-color:#333}
+            .article-nav a{font-size:13px;font-weight:600;color:#6f42c1;text-decoration:none;display:flex;align-items:center;gap:6px}
+            body.dark-mode .article-nav a{color:#e83e8c}
+        </style>
+    </head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <app-navbar></app-navbar>
+    <section class="page-content">
+        <div class="container">
+            <div class="article-content" data-aos="fade-up">
+
+                <div class="article-header">
+                    <a href="../article_research.html" class="article-back">
+                        <i class="fas fa-arrow-left"></i> Back to Articles &amp; Research
+                    </a>
+                    <div class="article-tags">
+                        <span class="article-tag">Security</span>
+                        <span class="article-tag">PKI</span>
+                        <span class="article-tag">HSM</span>
+                    </div>
+                    <h1 class="article-title">Understanding PKCS#11: Architecture, Cryptographic Operations, and Enterprise HSM Integration</h1>
+                    <div class="article-meta">
+                        <span><i class="fas fa-user"></i>&nbsp; Ervinda Pratama</span>
+                        <span><i class="fas fa-calendar"></i>&nbsp; May 2026</span>
+                        <span><i class="fas fa-clock"></i>&nbsp; ~18 min read</span>
+                        <span><i class="fas fa-tag"></i>&nbsp; Research Note</span>
+                    </div>
+                </div>
+
+                <h2>Overview</h2>
+                <p>
+                    PKCS#11 is one of the most important cryptographic standards in modern enterprise security infrastructure.
+                </p>
+                <p>
+                    It defines a standardized API used by applications to communicate with cryptographic devices such as:
+                </p>
+                <ul>
+                    <li>Hardware Security Modules (HSM)</li>
+                    <li>Smart cards</li>
+                    <li>USB cryptographic tokens</li>
+                    <li>Software HSM platforms</li>
+                    <li>Secure signing devices</li>
+                </ul>
+                <p>
+                    PKCS#11 enables applications to perform cryptographic operations without directly handling sensitive private keys.
+                </p>
+                <p>
+                    This separation is one of the foundational principles behind enterprise-grade key management and cryptographic security.
+                </p>
+                <p>
+                    In production environments, PKCS#11 is commonly used in:
+                </p>
+                <ul>
+                    <li>Certificate Authority (CA) systems</li>
+                    <li>Banking cryptographic infrastructure</li>
+                    <li>Payment systems</li>
+                    <li>Code-signing platforms</li>
+                    <li>TLS certificate management</li>
+                    <li>Government digital signature systems</li>
+                    <li>Enterprise PKI deployments</li>
+                    <li>Secure API authentication systems</li>
+                </ul>
+
+                <h2>What Does PKCS#11 Mean?</h2>
+                <p>PKCS stands for:</p>
+<pre><code>Public-Key Cryptography Standards</code></pre>
+                <p>PKCS#11 specifically defines:</p>
+<pre><code>Cryptographic Token Interface Standard</code></pre>
+                <p>
+                    It was originally developed by RSA Laboratories and later became one of the most widely adopted cryptographic interoperability standards.
+                </p>
+
+                <h2>Primary Goal of PKCS#11</h2>
+                <p>
+                    The primary purpose of PKCS#11 is standardization.
+                </p>
+                <p>
+                    Without PKCS#11, every HSM vendor would require custom application integration.
+                </p>
+                <p>PKCS#11 creates a common interface layer between:</p>
+<pre><code>Application
+    <-> PKCS#11 API
+        <-> HSM Vendor Library
+            <-> Hardware Security Module</code></pre>
+                <p>
+                    This allows applications to remain mostly vendor-independent.
+                </p>
+
+                <h2>Core PKCS#11 Architecture</h2>
+                <h3>High-Level Architecture</h3>
+<pre><code>Application Layer
+    |
+PKCS#11 API Calls
+    |
+Vendor PKCS#11 Shared Library
+    |
+HSM Middleware / Client
+    |
+Hardware Security Module</code></pre>
+
+                <h2>Main PKCS#11 Components</h2>
+                <table>
+                    <thead>
+                        <tr><th>Component</th><th>Function</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Slot</td><td>Logical reader or HSM endpoint</td></tr>
+                        <tr><td>Token</td><td>Logical secure storage container</td></tr>
+                        <tr><td>Session</td><td>Connection between application and token</td></tr>
+                        <tr><td>Object</td><td>Stored cryptographic entity</td></tr>
+                        <tr><td>Mechanism</td><td>Cryptographic algorithm definition</td></tr>
+                        <tr><td>Attribute</td><td>Metadata defining object behavior</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Understanding Slots and Tokens</h2>
+                <h3>Slot</h3>
+                <p>A slot represents a logical interface to an HSM or token.</p>
+                <p>Example:</p>
+<pre><code>Slot 0 -> Root CA Token
+Slot 1 -> OCSP Signing Token
+Slot 2 -> Banking Transaction Token</code></pre>
+
+                <h3>Token</h3>
+                <p>A token is a protected cryptographic storage space.</p>
+                <p>Inside a token:</p>
+                <ul>
+                    <li>RSA keys</li>
+                    <li>ECC keys</li>
+                    <li>Certificates</li>
+                    <li>AES keys</li>
+                    <li>Signing objects</li>
+                    <li>Metadata</li>
+                </ul>
+                <p>may exist.</p>
+
+                <h2>PKCS#11 Objects</h2>
+                <p>PKCS#11 stores cryptographic entities as objects.</p>
+                <h3>Common Object Types</h3>
+                <table>
+                    <thead>
+                        <tr><th>Object Type</th><th>Purpose</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Public Key</td><td>Encryption / verification</td></tr>
+                        <tr><td>Private Key</td><td>Signing / decryption</td></tr>
+                        <tr><td>Secret Key</td><td>Symmetric encryption</td></tr>
+                        <tr><td>Certificate</td><td>Identity binding</td></tr>
+                        <tr><td>Data Object</td><td>Arbitrary metadata</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>PKCS#11 Mechanisms</h2>
+                <p>Mechanisms define cryptographic algorithms.</p>
+                <p>Examples:</p>
+                <table>
+                    <thead>
+                        <tr><th>Mechanism</th><th>Usage</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>CKM_RSA_PKCS</td><td>RSA signing</td></tr>
+                        <tr><td>CKM_RSA_PKCS_OAEP</td><td>RSA OAEP encryption</td></tr>
+                        <tr><td>CKM_SHA256_RSA_PKCS</td><td>SHA256 RSA signing</td></tr>
+                        <tr><td>CKM_AES_CBC</td><td>AES encryption</td></tr>
+                        <tr><td>CKM_ECDSA</td><td>ECC signing</td></tr>
+                        <tr><td>CKM_SHA256</td><td>Hashing</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Important PKCS#11 API Functions</h2>
+                <p>PKCS#11 exposes cryptographic operations through standardized C-style APIs.</p>
+                <p>These functions are heavily used inside enterprise HSM platforms including Thales Luna HSM.</p>
+
+                <h2>Session Management APIs</h2>
+                <h3>Initialize Library</h3>
+<pre><code>C_Initialize</code></pre>
+                <p>Starts the PKCS#11 library.</p>
+
+                <h3>Open Session</h3>
+<pre><code>C_OpenSession</code></pre>
+                <p>Creates communication between application and token.</p>
+
+                <h3>Login</h3>
+<pre><code>C_Login</code></pre>
+                <p>Authenticates the application/user into the token.</p>
+
+                <h3>Close Session</h3>
+<pre><code>C_CloseSession</code></pre>
+                <p>Ends communication.</p>
+
+                <h2>Key Management APIs</h2>
+                <h3>Generate Key Pair</h3>
+<pre><code>C_GenerateKeyPair</code></pre>
+                <p>Used for:</p>
+                <ul>
+                    <li>RSA key generation</li>
+                    <li>ECC key generation</li>
+                    <li>CA key generation</li>
+                    <li>Banking transaction keys</li>
+                </ul>
+
+                <h3>Wrap Key</h3>
+<pre><code>C_WrapKey</code></pre>
+                <p>Encrypts a cryptographic key using another key.</p>
+                <p>Commonly used for:</p>
+                <ul>
+                    <li>Secure key export</li>
+                    <li>Key escrow</li>
+                    <li>Backup transfer</li>
+                    <li>Secure migration</li>
+                </ul>
+
+                <h3>Unwrap Key</h3>
+<pre><code>C_UnwrapKey</code></pre>
+                <p>Decrypts and imports wrapped keys securely into the HSM.</p>
+                <p>Very common in:</p>
+                <ul>
+                    <li>Banking systems</li>
+                    <li>HSM migration</li>
+                    <li>Secure backup restoration</li>
+                    <li>Distributed key ceremonies</li>
+                </ul>
+
+                <h3>Derive Key</h3>
+<pre><code>C_DeriveKey</code></pre>
+                <p>Creates derived keys from existing material.</p>
+                <p>Often used in:</p>
+                <ul>
+                    <li>TLS</li>
+                    <li>Session key generation</li>
+                    <li>Payment systems</li>
+                </ul>
+
+                <h2>Cryptographic Operation APIs</h2>
+                <h3>Encrypt / Decrypt</h3>
+<pre><code>C_Encrypt
+C_Decrypt</code></pre>
+                <p>Used for:</p>
+                <ul>
+                    <li>Data encryption</li>
+                    <li>Session encryption</li>
+                    <li>Secure payload protection</li>
+                </ul>
+
+                <h3>Sign / Verify</h3>
+<pre><code>C_Sign
+C_Verify</code></pre>
+                <p>Critical operations for:</p>
+                <ul>
+                    <li>Certificate Authorities</li>
+                    <li>Banking transactions</li>
+                    <li>Digital signatures</li>
+                    <li>Secure APIs</li>
+                    <li>Document signing</li>
+                </ul>
+
+                <h3>Digest / Hash</h3>
+<pre><code>C_Digest</code></pre>
+                <p>Used for:</p>
+                <ul>
+                    <li>Hashing</li>
+                    <li>Integrity validation</li>
+                    <li>Signature preprocessing</li>
+                </ul>
+
+                <h2>How Certificate Authorities Use PKCS#11</h2>
+                <p>Enterprise CA systems rarely store private keys directly inside the application server.</p>
+                <p>Instead:</p>
+<pre><code>EJBCA / Microsoft CA / OpenXPKI
+    |
+PKCS#11 API
+    |
+HSM</code></pre>
+                <p>The CA application requests cryptographic operations through PKCS#11.</p>
+                <p>The private key remains protected inside the HSM.</p>
+
+                <h2>Example CA Signing Flow</h2>
+                <h3>Step 1 — Generate CA Key Pair</h3>
+<pre><code>C_GenerateKeyPair</code></pre>
+                <p>Generated inside HSM.</p>
+                <p>Private key never leaves the device.</p>
+
+                <h3>Step 2 — CSR Processing</h3>
+<pre><code>Client -> CSR -> CA</code></pre>
+
+                <h3>Step 3 — Hash Certificate Data</h3>
+<pre><code>C_Digest</code></pre>
+
+                <h3>Step 4 — Sign Certificate</h3>
+<pre><code>C_Sign</code></pre>
+                <p>HSM signs the certificate hash.</p>
+
+                <h3>Step 5 — Return Signed Certificate</h3>
+<pre><code>CA -> Client</code></pre>
+
+                <h2>Banking System PKCS#11 Usage</h2>
+                <p>Banking environments use PKCS#11 extensively because cryptographic key exposure would create catastrophic risk.</p>
+
+                <h2>Typical Banking Operations</h2>
+                <table>
+                    <thead>
+                        <tr><th>Operation</th><th>Purpose</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>PIN encryption</td><td>ATM/POS security</td></tr>
+                        <tr><td>Transaction signing</td><td>Payment integrity</td></tr>
+                        <tr><td>Key wrapping</td><td>Secure key exchange</td></tr>
+                        <tr><td>HSM-based authentication</td><td>Secure authorization</td></tr>
+                        <tr><td>Session key generation</td><td>Secure communication</td></tr>
+                        <tr><td>MAC generation</td><td>Transaction integrity</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Example Banking Flow</h2>
+<pre><code>ATM / Payment System
+    |
+Banking Application
+    |
+PKCS#11 API
+    |
+Thales Luna HSM</code></pre>
+                <p>Example sequence:</p>
+                <ol>
+                    <li>Generate transaction key</li>
+                    <li>Encrypt session payload</li>
+                    <li>Sign transaction hash</li>
+                    <li>Verify transaction integrity</li>
+                    <li>Securely rotate keys</li>
+                </ol>
+                <p>All cryptographic operations occur through PKCS#11 API calls.</p>
+
+                <h2>Why Enterprise HSM Vendors Use PKCS#11</h2>
+                <p>PKCS#11 provides:</p>
+                <ul>
+                    <li>Standardized interoperability</li>
+                    <li>Vendor abstraction</li>
+                    <li>Application portability</li>
+                    <li>Security boundary separation</li>
+                    <li>Enterprise cryptographic consistency</li>
+                </ul>
+                <p>This is why nearly all major HSM vendors support PKCS#11:</p>
+                <ul>
+                    <li>Thales Luna</li>
+                    <li>Entrust nShield</li>
+                    <li>Utimaco</li>
+                    <li>SafeNet</li>
+                    <li>IBM Crypto Express</li>
+                    <li>YubiHSM</li>
+                    <li>SoftHSM</li>
+                </ul>
+
+                <h2>PKCS#11 in Thales Luna HSM</h2>
+                <p>Thales Luna HSM heavily relies on PKCS#11 architecture.</p>
+                <p>Typical Luna deployment:</p>
+<pre><code>Application
+    |
+libCryptoki2.so
+    |
+Luna Client Middleware
+    |
+Network HSM Appliance</code></pre>
+
+                <h3>Common Luna PKCS#11 Operations</h3>
+                <table>
+                    <thead>
+                        <tr><th>Operation</th><th>Typical Usage</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>C_GenerateKeyPair</td><td>Root / Intermediate CA keys</td></tr>
+                        <tr><td>C_Sign</td><td>Certificate signing</td></tr>
+                        <tr><td>C_WrapKey</td><td>Backup export</td></tr>
+                        <tr><td>C_UnwrapKey</td><td>Secure import</td></tr>
+                        <tr><td>C_Encrypt</td><td>Banking payload protection</td></tr>
+                        <tr><td>C_Login</td><td>Partition authentication</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Security Model of PKCS#11</h2>
+                <p>PKCS#11 helps separate:</p>
+<pre><code>Application Logic
+from
+Cryptographic Key Custody</code></pre>
+                <p>This is critically important.</p>
+                <p>Applications should request cryptographic operations — not directly handle private keys.</p>
+
+                <h2>Why PKCS#11 Is Worth Learning</h2>
+                <p>PKCS#11 is deeply embedded inside enterprise cryptographic infrastructure.</p>
+                <p>Understanding PKCS#11 helps engineers understand:</p>
+                <ul>
+                    <li>Enterprise PKI architecture</li>
+                    <li>HSM operations</li>
+                    <li>Banking cryptography</li>
+                    <li>Secure signing workflows</li>
+                    <li>Key lifecycle management</li>
+                    <li>Compliance-driven cryptographic security</li>
+                    <li>Secure API integrations</li>
+                </ul>
+                <p>It is one of the most valuable foundational standards for:</p>
+                <ul>
+                    <li>PKI Engineers</li>
+                    <li>Security Engineers</li>
+                    <li>Infrastructure Architects</li>
+                    <li>Banking Security Teams</li>
+                    <li>DevSecOps Engineers</li>
+                    <li>Cryptographic Platform Engineers</li>
+                </ul>
+
+                <h2>Relationship with ISO 27001</h2>
+                <p>PKCS#11 aligns strongly with ISO/IEC 27001 security objectives involving:</p>
+                <table>
+                    <thead>
+                        <tr><th>ISO 27001 Area</th><th>PKCS#11 Relevance</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Cryptographic Controls</td><td>Secure key management</td></tr>
+                        <tr><td>Access Control</td><td>HSM authentication</td></tr>
+                        <tr><td>Asset Protection</td><td>Private key custody</td></tr>
+                        <tr><td>Secure Operations</td><td>Controlled cryptographic workflow</td></tr>
+                        <tr><td>Logging &amp; Monitoring</td><td>Auditable cryptographic activity</td></tr>
+                    </tbody>
+                </table>
+                <p>PKCS#11 helps organizations implement structured cryptographic governance.</p>
+
+                <h2>Relationship with ISO 27701</h2>
+                <p>ISO/IEC 27701 focuses on privacy information management.</p>
+                <p>PKCS#11 contributes indirectly by supporting:</p>
+                <ul>
+                    <li>Secure encryption</li>
+                    <li>Privacy-sensitive data protection</li>
+                    <li>Key lifecycle governance</li>
+                    <li>Cryptographic separation of duties</li>
+                </ul>
+                <p>This becomes important in:</p>
+                <ul>
+                    <li>Banking systems</li>
+                    <li>Healthcare systems</li>
+                    <li>Government identity platforms</li>
+                    <li>Privacy-sensitive applications</li>
+                </ul>
+
+                <h2>Relationship with NIST</h2>
+                <p>PKCS#11 concepts strongly align with NIST recommendations involving:</p>
+                <ul>
+                    <li>Cryptographic key management</li>
+                    <li>Hardware-backed security</li>
+                    <li>Separation of cryptographic duties</li>
+                    <li>Secure signing infrastructure</li>
+                    <li>Controlled key access</li>
+                </ul>
+                <p>Relevant areas include:</p>
+                <ul>
+                    <li>NIST Cybersecurity Framework</li>
+                    <li>NIST SP 800-57</li>
+                    <li>NIST SP 800-63</li>
+                    <li>NIST SP 800-131A</li>
+                </ul>
+
+                <h2>Common Misunderstandings</h2>
+                <ul>
+                    <li>PKCS#11 is not an encryption algorithm.</li>
+                    <li>PKCS#11 is an interface standard, not a hardware platform.</li>
+                    <li>Using PKCS#11 does not automatically mean strong security.</li>
+                    <li>Security quality still depends on the HSM implementation.</li>
+                    <li>SoftHSM and hardware HSMs may both expose PKCS#11, but their security assurance differs significantly.</li>
+                </ul>
+
+                <h2>Summary / Takeaways</h2>
+                <ul>
+                    <li>PKCS#11 is a standardized cryptographic interface used by HSMs and secure cryptographic systems.</li>
+                    <li>It allows applications to perform cryptographic operations without directly handling private keys.</li>
+                    <li>Enterprise PKI systems and banking infrastructures rely heavily on PKCS#11.</li>
+                    <li>Core functions such as C_GenerateKeyPair, C_Sign, C_WrapKey, and C_UnwrapKey are fundamental in production HSM environments.</li>
+                    <li>Major HSM vendors including Thales Luna implement PKCS#11 extensively.</li>
+                    <li>Understanding PKCS#11 is essential for engineers working with PKI, HSMs, secure signing systems, and enterprise cryptographic architecture.</li>
+                    <li>PKCS#11 strongly supports compliance-oriented security models aligned with ISO and NIST guidance.</li>
+                </ul>
+                <p>
+                    PKCS#11 is not only a cryptographic interface standard — it is one of the foundational building blocks of modern enterprise trust infrastructure.
+                </p>
+
+                <div class="article-nav">
+                    <a href="softhsm-overview.html"><i class="fas fa-arrow-left"></i> Previous: Understanding SoftHSM</a>
+                    <a href="softhsm-pkcs11-encrypt-files.html">Next: KMS Secure File Archive <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="../../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <app-footer></app-footer>
+    <script>AOS.init();</script>
+    <script src="../../script/components.js"></script>
+</body>
+</html>

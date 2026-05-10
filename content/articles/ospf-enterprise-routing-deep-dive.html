@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+        <meta name="description" content="OSPF Deep Dive: Areas, LSAs, Backbone Design & Enterprise Implementation">
+        <meta name="author" content="Ervinda Pratama">
+        <link rel="stylesheet" href="../../styles/main.css">
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32">
+        <title>OSPF Deep Dive: Areas, LSAs, Backbone Design &amp; Enterprise Implementation — Ervinda Pratama</title>
+        <style>
+            .article-header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid #e0e0e0; margin-bottom: 2rem; }
+            body.dark-mode .article-header { border-bottom-color: #333; }
+            .article-back { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; margin-bottom:1.5rem; }
+            .article-back:hover { color:#005fa3; }
+            body.dark-mode .article-back { color:#00f2fe; }
+            .article-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:1rem; }
+            .article-tag { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; padding:2px 10px; border-radius:20px; background:rgba(0,119,204,0.1); color:#0077cc; border:1px solid rgba(0,119,204,0.25); }
+            body.dark-mode .article-tag { background:rgba(0,242,254,0.1); color:#00f2fe; border-color:rgba(0,242,254,0.25); }
+            .article-title { font-size:2rem; font-weight:800; line-height:1.25; margin-bottom:0.9rem; }
+            body.dark-mode .article-title { color:#f0f0f0; }
+            .article-meta { font-size:13px; color:#888; display:flex; flex-wrap:wrap; gap:1rem; align-items:center; }
+            body.dark-mode .article-meta { color:#666; }
+            .article-content { max-width:780px; margin:0 auto; font-size:1rem; line-height:1.8; color:#333; }
+            body.dark-mode .article-content { color:#d0d0d0; }
+            .article-content h2 { font-size:1.35rem; font-weight:700; margin-top:2.2rem; margin-bottom:0.7rem; border-left:4px solid #0077cc; padding-left:0.7rem; color:#003366; }
+            body.dark-mode .article-content h2 { border-left-color:#00f2fe; color:#00f2fe; }
+            .article-content h3 { font-size:1.1rem; font-weight:700; margin-top:1.5rem; margin-bottom:0.5rem; color:#0077cc; }
+            body.dark-mode .article-content h3 { color:#7fffff; }
+            .article-content pre, .article-content code { background:#1e1e2e; color:#a8d8a8; border-radius:6px; font-size:0.875rem; font-family:'Courier New',monospace; }
+            .article-content pre { padding:1rem 1.2rem; overflow-x:auto; margin:1.2rem 0; }
+            .article-content code { padding:2px 6px; }
+            .article-content blockquote { border-left:4px solid #0077cc; background:rgba(0, 119, 204, 0.06); margin:1.5rem 0; padding:0.8rem 1.2rem; border-radius:0 6px 6px 0; font-style:italic; color:#555; }
+            body.dark-mode .article-content blockquote { border-left-color:#00f2fe; background:rgba(0, 242, 254, 0.05); color:#aaa; }
+            .article-content table { width:100%; border-collapse:collapse; margin:1.2rem 0; }
+            .article-content table th, .article-content table td { border:1px solid #ddd; padding:8px 12px; font-size:0.9rem; }
+            .article-content table th { background:#f0f5ff; font-weight:700; }
+            body.dark-mode .article-content table th { background:#1a1a2e; color:#e0e0e0; }
+            body.dark-mode .article-content table td { border-color:#333; color:#d0d0d0; }
+            .article-nav { display:flex; justify-content:space-between; margin-top:3rem; padding-top:1.5rem; border-top:1px solid #e0e0e0; gap:1rem; }
+            body.dark-mode .article-nav { border-top-color:#333; }
+            .article-nav a { font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; display:flex; align-items:center; gap:6px; }
+            body.dark-mode .article-nav a { color:#00f2fe; }
+        </style>
+    </head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <app-navbar></app-navbar>
+    <section class="page-content">
+        <div class="container">
+            <div class="article-content" data-aos="fade-up">
+
+                <div class="article-header">
+                    <a href="../article_research.html" class="article-back">
+                        <i class="fas fa-arrow-left"></i> Back to Articles &amp; Research
+                    </a>
+                    <div class="article-tags">
+                        <span class="article-tag">Cisco</span>
+                        <span class="article-tag">Networking</span>
+                        <span class="article-tag">Routing</span>
+                    </div>
+                    <h1 class="article-title">OSPF Deep Dive: Areas, LSAs, Backbone Design &amp; Enterprise Implementation</h1>
+                    <div class="article-meta">
+                        <span><i class="fas fa-user"></i>&nbsp; Ervinda Pratama</span>
+                        <span><i class="fas fa-calendar"></i>&nbsp; June 2026</span>
+                        <span><i class="fas fa-clock"></i>&nbsp; ~18 min read</span>
+                    </div>
+                </div>
+
+                <h2>Introduction</h2>
+                <p>Open Shortest Path First (OSPF) is one of the most widely deployed Interior Gateway Protocols (IGPs) in enterprise and service-provider networks. It is a link-state routing protocol designed for fast convergence, hierarchical scalability, and deterministic path selection.</p>
+                <p>Unlike distance-vector protocols, OSPF builds a synchronized topology database and calculates best paths using the SPF (Shortest Path First) algorithm.</p>
+                <p>Where static routing relies on manual control, OSPF provides dynamic and topology-aware path selection.</p>
+
+                <h2>What is OSPF?</h2>
+                <p>OSPF is an open-standard link-state routing protocol that uses Dijkstra's SPF algorithm to calculate shortest paths based on interface cost.</p>
+
+                <table>
+                    <thead>
+                        <tr><th>Characteristic</th><th>Value</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Protocol Type</td><td>Interior Gateway Protocol (IGP)</td></tr>
+                        <tr><td>Algorithm</td><td>Shortest Path First (Dijkstra)</td></tr>
+                        <tr><td>Metric</td><td>Cost</td></tr>
+                        <tr><td>Administrative Distance (Cisco)</td><td>110</td></tr>
+                        <tr><td>Supports VLSM/CIDR</td><td>Yes</td></tr>
+                        <tr><td>Classless</td><td>Yes</td></tr>
+                        <tr><td>Hierarchical Areas</td><td>Yes</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Protocol Number and Communication Method</h2>
+                <p>OSPF does <strong>not</strong> use TCP or UDP ports.</p>
+                <p>It operates directly over IP using:</p>
+
+                <table>
+                    <thead>
+                        <tr><th>Item</th><th>Value</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>IP Protocol Number</td><td>89</td></tr>
+                        <tr><td>Multicast Address</td><td>224.0.0.5 (AllSPFRouters)</td></tr>
+                        <tr><td>DR/BDR Multicast</td><td>224.0.0.6 (AllDRouters)</td></tr>
+                    </tbody>
+                </table>
+                <p>This means routers exchange OSPF packets natively at Layer 3 without transport-layer ports.</p>
+
+                <h2>OSPF Packet Types</h2>
+                <p>OSPF uses five core packet types.</p>
+                <table>
+                    <thead>
+                        <tr><th>Type</th><th>Name</th><th>Purpose</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>Hello</td><td>Discover neighbors / maintain adjacency</td></tr>
+                        <tr><td>2</td><td>Database Description (DBD)</td><td>Summarize LSDB contents</td></tr>
+                        <tr><td>3</td><td>Link-State Request (LSR)</td><td>Request missing LSAs</td></tr>
+                        <tr><td>4</td><td>Link-State Update (LSU)</td><td>Send LSAs</td></tr>
+                        <tr><td>5</td><td>Link-State Acknowledgment (LSAck)</td><td>Confirm receipt</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>OSPF Neighbor States (Simplified)</h2>
+<pre><code>Down -> Init -> 2-Way -> ExStart -> Exchange -> Loading -> Full</code></pre>
+                <p>Reaching <strong>Full</strong> means adjacency is successfully established (depending on network type and DR logic).</p>
+
+                <h2>Why OSPF Uses Areas</h2>
+                <p>As networks grow, a single flat OSPF domain becomes inefficient.</p>
+                <p>Problems without hierarchy:</p>
+                <ul>
+                    <li>Large LSDB on every router</li>
+                    <li>Frequent SPF recalculation</li>
+                    <li>More flooding overhead</li>
+                    <li>Slower convergence at scale</li>
+                </ul>
+                <p>Areas divide topology into manageable sections.</p>
+                <table>
+                    <thead>
+                        <tr><th>Benefit</th><th>Result</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Smaller LSDB</td><td>Better performance</td></tr>
+                        <tr><td>Reduced flooding</td><td>Lower overhead</td></tr>
+                        <tr><td>Faster SPF</td><td>Better convergence</td></tr>
+                        <tr><td>Route summarization</td><td>Cleaner routing tables</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Backbone Area (Area 0)</h2>
+                <p>Area 0 is the OSPF backbone. It is the transit core that connects all non-backbone areas.</p>
+                <p>Every other area should connect logically to Area 0, either directly or through a virtual link.</p>
+                <p>Area 0 functions as the central transit core that interconnects all non-backbone areas.</p>
+
+                <h2>Single-Area OSPF (Area 0 Only)</h2>
+                <p>This is the simplest and most common enterprise deployment.</p>
+<pre><code>R1 --- R2 --- R3
+All interfaces in Area 0</code></pre>
+                <p>Advantages:</p>
+                <ul>
+                    <li>Simple design</li>
+                    <li>Easy troubleshooting</li>
+                    <li>Good for small to medium networks</li>
+                </ul>
+
+                <h3>Example Configuration (Cisco)</h3>
+<pre><code class="language-bash">router ospf 1
+ router-id 1.1.1.1
+ network 10.0.12.0 0.0.0.255 area 0
+ network 10.0.1.0 0.0.0.255 area 0</code></pre>
+
+                <h2>Single-Area OSPF Without Using Area Numbers Other Than 0</h2>
+                <p>In standards-based OSPF, the recommended single-area design is the use of Area 0 as the sole area.</p>
+                <p>Using only a non-backbone area as a standalone design may form adjacencies on some platforms, but it removes hierarchical intent and is not recommended for scalable deployments.</p>
+                <p>Use Area 0 for single-area deployments.</p>
+
+                <h2>Multi-Area OSPF Design</h2>
+                <p>Example:</p>
+<pre><code>Area 1 ---- ABR ---- Area 0 ---- ABR ---- Area 2</code></pre>
+
+                <table>
+                    <thead>
+                        <tr><th>Router Type</th><th>Role</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Internal Router</td><td>All interfaces in same area</td></tr>
+                        <tr><td>Backbone Router</td><td>At least one interface in Area 0</td></tr>
+                        <tr><td>ABR</td><td>Connects Area 0 to another area</td></tr>
+                        <tr><td>ASBR</td><td>Redistributes external routes</td></tr>
+                    </tbody>
+                </table>
+
+                <p>Why multi-area?</p>
+                <ul>
+                    <li>Better scalability</li>
+                    <li>Summarization at ABR</li>
+                    <li>Isolate topology changes</li>
+                    <li>Cleaner regional design</li>
+                </ul>
+
+                <h2>Why Non-Backbone Areas Must Connect to Area 0</h2>
+                <p>OSPF uses Area 0 as the central transit area for inter-area routing.</p>
+                <p>Without Area 0 connectivity:</p>
+                <ul>
+                    <li>Inter-area routes may not propagate correctly</li>
+                    <li>Hierarchical SPF design breaks</li>
+                    <li>Topology becomes inconsistent</li>
+                </ul>
+                <p>For this reason, non-backbone areas should not be used as transit paths between other areas without backbone participation.</p>
+
+                <h2>OSPF Virtual Link</h2>
+                <p>A Virtual Link is a logical tunnel through a transit area that temporarily or strategically connects a disconnected area to Area 0.</p>
+                <p>Example:</p>
+<pre><code>Area 1 --- R2 --- Area 2 --- R3(Area 0 disconnected)</code></pre>
+                <p>If an ABR cannot physically connect to Area 0, a virtual link can be created through Area 2 (transit area).</p>
+
+                <h3>Use Cases</h3>
+                <ul>
+                    <li>Mergers / temporary redesign</li>
+                    <li>Legacy topology constraints</li>
+                    <li>Migration period before proper backbone redesign</li>
+                </ul>
+
+                <h3>Cisco Example</h3>
+<pre><code class="language-bash">router ospf 1
+ area 2 virtual-link 2.2.2.2</code></pre>
+                <p>Where <code>2.2.2.2</code> is the remote ABR router-id.</p>
+
+                <h3>Important Notes</h3>
+                <ul>
+                    <li>Transit area cannot be stub area.</li>
+                    <li>Virtual links add complexity.</li>
+                    <li>Virtual links are best used as transitional mechanisms rather than permanent architecture.</li>
+                </ul>
+
+                <h2>OSPF LSA Types</h2>
+                <p>Link-State Advertisements (LSAs) carry topology information.</p>
+                <table>
+                    <thead>
+                        <tr><th>Type</th><th>Name</th><th>Generated By</th><th>Purpose</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>Router LSA</td><td>Every router</td><td>Links within area</td></tr>
+                        <tr><td>2</td><td>Network LSA</td><td>DR</td><td>Multi-access segment info</td></tr>
+                        <tr><td>3</td><td>Summary LSA</td><td>ABR</td><td>Inter-area routes</td></tr>
+                        <tr><td>4</td><td>ASBR Summary LSA</td><td>ABR</td><td>Reach ASBR</td></tr>
+                        <tr><td>5</td><td>AS External LSA</td><td>ASBR</td><td>External redistributed routes</td></tr>
+                        <tr><td>6</td><td>Group Membership</td><td>MOSPF</td><td>Rare / obsolete use</td></tr>
+                        <tr><td>7</td><td>NSSA External</td><td>ASBR in NSSA</td><td>External route in NSSA</td></tr>
+                        <tr><td>8</td><td>Link LSA</td><td>OSPFv3</td><td>Link-local info</td></tr>
+                        <tr><td>9</td><td>Intra-Area Prefix</td><td>OSPFv3</td><td>IPv6 prefixes</td></tr>
+                        <tr><td>10</td><td>Area-Local Opaque</td><td>Extension</td><td>TE/extensions</td></tr>
+                        <tr><td>11</td><td>AS-Wide Opaque</td><td>Extension</td><td>Global opaque data</td></tr>
+                    </tbody>
+                </table>
+                <p>Most enterprise OSPFv2 networks commonly use Types 1,2,3,4,5 and sometimes 7.</p>
+
+                <h2>Sample Enterprise Topology</h2>
+<pre><code>             ISP
+              |
+            R5 (ASBR)
+              |
+            Area 0
+        R1 -------- R2
+         |            |
+      Area 1       Area 2
+        R3           R4</code></pre>
+
+                <p>Behavior:</p>
+                <ul>
+                    <li>R5 redistributes default route -> Type 5 LSA</li>
+                    <li>R1/R2 act as ABRs</li>
+                    <li>R3 learns Area 2 networks via Type 3</li>
+                    <li>R4 learns Area 1 networks via Type 3</li>
+                    <li>Internal area links advertised by Type 1/2</li>
+                </ul>
+
+                <h2>Basic Multi-Area Configuration Example</h2>
+<pre><code class="language-bash">router ospf 1
+ router-id 1.1.1.1
+ network 10.0.0.0 0.0.0.255 area 0
+ network 10.1.0.0 0.0.0.255 area 1</code></pre>
+                <p>ABR example above has interfaces in Area 0 and Area 1.</p>
+
+                <h2>Best Practices</h2>
+                <table>
+                    <thead>
+                        <tr><th>Recommendation</th><th>Why</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Keep backbone stable</td><td>Core of inter-area routing</td></tr>
+                        <tr><td>Summarize at ABRs</td><td>Reduce routing table size</td></tr>
+                        <tr><td>Use Area 0 for single-area design</td><td>Standards-aligned simplicity</td></tr>
+                        <tr><td>Avoid overusing virtual links</td><td>Operational complexity</td></tr>
+                        <tr><td>Align hello/dead timers</td><td>Prevent adjacency issues</td></tr>
+                        <tr><td>Use passive-interface where needed</td><td>Security and control</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Common Troubleshooting Checks</h2>
+                <ul>
+                    <li>Area mismatch</li>
+                    <li>Authentication mismatch</li>
+                    <li>MTU mismatch (DBD stuck)</li>
+                    <li>Hello/dead timer mismatch</li>
+                    <li>Duplicate router-id</li>
+                    <li>Missing backbone connectivity</li>
+                    <li>ACL blocking protocol 89</li>
+                </ul>
+
+                <h2>Summary / Takeaways</h2>
+                <ul>
+                    <li>OSPF is a link-state IGP using SPF calculations.</li>
+                    <li>It uses IP Protocol <strong>89</strong>, not TCP/UDP ports.</li>
+                    <li>Area 0 is the mandatory backbone for scalable multi-area design.</li>
+                    <li>Single-area OSPF should normally use Area 0.</li>
+                    <li>Multi-area OSPF improves scale and stability.</li>
+                    <li>Virtual links can logically restore backbone connectivity when direct connection is unavailable.</li>
+                    <li>LSAs are the language OSPF uses to describe topology.</li>
+                    <li>Well-structured area design is fundamental to stable and scalable enterprise routing.</li>
+                </ul>
+
+                <div class="article-nav">
+                    <a href="cisco-eigrp-deep-dive.html">
+                        <i class="fas fa-arrow-left"></i> Previous: EIGRP Deep Dive
+                    </a>
+                    <a href="fortigate-ipsec-vpn-deep-dive.html">
+                        Next: FortiGate IPsec Deep Dive <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="../../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <app-footer></app-footer>
+    <script>AOS.init();</script>
+    <script src="../../script/components.js"></script>
+</body>
+</html>

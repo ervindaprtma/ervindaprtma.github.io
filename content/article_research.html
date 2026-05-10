@@ -245,6 +245,230 @@
                 color: #999;
             }
             body.dark-mode .ar-empty { color: #555; }
+
+            /* ── Learning Path Section ───────────────────────────── */
+            .lp-section {
+                margin: 2rem 0 0 0;
+                padding: 2rem 0 2.5rem;
+            }
+            .lp-header-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+                padding: 3px 12px;
+                border-radius: 20px;
+                background: rgba(0, 119, 204, 0.1);
+                color: #0077cc;
+                border: 1.5px solid rgba(0, 119, 204, 0.3);
+                margin-bottom: 0.75rem;
+            }
+            body.dark-mode .lp-header-badge {
+                background: rgba(0, 242, 254, 0.08);
+                color: #00f2fe;
+                border-color: rgba(0, 242, 254, 0.3);
+            }
+            .lp-title {
+                font-size: 1.5rem;
+                font-weight: 700;
+                border-left: 4px solid #0077cc;
+                padding-left: 0.9rem;
+                margin-bottom: 0.5rem;
+                line-height: 1.3;
+            }
+            body.dark-mode .lp-title {
+                border-left-color: #00f2fe;
+                color: #e0e0e0;
+            }
+            .lp-subtitle {
+                font-size: 0.9rem;
+                color: #666;
+                padding-left: 1.4rem;
+                margin-bottom: 2.2rem;
+                max-width: 680px;
+            }
+            body.dark-mode .lp-subtitle { color: #aaa; }
+
+            /* Step wrapper */
+            .lp-steps {
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+            }
+            .lp-step {
+                display: flex;
+                gap: 1.25rem;
+                position: relative;
+            }
+
+            /* Left column: number + connector line */
+            .lp-step-indicator {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                flex-shrink: 0;
+                width: 44px;
+            }
+            .lp-step-num {
+                width: 44px;
+                height: 44px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #0077cc, #00f2fe);
+                color: #fff;
+                font-size: 13px;
+                font-weight: 800;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+                box-shadow: 0 2px 10px rgba(0, 119, 204, 0.35);
+                letter-spacing: 0.02em;
+            }
+            body.dark-mode .lp-step-num {
+                box-shadow: 0 2px 12px rgba(0, 242, 254, 0.25);
+            }
+            .lp-connector {
+                width: 2px;
+                flex: 1;
+                min-height: 24px;
+                background: linear-gradient(to bottom, #0077cc44, transparent);
+                margin-top: 4px;
+                border-radius: 2px;
+            }
+            .lp-step:last-child .lp-connector { display: none; }
+
+            /* Right column: content box */
+            .lp-step-content {
+                flex: 1;
+                margin-bottom: 1.5rem;
+            }
+            .lp-step-box {
+                background: #f9f9f9;
+                border: 1px solid #e0e0e0;
+                border-radius: 10px;
+                overflow: hidden;
+                transition: box-shadow 0.25s ease;
+            }
+            .lp-step-box:hover { box-shadow: 0 4px 18px rgba(0, 119, 204, 0.12); }
+            body.dark-mode .lp-step-box {
+                background: #1e1e1e;
+                border-color: #333;
+            }
+
+            /* details / summary collapsible */
+            .lp-step-box > details { margin: 0; }
+            .lp-step-box > details > summary {
+                list-style: none;
+                cursor: pointer;
+                padding: 1rem 1.4rem;
+                display: flex;
+                align-items: flex-start;
+                gap: 0.75rem;
+                justify-content: space-between;
+            }
+            .lp-step-box > details > summary::-webkit-details-marker { display: none; }
+
+            .lp-step-summary-left { flex: 1; }
+            .lp-step-label {
+                font-size: 11px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                color: #0077cc;
+                margin-bottom: 0.25rem;
+            }
+            body.dark-mode .lp-step-label { color: #00f2fe; }
+            .lp-step-title {
+                font-size: 1rem;
+                font-weight: 700;
+                color: #222;
+                margin-bottom: 0.2rem;
+                line-height: 1.35;
+            }
+            body.dark-mode .lp-step-title { color: #e0e0e0; }
+            .lp-step-desc {
+                font-size: 0.82rem;
+                color: #777;
+                line-height: 1.55;
+                margin-top: 0.25rem;
+            }
+            body.dark-mode .lp-step-desc { color: #999; }
+            .lp-step-meta {
+                font-size: 11px;
+                color: #999;
+                white-space: nowrap;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                padding-top: 2px;
+            }
+            body.dark-mode .lp-step-meta { color: #666; }
+            .lp-chevron {
+                font-size: 12px;
+                color: #bbb;
+                flex-shrink: 0;
+                align-self: center;
+                transition: transform 0.25s ease;
+            }
+            details[open] .lp-chevron { transform: rotate(180deg); }
+
+            /* Article list inside details */
+            .lp-article-list {
+                list-style: none;
+                margin: 0;
+                padding: 0 1.4rem 1.1rem;
+                border-top: 1px solid #e8e8e8;
+            }
+            body.dark-mode .lp-article-list { border-top-color: #2d2d2d; }
+            .lp-article-list li {
+                padding: 0.55rem 0;
+                border-bottom: 1px solid #f0f0f0;
+                display: flex;
+                align-items: baseline;
+                gap: 0.6rem;
+            }
+            body.dark-mode .lp-article-list li { border-bottom-color: #272727; }
+            .lp-article-list li:last-child { border-bottom: none; }
+            .lp-article-num {
+                font-size: 11px;
+                font-weight: 700;
+                color: #bbb;
+                flex-shrink: 0;
+                min-width: 22px;
+                font-variant-numeric: tabular-nums;
+            }
+            body.dark-mode .lp-article-num { color: #555; }
+            .lp-article-list a {
+                font-size: 0.875rem;
+                font-weight: 600;
+                color: #333;
+                text-decoration: none;
+                line-height: 1.4;
+                transition: color 0.18s;
+            }
+            .lp-article-list a:hover { color: #0077cc; }
+            body.dark-mode .lp-article-list a { color: #c8c8c8; }
+            body.dark-mode .lp-article-list a:hover { color: #00f2fe; }
+
+            /* Responsive: 2-col on lg+ */
+            @media (min-width: 992px) {
+                .lp-steps {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    column-gap: 2rem;
+                }
+                /* Step 5 spans full width on its own row */
+                .lp-step:nth-child(5) {
+                    grid-column: 1 / -1;
+                    max-width: calc(50% - 1rem);
+                }
+                /* Connectors in grid layout: hide vertical line on right-column items */
+                .lp-step:nth-child(even) .lp-connector { opacity: 0; }
+            }
         </style>
     </head>
 <body>
@@ -284,7 +508,175 @@
                         </div>
                         <hr class="mt-5" data-aos="fade-up" data-aos-delay="500" />
 
-                        <!-- ── Filter / Search Bar ─────────────── -->
+                        <!-- ══════════════════════════════════════════
+                             SECTION 0 ── LEARNING PATH
+                        ═══════════════════════════════════════════ -->
+                        <div class="lp-section" data-aos="fade-up" data-aos-delay="550">
+                            <div class="lp-header-badge">
+                                <i class="fa fa-map-signs"></i> Reading Guide
+                            </div>
+                            <div class="lp-title">Learning Path: Networking &rarr; Security</div>
+                            <p class="lp-subtitle">16 articles arranged in a progressive sequence &mdash; from networking fundamentals to security engineering. Start here if you're new to this domain.&nbsp; <span style="display:inline-flex;align-items:center;gap:5px;font-weight:600;color:#0077cc;"><i class="fa fa-tag"></i> Phase 1 &middot; 16 Articles</span></p>
+
+                            <div class="lp-steps">
+
+                                <!-- ── STEP 01 ─ Fondasi ─────────────────── -->
+                                <div class="lp-step">
+                                    <div class="lp-step-indicator">
+                                        <div class="lp-step-num">01</div>
+                                        <div class="lp-connector"></div>
+                                    </div>
+                                    <div class="lp-step-content">
+                                        <div class="lp-step-box">
+                                            <details open>
+                                                <summary>
+                                                    <div class="lp-step-summary-left">
+                                                        <div class="lp-step-label">Start Here &mdash; Foundations</div>
+                                                        <div class="lp-step-title">How data moves across a network</div>
+                                                        <div class="lp-step-desc">Build a mental model of how data flows through networks before diving into security concepts.</div>
+                                                    </div>
+                                                    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;padding-left:1rem;">
+                                                        <span class="lp-step-meta"><i class="fa fa-clock-o"></i> 3 articles &middot; ~45 min</span>
+                                                        <i class="fa fa-chevron-down lp-chevron"></i>
+                                                    </div>
+                                                </summary>
+                                                <ul class="lp-article-list">
+                                                    <li><span class="lp-article-num">#1</span><a href="articles/traffic-flow-ephemeral-port-qos.html">Traffic Flow: Ephemeral Ports, Client-Server Roles &amp; QoS</a></li>
+                                                    <li><span class="lp-article-num">#2</span><a href="articles/vlan-deep-dive-modern-switching.html">VLAN Deep Dive: Why VLANs Matter in Modern Switching</a></li>
+                                                    <li><span class="lp-article-num">#3</span><a href="articles/understanding-internet-structure-bgp.html">Internet Structure: BGP, ASN &amp; Public IP Delivery</a></li>
+                                                </ul>
+                                            </details>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ── STEP 02 ─ Protokol Routing ─────────── -->
+                                <div class="lp-step">
+                                    <div class="lp-step-indicator">
+                                        <div class="lp-step-num">02</div>
+                                        <div class="lp-connector"></div>
+                                    </div>
+                                    <div class="lp-step-content">
+                                        <div class="lp-step-box">
+                                            <details open>
+                                                <summary>
+                                                    <div class="lp-step-summary-left">
+                                                        <div class="lp-step-label">Routing Layer &mdash; Routing Protocols</div>
+                                                        <div class="lp-step-title">How routing decisions are made</div>
+                                                        <div class="lp-step-desc">Essential groundwork before tackling BGP security and enterprise network segmentation.</div>
+                                                    </div>
+                                                    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;padding-left:1rem;">
+                                                        <span class="lp-step-meta"><i class="fa fa-clock-o"></i> 3 articles &middot; ~50 min</span>
+                                                        <i class="fa fa-chevron-down lp-chevron"></i>
+                                                    </div>
+                                                </summary>
+                                                <ul class="lp-article-list">
+                                                    <li><span class="lp-article-num">#4</span><a href="articles/ospf-enterprise-routing-deep-dive.html">OSPF Deep Dive: Areas, LSAs &amp; Enterprise Backbone Design</a></li>
+                                                    <li><span class="lp-article-num">#5</span><a href="articles/cisco-eigrp-deep-dive.html">EIGRP Deep Dive: Metrics, Best Path Logic &amp; Multi-AS Design</a></li>
+                                                    <li><span class="lp-article-num">#6</span><a href="articles/bgp-enterprise-wan.html">BGP for Enterprise WAN: Multi-Homed Connectivity &amp; Path Attributes</a></li>
+                                                </ul>
+                                            </details>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ── STEP 03 ─ Network Security Controls ─── -->
+                                <div class="lp-step">
+                                    <div class="lp-step-indicator">
+                                        <div class="lp-step-num">03</div>
+                                        <div class="lp-connector"></div>
+                                    </div>
+                                    <div class="lp-step-content">
+                                        <div class="lp-step-box">
+                                            <details open>
+                                                <summary>
+                                                    <div class="lp-step-summary-left">
+                                                        <div class="lp-step-label">Security Controls &mdash; The N&rarr;S Transition</div>
+                                                        <div class="lp-step-title">From network engineer to security engineer</div>
+                                                        <div class="lp-step-desc">Firewalls are more than connection rules &mdash; they enforce policy, identity, and meaningful network segmentation.</div>
+                                                    </div>
+                                                    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;padding-left:1rem;">
+                                                        <span class="lp-step-meta"><i class="fa fa-clock-o"></i> 3 articles &middot; ~60 min</span>
+                                                        <i class="fa fa-chevron-down lp-chevron"></i>
+                                                    </div>
+                                                </summary>
+                                                <ul class="lp-article-list">
+                                                    <li><span class="lp-article-num">#7</span><a href="articles/mikrotik-firewall-deep-dive.html">MikroTik Firewall Deep Dive: Filter, Mangle &amp; Raw Tables</a></li>
+                                                    <li><span class="lp-article-num">#8</span><a href="articles/fortigate-firewall-policy-deep-dive.html">FortiGate Firewall Policy: Packet Flow, SSL Inspection &amp; Security Profiles</a></li>
+                                                    <li><span class="lp-article-num">#9</span><a href="articles/fortigate-enterprise-segmentation.html">FortiGate Enterprise Segmentation: VDOM, Zones &amp; Governance Mapping to NIST &amp; ISO 27001</a></li>
+                                                </ul>
+                                            </details>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ── STEP 04 ─ Advanced Network Design ───── -->
+                                <div class="lp-step">
+                                    <div class="lp-step-indicator">
+                                        <div class="lp-step-num">04</div>
+                                        <div class="lp-connector"></div>
+                                    </div>
+                                    <div class="lp-step-content">
+                                        <div class="lp-step-box">
+                                            <details open>
+                                                <summary>
+                                                    <div class="lp-step-summary-left">
+                                                        <div class="lp-step-label">Advanced Design &mdash; Modern Enterprise Architecture</div>
+                                                        <div class="lp-step-title">Overlay networks, bandwidth control, and SD-WAN</div>
+                                                        <div class="lp-step-desc">Technologies that underpin modern enterprise network design &mdash; from L2 overlays and bandwidth shaping to intelligent SD-WAN path steering.</div>
+                                                    </div>
+                                                    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;padding-left:1rem;">
+                                                        <span class="lp-step-meta"><i class="fa fa-clock-o"></i> 4 articles &middot; ~75 min</span>
+                                                        <i class="fa fa-chevron-down lp-chevron"></i>
+                                                    </div>
+                                                </summary>
+                                                <ul class="lp-article-list">
+                                                    <li><span class="lp-article-num">#10</span><a href="articles/vxlan-evolution-beyond-vlan.html">VXLAN Deep Dive: The Evolution Beyond Traditional VLAN</a></li>
+                                                    <li><span class="lp-article-num">#11</span><a href="articles/fortigate-traffic-shaping-deep-dive.html">FortiGate Traffic Shaping: Interface Limits, Policy Control &amp; NP Offload</a></li>
+                                                    <li><span class="lp-article-num">#12</span><a href="articles/mikrotik-qos-deep-dive.html">MikroTik QoS Deep Dive: Simple Queue, Queue Tree &amp; HTB Design</a></li>
+                                                    <li><span class="lp-article-num">#13</span><a href="articles/fortigate-sdwan-deep-dive.html">FortiGate SD-WAN: Load Balancing, Failover &amp; Performance SLA Steering</a></li>
+                                                </ul>
+                                            </details>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ── STEP 05 ─ Security Engineering ───────── -->
+                                <div class="lp-step">
+                                    <div class="lp-step-indicator">
+                                        <div class="lp-step-num">05</div>
+                                        <div class="lp-connector"></div>
+                                    </div>
+                                    <div class="lp-step-content">
+                                        <div class="lp-step-box">
+                                            <details open>
+                                                <summary>
+                                                    <div class="lp-step-summary-left">
+                                                        <div class="lp-step-label">Security Engineering &mdash; Phase 1 Summit</div>
+                                                        <div class="lp-step-title">Encryption, tunneling, and automated defense</div>
+                                                        <div class="lp-step-desc">Concrete security implementations &mdash; from site-to-site tunnel encryption to automated defenses against brute-force attacks and VPN exploitation.</div>
+                                                    </div>
+                                                    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;padding-left:1rem;">
+                                                        <span class="lp-step-meta"><i class="fa fa-clock-o"></i> 3 articles &middot; ~58 min</span>
+                                                        <i class="fa fa-chevron-down lp-chevron"></i>
+                                                    </div>
+                                                </summary>
+                                                <ul class="lp-article-list">
+                                                    <li><span class="lp-article-num">#14</span><a href="articles/fortigate-ipsec-vpn-deep-dive.html">FortiGate IPsec (Part 1): Encryption, DH Groups &amp; Tunnel Design</a></li>
+                                                    <li><span class="lp-article-num">#15</span><a href="articles/fortigate-ipsec-handshake-advpn-deep-dive.html">FortiGate IPsec (Part 2): Packet Handshake, Debug Flow &amp; ADVPN 2.0</a></li>
+                                                    <li><span class="lp-article-num">#16</span><a href="articles/fortigate-automation-stitch-sslvpn-defense.html">FortiGate SSL VPN Defense: Automation Stitch, Geo-IP &amp; ASN Blocking</a></li>
+                                                </ul>
+                                            </details>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div><!-- /lp-steps -->
+                        </div><!-- /lp-section -->
+
+                        <hr class="mt-1 mb-4" data-aos="fade-up" data-aos-delay="100" />
+
+                        <!-- ── Filter / Search Bar ───────────────────────────── -->
                         <div class="col-lg-12 col-md-8 mt-4" data-aos="fade-up" data-aos-delay="550">
                             <div class="ar-filter-bar">
                                 <input type="text" id="arSearch" class="ar-search" placeholder="&#128269; Search articles or notes...">
@@ -402,6 +794,130 @@
                                                 Using Telegraf as a collector to pull FortiGate SD-WAN SLA performance metrics and visualize link health in real-time.
                                             </div>
                                             <a href="research/sdwan-sla-telegraf.html" class="ar-read-btn research">
+                                                <i class="fa fa-book"></i> Read Note
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- RESEARCH #4 -->
+                                <div class="col-12 col-md-6 col-lg-4 mb-4 ar-item"
+                                     data-tags="security"
+                                     data-title="Understanding SoftHSM: Architecture, Limitations, and Comparison with Thales Luna HSM">
+                                    <div class="ar-card" data-aos="fade-up" data-aos-delay="400">
+                                        <div class="ar-card-bar research"></div>
+                                        <div class="ar-card-body">
+                                            <div class="ar-tags">
+                                                <span class="ar-tag research">Security</span>
+                                                <span class="ar-tag research">PKI</span>
+                                                <span class="ar-tag research">HSM</span>
+                                            </div>
+                                            <div class="ar-card-meta">
+                                                <span><i class="fa fa-calendar"></i> May 2026</span>
+                                                <span><i class="fa fa-clock-o"></i> ~14 min read</span>
+                                            </div>
+                                            <div class="ar-card-title">
+                                                <a href="research/softhsm-overview.html">
+                                                    Understanding SoftHSM: Architecture, Limitations, and Comparison with Thales Luna HSM
+                                                </a>
+                                            </div>
+                                            <div class="ar-card-excerpt">
+                                                SoftHSM is a software-based implementation of a Hardware Security Module (HSM) designed primarily for development, testing, learning, and integration validation. It implements the PKCS#11 standard and emulates many common cryptographic operations.
+                                            </div>
+                                            <a href="research/softhsm-overview.html" class="ar-read-btn research">
+                                                <i class="fa fa-book"></i> Read Note
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- RESEARCH #5 -->
+                                <div class="col-12 col-md-6 col-lg-4 mb-4 ar-item"
+                                     data-tags="security"
+                                     data-title="Understanding PKCS#11: Architecture, Cryptographic Operations, and Enterprise HSM Integration">
+                                    <div class="ar-card" data-aos="fade-up" data-aos-delay="500">
+                                        <div class="ar-card-bar research"></div>
+                                        <div class="ar-card-body">
+                                            <div class="ar-tags">
+                                                <span class="ar-tag research">Security</span>
+                                                <span class="ar-tag research">PKI</span>
+                                                <span class="ar-tag research">HSM</span>
+                                            </div>
+                                            <div class="ar-card-meta">
+                                                <span><i class="fa fa-calendar"></i> May 2026</span>
+                                                <span><i class="fa fa-clock-o"></i> ~18 min read</span>
+                                            </div>
+                                            <div class="ar-card-title">
+                                                <a href="research/pkcs11-overview.html">
+                                                    Understanding PKCS#11: Architecture, Cryptographic Operations, and Enterprise HSM Integration
+                                                </a>
+                                            </div>
+                                            <div class="ar-card-excerpt">
+                                                PKCS#11 is one of the most important cryptographic standards in modern enterprise security infrastructure. It defines a standardized API used by applications to communicate with cryptographic devices such as Hardware Security Modules (HSM), smart cards, and tokens.
+                                            </div>
+                                            <a href="research/pkcs11-overview.html" class="ar-read-btn research">
+                                                <i class="fa fa-book"></i> Read Note
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- RESEARCH #6 -->
+                                <div class="col-12 col-md-6 col-lg-4 mb-4 ar-item"
+                                     data-tags="security"
+                                     data-title="KMS Secure File Archive: SoftHSM + PKCS#11 + Hybrid Encryption">
+                                    <div class="ar-card" data-aos="fade-up" data-aos-delay="600">
+                                        <div class="ar-card-bar research"></div>
+                                        <div class="ar-card-body">
+                                            <div class="ar-tags">
+                                                <span class="ar-tag research">Security</span>
+                                                <span class="ar-tag research">PKI</span>
+                                                <span class="ar-tag research">HSM</span>
+                                            </div>
+                                            <div class="ar-card-meta">
+                                                <span><i class="fa fa-calendar"></i> June 2026</span>
+                                                <span><i class="fa fa-clock-o"></i> ~18 min read</span>
+                                            </div>
+                                            <div class="ar-card-title">
+                                                <a href="research/softhsm-pkcs11-encrypt-files.html">
+                                                    KMS Secure File Archive: SoftHSM + PKCS#11 + Hybrid Encryption
+                                                </a>
+                                            </div>
+                                            <div class="ar-card-excerpt">
+                                                KMS is a hybrid cryptography-based secure file encryption implementation that combines AES-256-GCM for data encryption and RSA-OAEP-SHA256 for key wrapping, with the private key fully managed by SoftHSM through the PKCS#11 interface.
+                                            </div>
+                                            <a href="research/softhsm-pkcs11-encrypt-files.html" class="ar-read-btn research">
+                                                <i class="fa fa-book"></i> Read Note
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- RESEARCH #7 -->
+                                <div class="col-12 col-md-6 col-lg-4 mb-4 ar-item"
+                                     data-tags="security,pki,hsm"
+                                     data-title="Understanding Thales Luna HSM Fundamentals: Architecture, Operations, and Integration">
+                                    <div class="ar-card" data-aos="fade-up" data-aos-delay="700">
+                                        <div class="ar-card-bar research"></div>
+                                        <div class="ar-card-body">
+                                            <div class="ar-tags">
+                                                <span class="ar-tag research">Security</span>
+                                                <span class="ar-tag research">PKI</span>
+                                                <span class="ar-tag research">HSM</span>
+                                            </div>
+                                            <div class="ar-card-meta">
+                                                <span><i class="fa fa-calendar"></i> July 2026</span>
+                                                <span><i class="fa fa-clock-o"></i> ~20 min read</span>
+                                            </div>
+                                            <div class="ar-card-title">
+                                                <a href="research/thales-luna-hsm-fundamentals.html">
+                                                    Understanding Thales Luna HSM Fundamentals: Architecture, Operations, and Integration
+                                                </a>
+                                            </div>
+                                            <div class="ar-card-excerpt">
+                                                Thales Luna HSM is an enterprise-grade Hardware Security Module platform designed to securely generate, store, protect, and process cryptographic keys inside tamper-resistant hardware.
+                                            </div>
+                                            <a href="research/thales-luna-hsm-fundamentals.html" class="ar-read-btn research">
                                                 <i class="fa fa-book"></i> Read Note
                                             </a>
                                         </div>
@@ -548,6 +1064,378 @@
                                                 FortiGate firewall policy is more than an allow-or-deny rulebase. It is the enforcement point where routing decisions, NAT, SSL inspection, identity controls, and multiple security profiles converge.
                                             </div>
                                             <a href="articles/fortigate-firewall-policy-deep-dive.html" class="ar-read-btn">
+                                                <i class="fa fa-arrow-right"></i> Read Article
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ARTICLE #5 -->
+                                <div class="col-12 col-md-6 col-lg-4 mb-4 ar-item"
+                                     data-tags="fortinet,security,networking"
+                                     data-title="FortiGate SD-WAN Deep Dive: Load Balance, Failover, Performance SLA & Policy Steering">
+                                    <div class="ar-card" data-aos="fade-up" data-aos-delay="500">
+                                        <div class="ar-card-bar"></div>
+                                        <div class="ar-card-body">
+                                            <div class="ar-tags">
+                                                <span class="ar-tag">Fortinet</span>
+                                                <span class="ar-tag">Security</span>
+                                                <span class="ar-tag">SD-WAN</span>
+                                            </div>
+                                            <div class="ar-card-meta">
+                                                <span><i class="fa fa-calendar"></i> May 2026</span>
+                                                <span><i class="fa fa-clock-o"></i> ~22 min read</span>
+                                            </div>
+                                            <div class="ar-card-title">
+                                                <a href="articles/fortigate-sdwan-deep-dive.html">
+                                                    FortiGate SD-WAN Deep Dive: Load Balance, Failover, Performance SLA &amp; Policy Steering
+                                                </a>
+                                            </div>
+                                            <div class="ar-card-excerpt">
+                                                FortiGate SD-WAN is more than combining multiple WAN links into one logical interface. It is an intelligent path-selection system that continuously evaluates link quality, steers sessions according to business intent, and automates failover when connectivity degrades.
+                                            </div>
+                                            <a href="articles/fortigate-sdwan-deep-dive.html" class="ar-read-btn">
+                                                <i class="fa fa-arrow-right"></i> Read Article
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ARTICLE #6 -->
+                                <div class="col-12 col-md-6 col-lg-4 mb-4 ar-item"
+                                     data-tags="networking,security"
+                                     data-title="Understanding Traffic Flow: Ephemeral Ports, Client-Server Roles & QoS in Data Center and ISP Networks">
+                                    <div class="ar-card" data-aos="fade-up" data-aos-delay="600">
+                                        <div class="ar-card-bar"></div>
+                                        <div class="ar-card-body">
+                                            <div class="ar-tags">
+                                                <span class="ar-tag">Networking</span>
+                                                <span class="ar-tag">Security</span>
+                                                <span class="ar-tag">Traffic Engineering</span>
+                                            </div>
+                                            <div class="ar-card-meta">
+                                                <span><i class="fa fa-calendar"></i> May 2026</span>
+                                                <span><i class="fa fa-clock-o"></i> ~18 min read</span>
+                                            </div>
+                                            <div class="ar-card-title">
+                                                <a href="articles/traffic-flow-ephemeral-port-qos.html">
+                                                    Understanding Traffic Flow: Ephemeral Ports, Client-Server Roles &amp; QoS in Data Center and ISP Networks
+                                                </a>
+                                            </div>
+                                            <div class="ar-card-excerpt">
+                                                Every network session follows a predictable flow model: one side initiates the connection, one side listens for requests, and transport-layer ports identify each conversation. Understanding this behavior is essential for firewall policy design, NAT translation, traffic troubleshooting, and Quality of Service (QoS).
+                                            </div>
+                                            <a href="articles/traffic-flow-ephemeral-port-qos.html" class="ar-read-btn">
+                                                <i class="fa fa-arrow-right"></i> Read Article
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ARTICLE #7 -->
+                                <div class="col-12 col-md-6 col-lg-4 mb-4 ar-item"
+                                     data-tags="fortinet,security"
+                                     data-title="Understanding FortiGate Traffic Shaping: Interface Limits, Policy Control, NP Offload & Data Center Use Cases">
+                                    <div class="ar-card" data-aos="fade-up" data-aos-delay="700">
+                                        <div class="ar-card-bar"></div>
+                                        <div class="ar-card-body">
+                                            <div class="ar-tags">
+                                                <span class="ar-tag">Fortinet</span>
+                                                <span class="ar-tag">Security</span>
+                                                <span class="ar-tag">Traffic Engineering</span>
+                                            </div>
+                                            <div class="ar-card-meta">
+                                                <span><i class="fa fa-calendar"></i> June 2026</span>
+                                                <span><i class="fa fa-clock-o"></i> ~22 min read</span>
+                                            </div>
+                                            <div class="ar-card-title">
+                                                <a href="articles/fortigate-traffic-shaping-deep-dive.html">
+                                                    Understanding FortiGate Traffic Shaping: Interface Limits, Policy Control, NP Offload &amp; Data Center Use Cases
+                                                </a>
+                                            </div>
+                                            <div class="ar-card-excerpt">
+                                                Traffic shaping on FortiGate is used to control bandwidth consumption, protect critical applications, and prevent congestion from degrading user experience. In production environments, shaping is not only about limiting speed. It is a method of enforcing business priority across shared links.
+                                            </div>
+                                            <a href="articles/fortigate-traffic-shaping-deep-dive.html" class="ar-read-btn">
+                                                <i class="fa fa-arrow-right"></i> Read Article
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ARTICLE #8 -->
+                                <div class="col-12 col-md-6 col-lg-4 mb-4 ar-item"
+                                     data-tags="cisco,networking,switching"
+                                     data-title="VLAN Deep Dive: Why VLAN Matters in Modern Switching">
+                                    <div class="ar-card" data-aos="fade-up" data-aos-delay="800">
+                                        <div class="ar-card-bar"></div>
+                                        <div class="ar-card-body">
+                                            <div class="ar-tags">
+                                                <span class="ar-tag">Cisco</span>
+                                                <span class="ar-tag">Networking</span>
+                                                <span class="ar-tag">Switching</span>
+                                            </div>
+                                            <div class="ar-card-meta">
+                                                <span><i class="fa fa-calendar"></i> April 2026</span>
+                                                <span><i class="fa fa-clock-o"></i> ~10 min read</span>
+                                            </div>
+                                            <div class="ar-card-title">
+                                                <a href="articles/vlan-deep-dive-modern-switching.html">
+                                                    VLAN Deep Dive: Why VLAN Matters in Modern Switching
+                                                </a>
+                                            </div>
+                                            <div class="ar-card-excerpt">
+                                                VLAN (Virtual Local Area Network) addresses the limitations of flat Layer 2 networks by dividing one physical switching infrastructure into multiple logical networks.
+                                            </div>
+                                            <a href="articles/vlan-deep-dive-modern-switching.html" class="ar-read-btn">
+                                                <i class="fa fa-arrow-right"></i> Read Article
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ARTICLE #9 -->
+                                <div class="col-12 col-md-6 col-lg-4 mb-4 ar-item"
+                                     data-tags="cisco,networking,datacenter"
+                                     data-title="VXLAN Deep Dive: The Evolution Beyond Traditional VLAN">
+                                    <div class="ar-card" data-aos="fade-up" data-aos-delay="900">
+                                        <div class="ar-card-bar"></div>
+                                        <div class="ar-card-body">
+                                            <div class="ar-tags">
+                                                <span class="ar-tag">Cisco</span>
+                                                <span class="ar-tag">Networking</span>
+                                                <span class="ar-tag">Data Center</span>
+                                            </div>
+                                            <div class="ar-card-meta">
+                                                <span><i class="fa fa-calendar"></i> June 2026</span>
+                                                <span><i class="fa fa-clock-o"></i> ~14 min read</span>
+                                            </div>
+                                            <div class="ar-card-title">
+                                                <a href="articles/vxlan-evolution-beyond-vlan.html">
+                                                    VXLAN Deep Dive: The Evolution Beyond Traditional VLAN
+                                                </a>
+                                            </div>
+                                            <div class="ar-card-excerpt">
+                                                VXLAN (Virtual Extensible LAN) emerged — a technology designed to extend Layer 2 networks across Layer 3 underlay networks while massively increasing segmentation scale.
+                                            </div>
+                                            <a href="articles/vxlan-evolution-beyond-vlan.html" class="ar-read-btn">
+                                                <i class="fa fa-arrow-right"></i> Read Article
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ARTICLE #10 -->
+                                <div class="col-12 col-md-6 col-lg-4 mb-4 ar-item"
+                                     data-tags="networking,bgp,cisco"
+                                     data-title="Understanding Internet Structure: BGP, ASN, Public IP Delivery & Enterprise Connectivity">
+                                    <div class="ar-card" data-aos="fade-up" data-aos-delay="1000">
+                                        <div class="ar-card-bar"></div>
+                                        <div class="ar-card-body">
+                                            <div class="ar-tags">
+                                                <span class="ar-tag">Networking</span>
+                                                <span class="ar-tag">BGP</span>
+                                                <span class="ar-tag">Cisco</span>
+                                            </div>
+                                            <div class="ar-card-meta">
+                                                <span><i class="fa fa-calendar"></i> June 2026</span>
+                                                <span><i class="fa fa-clock-o"></i> ~20 min read</span>
+                                            </div>
+                                            <div class="ar-card-title">
+                                                <a href="articles/understanding-internet-structure-bgp.html">
+                                                    Understanding Internet Structure: BGP, ASN, Public IP Delivery &amp; Enterprise Connectivity
+                                                </a>
+                                            </div>
+                                            <div class="ar-card-excerpt">
+                                                Most users think the internet is a single global network. In reality, the internet is a federation of thousands of independently operated networks connected through routing agreements.
+                                            </div>
+                                            <a href="articles/understanding-internet-structure-bgp.html" class="ar-read-btn">
+                                                <i class="fa fa-arrow-right"></i> Read Article
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ARTICLE #11 -->
+                                <div class="col-12 col-md-6 col-lg-4 mb-4 ar-item"
+                                     data-tags="mikrotik,networking,traffic engineering"
+                                     data-title="MikroTik QoS Deep Dive: Simple Queue, Queue Tree, Burst & HTB Design">
+                                    <div class="ar-card" data-aos="fade-up" data-aos-delay="1100">
+                                        <div class="ar-card-bar"></div>
+                                        <div class="ar-card-body">
+                                            <div class="ar-tags">
+                                                <span class="ar-tag">MikroTik</span>
+                                                <span class="ar-tag">Networking</span>
+                                                <span class="ar-tag">Traffic Engineering</span>
+                                            </div>
+                                            <div class="ar-card-meta">
+                                                <span><i class="fa fa-calendar"></i> June 2026</span>
+                                                <span><i class="fa fa-clock-o"></i> ~20 min read</span>
+                                            </div>
+                                            <div class="ar-card-title">
+                                                <a href="articles/mikrotik-qos-deep-dive.html">
+                                                    MikroTik QoS Deep Dive: Simple Queue, Queue Tree, Burst &amp; HTB Design
+                                                </a>
+                                            </div>
+                                            <div class="ar-card-excerpt">
+                                                Quality of Service (QoS) on MikroTik is one of the most powerful features available for bandwidth control, subscriber fairness, and traffic prioritization. In production environments, QoS is not only about limiting speed. It is about controlling congestion, preserving application performance, and distributing shared capacity intelligently.
+                                            </div>
+                                            <a href="articles/mikrotik-qos-deep-dive.html" class="ar-read-btn">
+                                                <i class="fa fa-arrow-right"></i> Read Article
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ARTICLE #12 -->
+                                <div class="col-12 col-md-6 col-lg-4 mb-4 ar-item"
+                                     data-tags="cisco,networking,routing"
+                                     data-title="EIGRP Deep Dive: Metrics, Best Path Logic, K-Values & Multi-AS Design">
+                                    <div class="ar-card" data-aos="fade-up" data-aos-delay="1200">
+                                        <div class="ar-card-bar"></div>
+                                        <div class="ar-card-body">
+                                            <div class="ar-tags">
+                                                <span class="ar-tag">Cisco</span>
+                                                <span class="ar-tag">Networking</span>
+                                                <span class="ar-tag">Routing</span>
+                                            </div>
+                                            <div class="ar-card-meta">
+                                                <span><i class="fa fa-calendar"></i> June 2026</span>
+                                                <span><i class="fa fa-clock-o"></i> ~18 min read</span>
+                                            </div>
+                                            <div class="ar-card-title">
+                                                <a href="articles/cisco-eigrp-deep-dive.html">
+                                                    EIGRP Deep Dive: Metrics, Best Path Logic, K-Values &amp; Multi-AS Design
+                                                </a>
+                                            </div>
+                                            <div class="ar-card-excerpt">
+                                                Enhanced Interior Gateway Routing Protocol (EIGRP) is a high-performance dynamic routing protocol originally developed by Cisco. It combines characteristics of distance-vector and link-state approaches, which is why it is often described as an advanced distance-vector or hybrid routing protocol.
+                                            </div>
+                                            <a href="articles/cisco-eigrp-deep-dive.html" class="ar-read-btn">
+                                                <i class="fa fa-arrow-right"></i> Read Article
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ARTICLE #13 -->
+                                <div class="col-12 col-md-6 col-lg-4 mb-4 ar-item"
+                                     data-tags="cisco,networking,routing"
+                                     data-title="OSPF Deep Dive: Areas, LSAs, Backbone Design & Enterprise Implementation">
+                                    <div class="ar-card" data-aos="fade-up" data-aos-delay="1300">
+                                        <div class="ar-card-bar"></div>
+                                        <div class="ar-card-body">
+                                            <div class="ar-tags">
+                                                <span class="ar-tag">Cisco</span>
+                                                <span class="ar-tag">Networking</span>
+                                                <span class="ar-tag">Routing</span>
+                                            </div>
+                                            <div class="ar-card-meta">
+                                                <span><i class="fa fa-calendar"></i> June 2026</span>
+                                                <span><i class="fa fa-clock-o"></i> ~18 min read</span>
+                                            </div>
+                                            <div class="ar-card-title">
+                                                <a href="articles/ospf-enterprise-routing-deep-dive.html">
+                                                    OSPF Deep Dive: Areas, LSAs, Backbone Design &amp; Enterprise Implementation
+                                                </a>
+                                            </div>
+                                            <div class="ar-card-excerpt">
+                                                Open Shortest Path First (OSPF) is one of the most widely deployed Interior Gateway Protocols (IGPs) in enterprise and service-provider networks. It is a link-state routing protocol designed for fast convergence, hierarchical scalability, and deterministic path selection.
+                                            </div>
+                                            <a href="articles/ospf-enterprise-routing-deep-dive.html" class="ar-read-btn">
+                                                <i class="fa fa-arrow-right"></i> Read Article
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ARTICLE #14 -->
+                                <div class="col-12 col-md-6 col-lg-4 mb-4 ar-item"
+                                     data-tags="fortinet,security,vpn"
+                                     data-title="FortiGate IPsec Deep Dive: Encryption, DH Groups, Tunnel Design & Real Configuration">
+                                    <div class="ar-card" data-aos="fade-up" data-aos-delay="1400">
+                                        <div class="ar-card-bar"></div>
+                                        <div class="ar-card-body">
+                                            <div class="ar-tags">
+                                                <span class="ar-tag">Fortinet</span>
+                                                <span class="ar-tag">Security</span>
+                                                <span class="ar-tag">VPN</span>
+                                            </div>
+                                            <div class="ar-card-meta">
+                                                <span><i class="fa fa-calendar"></i> July 2026</span>
+                                                <span><i class="fa fa-clock-o"></i> ~18 min read</span>
+                                            </div>
+                                            <div class="ar-card-title">
+                                                <a href="articles/fortigate-ipsec-vpn-deep-dive.html">
+                                                    FortiGate IPsec Deep Dive: Encryption, DH Groups, Tunnel Design &amp; Real Configuration
+                                                </a>
+                                            </div>
+                                            <div class="ar-card-excerpt">
+                                                When organizations need to securely connect branches, data centers, cloud workloads, or remote partners across untrusted networks such as the internet, one of the most proven technologies is IPsec.
+                                            </div>
+                                            <a href="articles/fortigate-ipsec-vpn-deep-dive.html" class="ar-read-btn">
+                                                <i class="fa fa-arrow-right"></i> Read Article
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ARTICLE #15 -->
+                                <div class="col-12 col-md-6 col-lg-4 mb-4 ar-item"
+                                     data-tags="fortinet,security,vpn"
+                                     data-title="FortiGate IPsec Deep Dive: Packet Handshake, Debug Flow, Hub-Spoke & ADVPN 2.0">
+                                    <div class="ar-card" data-aos="fade-up" data-aos-delay="1500">
+                                        <div class="ar-card-bar"></div>
+                                        <div class="ar-card-body">
+                                            <div class="ar-tags">
+                                                <span class="ar-tag">Fortinet</span>
+                                                <span class="ar-tag">Security</span>
+                                                <span class="ar-tag">VPN</span>
+                                            </div>
+                                            <div class="ar-card-meta">
+                                                <span><i class="fa fa-calendar"></i> July 2026</span>
+                                                <span><i class="fa fa-clock-o"></i> ~22 min read</span>
+                                            </div>
+                                            <div class="ar-card-title">
+                                                <a href="articles/fortigate-ipsec-handshake-advpn-deep-dive.html">
+                                                    FortiGate IPsec Deep Dive: Packet Handshake, Debug Flow, Hub-Spoke &amp; ADVPN 2.0
+                                                </a>
+                                            </div>
+                                            <div class="ar-card-excerpt">
+                                                Understanding IPsec only from GUI configuration is not enough for production engineers. Real operational mastery comes from understanding what happens at packet level during tunnel establishment, route learning, and traffic forwarding.
+                                            </div>
+                                            <a href="articles/fortigate-ipsec-handshake-advpn-deep-dive.html" class="ar-read-btn">
+                                                <i class="fa fa-arrow-right"></i> Read Article
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+ 
+                                 <!-- ARTICLE #16 -->
+                                 <div class="col-12 col-md-6 col-lg-4 mb-4 ar-item"
+                                      data-tags="fortinet,security,automation"
+                                      data-title="FortiGate SSL VPN Defense: Automation & Multi-Layer Security">
+                                    <div class="ar-card" data-aos="fade-up" data-aos-delay="1600">
+                                        <div class="ar-card-bar"></div>
+                                        <div class="ar-card-body">
+                                            <div class="ar-tags">
+                                                <span class="ar-tag">Fortinet</span>
+                                                <span class="ar-tag">Security</span>
+                                                <span class="ar-tag">Automation</span>
+                                            </div>
+                                            <div class="ar-card-meta">
+                                                <span><i class="fa fa-calendar"></i> July 2026</span>
+                                                <span><i class="fa fa-clock-o"></i> ~18 min read</span>
+                                            </div>
+                                            <div class="ar-card-title">
+                                                <a href="articles/fortigate-automation-stitch-sslvpn-defense.html">
+                                                    FortiGate SSL VPN Defense: Automation &amp; Multi-Layer Security
+                                                </a>
+                                            </div>
+                                            <div class="ar-card-excerpt">
+                                                SSL VPN remains one of the most targeted services. This article explores advanced defensive strategies using FortiGate Automation Stitches to automatically block attackers, combined with Geo-IP and ASN filtering.
+                                            </div>
+                                            <a href="articles/fortigate-automation-stitch-sslvpn-defense.html" class="ar-read-btn">
                                                 <i class="fa fa-arrow-right"></i> Read Article
                                             </a>
                                         </div>

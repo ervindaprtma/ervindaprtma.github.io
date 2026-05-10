@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+        <meta name="description" content="FortiGate IPsec Deep Dive: Encryption, DH Groups, Tunnel Design & Real Configuration">
+        <meta name="author" content="Ervinda Pratama">
+        <link rel="stylesheet" href="../../styles/main.css">
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32">
+        <title>FortiGate IPsec Deep Dive: Encryption, DH Groups, Tunnel Design &amp; Real Configuration — Ervinda Pratama</title>
+        <style>
+            .article-header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid #e0e0e0; margin-bottom: 2rem; }
+            body.dark-mode .article-header { border-bottom-color: #333; }
+            .article-back { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; margin-bottom:1.5rem; }
+            .article-back:hover { color:#005fa3; }
+            body.dark-mode .article-back { color:#00f2fe; }
+            .article-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:1rem; }
+            .article-tag { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; padding:2px 10px; border-radius:20px; background:rgba(0,119,204,0.1); color:#0077cc; border:1px solid rgba(0,119,204,0.25); }
+            body.dark-mode .article-tag { background:rgba(0,242,254,0.1); color:#00f2fe; border-color:rgba(0,242,254,0.25); }
+            .article-title { font-size:2rem; font-weight:800; line-height:1.25; margin-bottom:0.9rem; }
+            body.dark-mode .article-title { color:#f0f0f0; }
+            .article-meta { font-size:13px; color:#888; display:flex; flex-wrap:wrap; gap:1rem; align-items:center; }
+            body.dark-mode .article-meta { color:#666; }
+            .article-content { max-width:780px; margin:0 auto; font-size:1rem; line-height:1.8; color:#333; }
+            body.dark-mode .article-content { color:#d0d0d0; }
+            .article-content h2 { font-size:1.35rem; font-weight:700; margin-top:2.2rem; margin-bottom:0.7rem; border-left:4px solid #0077cc; padding-left:0.7rem; color:#003366; }
+            body.dark-mode .article-content h2 { border-left-color:#00f2fe; color:#00f2fe; }
+            .article-content h3 { font-size:1.1rem; font-weight:700; margin-top:1.5rem; margin-bottom:0.5rem; color:#0077cc; }
+            body.dark-mode .article-content h3 { color:#7fffff; }
+            .article-content pre, .article-content code { background:#1e1e2e; color:#a8d8a8; border-radius:6px; font-size:0.875rem; font-family:'Courier New',monospace; }
+            .article-content pre { padding:1rem 1.2rem; overflow-x:auto; margin:1.2rem 0; }
+            .article-content code { padding:2px 6px; }
+            .article-content blockquote { border-left:4px solid #0077cc; background:rgba(0, 119, 204, 0.06); margin:1.5rem 0; padding:0.8rem 1.2rem; border-radius:0 6px 6px 0; font-style:italic; color:#555; }
+            body.dark-mode .article-content blockquote { border-left-color:#00f2fe; background:rgba(0, 242, 254, 0.05); color:#aaa; }
+            .article-content table { width:100%; border-collapse:collapse; margin:1.2rem 0; }
+            .article-content table th, .article-content table td { border:1px solid #ddd; padding:8px 12px; font-size:0.9rem; }
+            .article-content table th { background:#f0f5ff; font-weight:700; }
+            body.dark-mode .article-content table th { background:#1a1a2e; color:#e0e0e0; }
+            body.dark-mode .article-content table td { border-color:#333; color:#d0d0d0; }
+            .article-nav { display:flex; justify-content:space-between; margin-top:3rem; padding-top:1.5rem; border-top:1px solid #e0e0e0; gap:1rem; }
+            body.dark-mode .article-nav { border-top-color:#333; }
+            .article-nav a { font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; display:flex; align-items:center; gap:6px; }
+            body.dark-mode .article-nav a { color:#00f2fe; }
+        </style>
+    </head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <app-navbar></app-navbar>
+    <section class="page-content">
+        <div class="container">
+            <div class="article-content" data-aos="fade-up">
+
+                <div class="article-header">
+                    <a href="../article_research.html" class="article-back">
+                        <i class="fas fa-arrow-left"></i> Back to Articles &amp; Research
+                    </a>
+                    <div class="article-tags">
+                        <span class="article-tag">Fortinet</span>
+                        <span class="article-tag">Security</span>
+                        <span class="article-tag">VPN</span>
+                    </div>
+                    <h1 class="article-title">FortiGate IPsec Deep Dive: Encryption, DH Groups, Tunnel Design &amp; Real Configuration</h1>
+                    <div class="article-meta">
+                        <span><i class="fas fa-user"></i>&nbsp; Ervinda Pratama</span>
+                        <span><i class="fas fa-calendar"></i>&nbsp; June 2026</span>
+                        <span><i class="fas fa-clock"></i>&nbsp; ~18 min read</span>
+                    </div>
+                </div>
+
+                <h2>Introduction</h2>
+                <p>When organizations need to securely connect branches, data centers, cloud workloads, or remote partners across untrusted networks such as the internet, one of the most proven technologies is <strong>IPsec</strong>.</p>
+                <p>On FortiGate, IPsec is a core capability used for site-to-site tunnels, hub-and-spoke WAN, SD-WAN overlays, and secure hybrid-cloud connectivity.</p>
+                <p>IPsec does not change the trust model of the internet; it protects data confidentiality across untrusted networks.</p>
+
+                <h2>Why Use IPsec?</h2>
+                <p>IPsec is used when traffic must traverse public or shared networks securely.</p>
+                <table>
+                    <thead>
+                        <tr><th>Business Need</th><th>How IPsec Helps</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Branch connectivity</td><td>Secure site-to-site tunnel</td></tr>
+                        <tr><td>Data center interconnect</td><td>Encrypted WAN transport</td></tr>
+                        <tr><td>Cloud extension</td><td>Secure AWS/Azure/GCP access</td></tr>
+                        <tr><td>Partner integration</td><td>Controlled encrypted exchange</td></tr>
+                        <tr><td>Backup WAN path</td><td>Internet-based DR tunnel</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>What Is IPsec?</h2>
+                <p>IPsec (Internet Protocol Security) is a suite of protocols that provides:</p>
+                <ul>
+                    <li>Confidentiality (encryption)</li>
+                    <li>Integrity (anti-tamper validation)</li>
+                    <li>Authentication (peer identity verification)</li>
+                    <li>Anti-replay protection</li>
+                    <li>Secure key exchange</li>
+                </ul>
+                <p>It operates at Layer 3, protecting IP traffic.</p>
+
+                <h2>Main Protocol Components</h2>
+                <table>
+                    <thead>
+                        <tr><th>Component</th><th>Purpose</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>IKE</td><td>Negotiates tunnel and keys</td></tr>
+                        <tr><td>ESP</td><td>Encrypts and protects payload</td></tr>
+                        <tr><td>AH</td><td>Integrity/authentication only (rare today)</td></tr>
+                        <tr><td>NAT-T</td><td>Encapsulates IPsec through NAT using UDP 4500</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Ports / Protocols Used</h3>
+                <table>
+                    <thead>
+                        <tr><th>Item</th><th>Value</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>IKE / ISAKMP</td><td>UDP 500</td></tr>
+                        <tr><td>NAT Traversal</td><td>UDP 4500</td></tr>
+                        <tr><td>ESP</td><td>IP Protocol 50</td></tr>
+                        <tr><td>AH</td><td>IP Protocol 51</td></tr>
+                    </tbody>
+                </table>
+                <p>FortiGate deployments commonly use IKE + ESP.</p>
+
+                <h2>IPsec Phases on FortiGate</h2>
+                <table>
+                    <thead>
+                        <tr><th>Phase</th><th>Purpose</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Phase 1</td><td>Build IKE SA (peer auth, key exchange)</td></tr>
+                        <tr><td>Phase 2</td><td>Build IPsec SA (data encryption selectors)</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Phase 1 Typical Parameters</h3>
+                <ul>
+                    <li>Interface / remote gateway</li>
+                    <li>Pre-shared key or certificate</li>
+                    <li>Encryption algorithm</li>
+                    <li>Authentication hash / integrity</li>
+                    <li>DH group</li>
+                    <li>Lifetime</li>
+                </ul>
+
+                <h3>Phase 2 Typical Parameters</h3>
+                <ul>
+                    <li>Source/destination selectors</li>
+                    <li>ESP encryption/authentication</li>
+                    <li>PFS group (optional but recommended)</li>
+                    <li>Lifetime</li>
+                </ul>
+
+                <h2>Encryption Algorithms Common in FortiGate</h2>
+                <table>
+                    <thead>
+                        <tr><th>Algorithm</th><th>Notes</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>AES128</td><td>Fast, acceptable legacy/common use</td></tr>
+                        <tr><td>AES256</td><td>Strong common enterprise standard</td></tr>
+                        <tr><td>AES-GCM</td><td>Authenticated encryption, modern preferred</td></tr>
+                        <tr><td>ChaCha20-Poly1305</td><td>Excellent on CPUs without AES acceleration</td></tr>
+                        <tr><td>3DES</td><td>Legacy, avoid new deployments</td></tr>
+                        <tr><td>DES</td><td>Obsolete</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Recommended Modern Choices</h3>
+                <ul>
+                    <li>aes256gcm</li>
+                    <li>aes128gcm</li>
+                    <li>chacha20poly1305</li>
+                </ul>
+
+                <h2>Authentication / Integrity Algorithms</h2>
+                <table>
+                    <thead>
+                        <tr><th>Algorithm</th><th>Notes</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>SHA1</td><td>Legacy, avoid if possible</td></tr>
+                        <tr><td>SHA256</td><td>Strong common standard</td></tr>
+                        <tr><td>SHA384</td><td>Stronger option</td></tr>
+                        <tr><td>SHA512</td><td>High security environments</td></tr>
+                        <tr><td>GCM Integrated Auth</td><td>Built into AES-GCM</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>What Is Diffie-Hellman?</h2>
+                <p>Diffie-Hellman (DH) is a secure key exchange method allowing two peers to derive a shared secret over an untrusted network without sending the secret directly.</p>
+                <p>That shared secret is then used to derive encryption keys.</p>
+                <p>Without DH, secure key exchange over the internet would be difficult.</p>
+
+                <h2>Common DH Groups in FortiGate</h2>
+                <table>
+                    <thead>
+                        <tr><th>Group</th><th>Type</th><th>Notes</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>2</td><td>MODP 1024</td><td>Legacy / weak</td></tr>
+                        <tr><td>5</td><td>MODP 1536</td><td>Legacy</td></tr>
+                        <tr><td>14</td><td>MODP 2048</td><td>Common secure baseline</td></tr>
+                        <tr><td>15</td><td>MODP 3072</td><td>Stronger</td></tr>
+                        <tr><td>16</td><td>MODP 4096</td><td>Strong but heavier CPU</td></tr>
+                        <tr><td>19</td><td>ECP256</td><td>Efficient elliptic curve</td></tr>
+                        <tr><td>20</td><td>ECP384</td><td>Strong modern choice</td></tr>
+                        <tr><td>21</td><td>ECP521</td><td>Very strong</td></tr>
+                        <tr><td>31</td><td>Curve25519</td><td>Modern high-performance (platform dependent)</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Practical Guidance</h3>
+                <ul>
+                    <li>Group 14 = widely compatible baseline</li>
+                    <li>Group 19/20 = modern preferred balance</li>
+                    <li>Group 20 = excellent enterprise choice</li>
+                    <li>Group 21+ = stronger but more CPU cost</li>
+                </ul>
+
+                <h2>What Is PFS?</h2>
+                <p>Perfect Forward Secrecy (PFS) performs additional DH exchange in Phase 2 so compromise of one key does not expose past sessions.</p>
+                <p>Recommended for sensitive environments.</p>
+
+                <h2>IPsec Tunnel vs IPsec VPN</h2>
+                <p>These terms are often used interchangeably, although they commonly refer to different deployment models in operations.</p>
+                <table>
+                    <thead>
+                        <tr><th>Term</th><th>Practical Meaning</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>IPsec Tunnel</td><td>Site-to-site routed or policy tunnel between devices</td></tr>
+                        <tr><td>IPsec VPN</td><td>Generic term covering site-to-site or remote access secure VPN</td></tr>
+                    </tbody>
+                </table>
+                <p>In FortiGate context, site-to-site interface-based VPN is the most common enterprise design.</p>
+
+                <h2>Example 1: Site-to-Site IPsec Tunnel (FortiGate &lt;-&gt; FortiGate)</h2>
+                <h3>Topology</h3>
+<pre><code>Site-A LAN 10.1.0.0/24 --- FGT-A === Internet === FGT-B --- Site-B LAN 10.2.0.0/24</code></pre>
+
+                <h3>FortiGate A</h3>
+<pre><code class="language-bash">config vpn ipsec phase1-interface
+ edit "FGT-B"
+  set interface "wan1"
+  set remote-gw 198.51.100.2
+  set peertype any
+  set proposal aes256gcm-prfsha256
+  set dhgrp 20
+  set psksecret ENC myStrongKey
+ next
+end
+
+config vpn ipsec phase2-interface
+ edit "FGT-B-P2"
+  set phase1name "FGT-B"
+  set proposal aes256gcm
+  set dhgrp 20
+  set src-subnet 10.1.0.0 255.255.255.0
+  set dst-subnet 10.2.0.0 255.255.255.0
+ next
+end</code></pre>
+
+                <h3>FortiGate B</h3>
+<pre><code class="language-bash">config vpn ipsec phase1-interface
+ edit "FGT-A"
+  set interface "wan1"
+  set remote-gw 203.0.113.2
+  set peertype any
+  set proposal aes256gcm-prfsha256
+  set dhgrp 20
+  set psksecret ENC myStrongKey
+ next
+end
+
+config vpn ipsec phase2-interface
+ edit "FGT-A-P2"
+  set phase1name "FGT-A"
+  set proposal aes256gcm
+  set dhgrp 20
+  set src-subnet 10.2.0.0 255.255.255.0
+  set dst-subnet 10.1.0.0 255.255.255.0
+ next
+end</code></pre>
+
+                <h3>Required Policies</h3>
+                <p>Create firewall policies allowing LAN &lt;-&gt; VPN interface traffic on both devices.</p>
+
+                <h2>Example 2: IPsec VPN for Remote User (Dial-Up)</h2>
+<pre><code class="language-bash">config vpn ipsec phase1-interface
+ edit "RemoteUserVPN"
+  set type dynamic
+  set interface "wan1"
+  set mode-cfg enable
+  set proposal aes256-sha256
+  set dhgrp 14
+  set ipv4-start-ip 10.10.10.10
+  set ipv4-end-ip 10.10.10.50
+  set psksecret ENC RemoteUserKey
+ next
+end</code></pre>
+                <p>This configuration enables remote users with compatible IPsec client software to establish secure connectivity.</p>
+
+                <h2>Operational Best Practices</h2>
+                <table>
+                    <thead>
+                        <tr><th>Recommendation</th><th>Why</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Use AES-GCM or ChaCha20</td><td>Modern secure crypto</td></tr>
+                        <tr><td>Prefer DH 19/20+</td><td>Strong key exchange</td></tr>
+                        <tr><td>Enable PFS</td><td>Better session secrecy</td></tr>
+                        <tr><td>Use route-based VPN</td><td>Simpler operations</td></tr>
+                        <tr><td>Restrict policies tightly</td><td>Least privilege</td></tr>
+                        <tr><td>Monitor rekey/lifetime logs</td><td>Stability</td></tr>
+                        <tr><td>Use certificates for scale</td><td>Better identity management</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Common Troubleshooting Checks</h2>
+                <ul>
+                    <li>PSK mismatch</li>
+                    <li>Proposal mismatch</li>
+                    <li>DH group mismatch</li>
+                    <li>Wrong peer public IP</li>
+                    <li>NAT-T blocked UDP 4500</li>
+                    <li>Missing firewall policy</li>
+                    <li>Wrong phase2 selectors</li>
+                    <li>Asymmetric routing</li>
+                    <li>MTU/MSS issues</li>
+                </ul>
+
+                <h2>Verification Commands</h2>
+<pre><code class="language-bash">diagnose vpn ike gateway list
+diagnose vpn tunnel list
+get vpn ipsec tunnel summary</code></pre>
+
+                <h2>Summary / Takeaways</h2>
+                <ul>
+                    <li>IPsec secures Layer 3 traffic across untrusted networks.</li>
+                    <li>FortiGate commonly uses IKE + ESP with Phase1 and Phase2 negotiation.</li>
+                    <li>AES-GCM and ChaCha20 are strong modern choices.</li>
+                    <li>DH groups define key exchange strength; Group 20 is an excellent enterprise option.</li>
+                    <li>Site-to-site IPsec tunnels securely connect networks.</li>
+                    <li>IPsec VPN can also serve remote users.</li>
+                    <li>Strong cryptography must be paired with correct routing and firewall policy.</li>
+                </ul>
+                <p>Effective VPN design combines strong cryptography, operational reliability, and predictable traffic flow.</p>
+
+                <div class="article-nav">
+                    <a href="ospf-enterprise-routing-deep-dive.html">
+                        <i class="fas fa-arrow-left"></i> Previous: OSPF Deep Dive
+                    </a>
+                    <a href="fortigate-ipsec-handshake-advpn-deep-dive.html">
+                        Next: Handshake & ADVPN <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="../../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <app-footer></app-footer>
+    <script>AOS.init();</script>
+    <script src="../../script/components.js"></script>
+</body>
+</html>

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+        <meta name="description" content="Understanding Internet Structure: BGP, ASN, Public IP Delivery & Enterprise Connectivity">
+        <meta name="author" content="Ervinda Pratama">
+        <link rel="stylesheet" href="../../styles/main.css">
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32">
+        <title>Understanding Internet Structure: BGP, ASN, Public IP Delivery & Enterprise Connectivity — Ervinda Pratama</title>
+        <style>
+            .article-header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid #e0e0e0; margin-bottom: 2rem; }
+            body.dark-mode .article-header { border-bottom-color: #333; }
+            .article-back { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; margin-bottom:1.5rem; }
+            .article-back:hover { color:#005fa3; }
+            body.dark-mode .article-back { color:#00f2fe; }
+            .article-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:1rem; }
+            .article-tag { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; padding:2px 10px; border-radius:20px; background:rgba(0,119,204,0.1); color:#0077cc; border:1px solid rgba(0,119,204,0.25); }
+            body.dark-mode .article-tag { background:rgba(0,242,254,0.1); color:#00f2fe; border-color:rgba(0,242,254,0.25); }
+            .article-title { font-size:2rem; font-weight:800; line-height:1.25; margin-bottom:0.9rem; }
+            body.dark-mode .article-title { color:#f0f0f0; }
+            .article-meta { font-size:13px; color:#888; display:flex; flex-wrap:wrap; gap:1rem; align-items:center; }
+            body.dark-mode .article-meta { color:#666; }
+            .article-content { max-width:780px; margin:0 auto; font-size:1rem; line-height:1.8; color:#333; }
+            body.dark-mode .article-content { color:#d0d0d0; }
+            .article-content h2 { font-size:1.35rem; font-weight:700; margin-top:2.2rem; margin-bottom:0.7rem; border-left:4px solid #0077cc; padding-left:0.7rem; color:#003366; }
+            body.dark-mode .article-content h2 { border-left-color:#00f2fe; color:#00f2fe; }
+            .article-content h3 { font-size:1.1rem; font-weight:700; margin-top:1.5rem; margin-bottom:0.5rem; color:#0077cc; }
+            body.dark-mode .article-content h3 { color:#7fffff; }
+            .article-content pre, .article-content code { background:#1e1e2e; color:#a8d8a8; border-radius:6px; font-size:0.875rem; font-family:'Courier New',monospace; }
+            .article-content pre { padding:1rem 1.2rem; overflow-x:auto; margin:1.2rem 0; }
+            .article-content code { padding:2px 6px; }
+            .article-content blockquote { border-left:4px solid #0077cc; background:rgba(0, 119, 204, 0.06); margin:1.5rem 0; padding:0.8rem 1.2rem; border-radius:0 6px 6px 0; font-style:italic; color:#555; }
+            body.dark-mode .article-content blockquote { border-left-color:#00f2fe; background:rgba(0, 242, 254, 0.05); color:#aaa; }
+            .article-content table { width:100%; border-collapse:collapse; margin:1.2rem 0; }
+            .article-content table th, .article-content table td { border:1px solid #ddd; padding:8px 12px; font-size:0.9rem; }
+            .article-content table th { background:#f0f5ff; font-weight:700; }
+            body.dark-mode .article-content table th { background:#1a1a2e; color:#e0e0e0; }
+            body.dark-mode .article-content table td { border-color:#333; color:#d0d0d0; }
+            .article-nav { display:flex; justify-content:space-between; margin-top:3rem; padding-top:1.5rem; border-top:1px solid #e0e0e0; gap:1rem; }
+            body.dark-mode .article-nav { border-top-color:#333; }
+            .article-nav a { font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; display:flex; align-items:center; gap:6px; }
+            body.dark-mode .article-nav a { color:#00f2fe; }
+        </style>
+    </head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <app-navbar></app-navbar>
+    <section class="page-content">
+        <div class="container">
+            <div class="article-content" data-aos="fade-up">
+
+                <div class="article-header">
+                    <a href="../article_research.html" class="article-back">
+                        <i class="fas fa-arrow-left"></i> Back to Articles &amp; Research
+                    </a>
+                    <div class="article-tags">
+                        <span class="article-tag">Networking</span>
+                        <span class="article-tag">BGP</span>
+                        <span class="article-tag">Cisco</span>
+                    </div>
+                    <h1 class="article-title">Understanding Internet Structure: BGP, ASN, Public IP Delivery &amp; Enterprise Connectivity</h1>
+                    <div class="article-meta">
+                        <span><i class="fas fa-user"></i>&nbsp; Ervinda Pratama</span>
+                        <span><i class="fas fa-calendar"></i>&nbsp; June 2026</span>
+                        <span><i class="fas fa-clock"></i>&nbsp; ~20 min read</span>
+                    </div>
+                </div>
+
+                <h2>Introduction</h2>
+                <p>
+                    Most users think the internet is a single global network. In reality, the internet is a federation of thousands of independently operated networks connected through routing agreements.
+                </p>
+                <p>
+                    What makes these separate networks function as one reachable system is <strong>Border Gateway Protocol (BGP)</strong>.
+                </p>
+                <p>
+                    BGP is the language of the internet. Without BGP, the internet would be isolated islands of connectivity.
+                </p>
+
+                <h2>What Is the Internet Structurally?</h2>
+                <p>The internet is a network of networks.</p>
+                <p>Examples of participating networks:</p>
+                <ul>
+                    <li>Internet Service Providers (ISPs)</li>
+                    <li>Mobile operators</li>
+                    <li>Cloud providers</li>
+                    <li>Content delivery networks (CDNs)</li>
+                    <li>Universities</li>
+                    <li>Governments</li>
+                    <li>Large enterprises with public prefixes</li>
+                    <li>Hosting providers</li>
+                </ul>
+                <p>Each of these may operate its own routing domain and exchange reachability information with others.</p>
+
+<pre><code>Enterprise A --- ISP 1 --- Transit Provider --- Cloud Network
+                 |                |
+Enterprise B --- ISP 2 -----------IXP/CDN</code></pre>
+
+                <h2>When Does a Network Become Part of the Internet?</h2>
+                <p>A private network becomes part of the public internet when it can exchange globally routable reachability information with external autonomous systems and reach other public prefixes.</p>
+                <p>Practically, this usually means:</p>
+                <ul>
+                    <li>Connected to an ISP or upstream provider</li>
+                    <li>Uses public IP addressing (or NAT to public IP)</li>
+                    <li>Receives routes or default path to internet</li>
+                    <li>Participates directly or indirectly in BGP-based reachability</li>
+                </ul>
+                <p>Even users behind NAT are internet-connected because their provider participates in global routing.</p>
+
+                <h2>What Is BGP?</h2>
+                <p>Border Gateway Protocol is the inter-domain routing protocol used to exchange routes between autonomous systems.</p>
+                <p>Unlike OSPF or EIGRP that optimize internal paths, BGP focuses on policy, scalability, and reachability between organizations.</p>
+
+                <table>
+                    <thead>
+                        <tr><th>Characteristic</th><th>Value</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Scope</td><td>Inter-domain routing</td></tr>
+                        <tr><td>Protocol Type</td><td>Path Vector</td></tr>
+                        <tr><td>Transport</td><td>TCP Port 179</td></tr>
+                        <tr><td>Metric Logic</td><td>Attributes / policy</td></tr>
+                        <tr><td>Typical Use</td><td>ISP, cloud, enterprise edge</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>What Is an Autonomous System (AS)?</h2>
+                <p>An Autonomous System is a network under a single administrative routing policy.</p>
+                <p>Examples:</p>
+                <ul>
+                    <li>ISP network</li>
+                    <li>Cloud provider backbone</li>
+                    <li>Large enterprise internet edge</li>
+                </ul>
+                <p>Each AS is identified by an <strong>ASN (Autonomous System Number)</strong>.</p>
+                <p>Examples:</p>
+                <ul>
+                    <li>AS13335 = Cloudflare</li>
+                    <li>AS15169 = Google</li>
+                    <li>AS16509 = AWS</li>
+                    <li>Enterprise may receive private ASN or public ASN depending on design</li>
+                </ul>
+
+                <h2>ASN Meaning in BGP vs EIGRP</h2>
+                <p>The term AS number exists in both BGP and classic EIGRP, but meanings differ.</p>
+
+                <table>
+                    <thead>
+                        <tr><th>Protocol</th><th>Meaning of AS Number</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>BGP</td><td>Globally or privately identified routing domain between organizations</td></tr>
+                        <tr><td>EIGRP</td><td>Local process/domain identifier for neighbor formation</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Important Difference</h3>
+                <ul>
+                    <li>BGP ASN has real inter-network identity significance.</li>
+                    <li>EIGRP AS number is mainly local administrative grouping.</li>
+                </ul>
+
+                <h2>BGP Message Types</h2>
+                <p>BGP peers exchange information using TCP 179 and several message types.</p>
+
+                <table>
+                    <thead>
+                        <tr><th>Message</th><th>Purpose</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>OPEN</td><td>Establish peering session</td></tr>
+                        <tr><td>KEEPALIVE</td><td>Maintain session</td></tr>
+                        <tr><td>UPDATE</td><td>Advertise / withdraw routes</td></tr>
+                        <tr><td>NOTIFICATION</td><td>Signal error and close session</td></tr>
+                        <tr><td>ROUTE-REFRESH</td><td>Request re-advertisement</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Types of BGP</h2>
+                <table>
+                    <thead>
+                        <tr><th>Type</th><th>Meaning</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>eBGP</td><td>Between different ASNs</td></tr>
+                        <tr><td>iBGP</td><td>Within same ASN</td></tr>
+                        <tr><td>Confederation</td><td>Large AS split into sub-AS internally</td></tr>
+                        <tr><td>Route Reflector Design</td><td>Scalable iBGP architecture</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Example eBGP Peering</h2>
+<pre><code>Enterprise AS65001 -------- ISP AS100</code></pre>
+
+                <h3>Cisco Example</h3>
+<pre><code class="language-bash">router bgp 65001
+ neighbor 203.0.113.1 remote-as 100
+ network 198.51.100.0 mask 255.255.255.0</code></pre>
+
+                <p>Meaning:</p>
+                <ul>
+                    <li>Enterprise peers with ISP.</li>
+                    <li>Advertises owned public prefix.</li>
+                </ul>
+
+                <h2>Example Transit AS / Transit BGP</h2>
+                <p>A transit provider carries traffic between two or more external networks and sells upstream reachability to prefixes it does not own.</p>
+
+<pre><code>Enterprise ---- ISP-A ---- Transit Provider ---- Content Network</code></pre>
+
+                <p>Transit AS performs two strategic functions:</p>
+                <ul>
+                    <li>Provides access to the wider internet routing table</li>
+                    <li>Carries third-party traffic between customer and destination networks</li>
+                    <li>Aggregates many regional ISPs into larger upstream ecosystems</li>
+                    <li>Offers redundancy when multiple upstreams are used</li>
+                </ul>
+
+                <h3>Practical Example</h3>
+                <p>A regional ISP may only have local customers. By purchasing transit from a national carrier, that ISP gains reachability to global destinations such as cloud platforms, CDNs, and overseas networks.</p>
+
+                <h3>Why Transit Matters</h3>
+                <p>Without transit AS operators, every ISP would need direct peering with thousands of networks, which is operationally unrealistic.</p>
+                <p>Transit AS sells scale, reachability, and routing efficiency.</p>
+
+                <h2>Internet Service Structure: NAP -> ISP -> User</h2>
+                <p>In many markets, enterprise and retail internet users do not connect directly to every global carrier. Connectivity is layered.</p>
+
+<pre><code>Global Carriers / Tier-1 Networks
+          |
+   National NAP / IXP / Backbone
+          |
+      ISP / Regional ISP
+          |
+ Enterprise / Home / Mobile User</code></pre>
+
+                <h3>Typical Roles</h3>
+                <table>
+                    <thead>
+                        <tr><th>Layer</th><th>Function</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Tier-1 / Global Carrier</td><td>International transit and backbone</td></tr>
+                        <tr><td>NAP / IXP</td><td>Interconnection exchange point</td></tr>
+                        <tr><td>National Backbone Provider</td><td>Domestic transport capacity</td></tr>
+                        <tr><td>ISP</td><td>Last-mile service + customer routing</td></tr>
+                        <tr><td>User</td><td>Consumes connectivity</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Example Scenario</h3>
+                <ul>
+                    <li>National provider owns backbone across multiple cities.</li>
+                    <li>ISP leases upstream capacity and receives BGP transit.</li>
+                    <li>Enterprise customer buys dedicated internet with public subnet.</li>
+                    <li>End users consume services through ISP edge.</li>
+                </ul>
+                <p>This layered model allows efficient scaling of internet delivery.</p>
+
+                <h2>Public IP Delivery to Enterprise</h2>
+                <p>There are two common models.</p>
+
+                <h3>Model 1: ISP Assigned Public IP</h3>
+                <p>ISP gives:</p>
+                <ul>
+                    <li>Single static public IP</li>
+                    <li>Small subnet (/30, /29, /28)</li>
+                    <li>Routed block toward enterprise CE router</li>
+                </ul>
+
+                <h3>Model 2: Enterprise Own Prefix + BGP</h3>
+                <p>Enterprise owns provider-independent public prefix and ASN.</p>
+                <p>ISP announces enterprise prefix into internet via BGP.</p>
+
+                <h2>How Public IP Reaches Private Network Users</h2>
+                <p>Example:</p>
+<pre><code>Internet -> ISP -> Enterprise Edge Router -> Firewall -> Internal LAN</code></pre>
+
+                <p>Methods:</p>
+
+                <h3>1. NAT/PAT Model (Most Common)</h3>
+                <p>Private users use RFC1918 addresses:</p>
+                <ul>
+                    <li>10.0.0.0/8</li>
+                    <li>172.16.0.0/12</li>
+                    <li>192.168.0.0/16</li>
+                </ul>
+                <p>Firewall translates many private users to one/few public IPs.</p>
+
+                <h3>2. Routed Public Subnet Model</h3>
+                <p>Internal servers or DMZ receive real public IP addresses.</p>
+                <p>Example:</p>
+                <ul>
+                    <li>Public /29 routed to firewall</li>
+                    <li>Firewall assigns to DMZ VIP/server</li>
+                </ul>
+
+                <h2>Routing Example: ISP Owns /22 and Customer Leases /30</h2>
+                <p>Assume ISP owns public block:</p>
+<pre><code>203.0.112.0/22</code></pre>
+
+                <p>Range summary:</p>
+                <ul>
+                    <li>203.0.112.0 - 203.0.115.255</li>
+                </ul>
+
+                <p>ISP allocates one /30 to enterprise customer:</p>
+<pre><code>203.0.113.8/30</code></pre>
+
+                <p>Usable IPs:</p>
+                <ul>
+                    <li>203.0.113.9</li>
+                    <li>203.0.113.10</li>
+                </ul>
+
+                <h3>Structural Topology</h3>
+<pre><code>NAP / Upstream
+     |
+ ISP Core (BGP)
+     |
+ ISP PE Router
+     |
+ Customer Edge / Firewall</code></pre>
+
+                <h3>Routing View Inside ISP</h3>
+                <p>The ISP advertises aggregate /22 to upstreams:</p>
+<pre><code>203.0.112.0/22 via ISP-AS</code></pre>
+
+                <p>Inside ISP internal routing, a more specific route points customer /30 toward the serving PE router:</p>
+<pre><code>203.0.113.8/30 -> PE-JKT-01</code></pre>
+
+                <p>Because longest-prefix match prefers /30 over /22 internally, packets for customer IPs are delivered to correct edge router.</p>
+
+                <h3>Mechanism and Purpose</h3>
+                <ul>
+                    <li>/22 aggregate reduces global routing table growth.</li>
+                    <li>/30 specific route enables exact customer delivery inside ISP.</li>
+                    <li>Customer receives usable public addresses without announcing own BGP prefix.</li>
+                    <li>ISP retains routing control and address efficiency.</li>
+                </ul>
+
+                <h3>Example Static Delivery to Customer</h3>
+<pre><code class="language-bash">ip route 203.0.113.8 255.255.255.252 CUSTOMER-LINK</code></pre>
+
+                <h3>If Using eBGP With Customer</h3>
+<pre><code class="language-bash">router bgp 64500
+ neighbor 203.0.113.10 remote-as 65001</code></pre>
+
+                <p>ISP may still advertise default route while routing the /30 toward customer edge.</p>
+
+                <h3>Customer Side Usage</h3>
+                <ul>
+                    <li>203.0.113.9 = ISP gateway</li>
+                    <li>203.0.113.10 = Customer firewall WAN</li>
+                </ul>
+                <p>Customer may NAT internal users behind 203.0.113.10 or use routed services.</p>
+
+                <h2>Advertising Public Prefix to Internet</h2>
+                <p>If enterprise owns prefix 198.51.100.0/24:</p>
+
+<pre><code class="language-bash">router bgp 65001
+ network 198.51.100.0 mask 255.255.255.0</code></pre>
+
+                <p>Then ISP accepts and propagates route (subject to policy).</p>
+                <p>Global routers now know traffic for that prefix should move toward enterprise ASN path.</p>
+
+                <h2>How Private Users Access Internet Without Public IP on PC</h2>
+                <p>Users may remain private internally:</p>
+<pre><code>PC 10.10.10.50 -> Firewall NAT -> 198.51.100.10 -> Internet</code></pre>
+
+                <p>The internet only sees translated public IP.</p>
+                <p>So users do not need public IP directly to access the internet.</p>
+
+                <h2>Where NAT Sits in BGP Architecture</h2>
+                <p>NAT is usually <strong>inside the enterprise edge</strong>, not in BGP core routing itself.</p>
+
+                <p>Typical placement:</p>
+<pre><code>LAN -> Firewall/NAT -> Edge Router(BGP) -> ISP</code></pre>
+
+                <p>or</p>
+<pre><code>LAN -> Firewall(BGP + NAT capable device) -> ISP</code></pre>
+
+                <p>BGP distributes prefixes. NAT translates addresses.</p>
+                <p>These are separate functions.</p>
+
+                <h2>Implications of NAT in BGP Networks</h2>
+                <table>
+                    <thead>
+                        <tr><th>Topic</th><th>Effect</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Outbound internet access</td><td>Efficient public IP sharing</td></tr>
+                        <tr><td>Inbound hosting</td><td>Requires DNAT / static NAT</td></tr>
+                        <tr><td>End-to-end visibility</td><td>Reduced source transparency</td></tr>
+                        <tr><td>Troubleshooting</td><td>Need translation tracking</td></tr>
+                        <tr><td>Security</td><td>Hides internal addressing</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Real Enterprise Design Example</h2>
+<pre><code>Users VLANs (10.0.0.0/16)
+        |
+   FortiGate Firewall
+ NAT to 203.0.113.10
+        |
+ Edge Router BGP AS65001
+        |
+ ISP AS100
+        |
+ Internet</code></pre>
+
+                <p>If company hosts website:</p>
+                <ul>
+                    <li>ISP routes public /29 block</li>
+                    <li>Firewall maps one IP to DMZ web server</li>
+                    <li>BGP advertises company prefix or ISP static route handles delivery</li>
+                </ul>
+
+                <h2>Common Misunderstandings</h2>
+                <ul>
+                    <li>BGP does not automatically perform NAT.</li>
+                    <li>Having BGP does not mean every user gets public IP.</li>
+                    <li>Public IP can be routed block or translated IP.</li>
+                    <li>Internet access can work with only default route from ISP (no direct BGP on customer side).</li>
+                    <li>Small businesses often use NAT only without BGP.</li>
+                </ul>
+
+                <h2>Best Practices</h2>
+                <table>
+                    <thead>
+                        <tr><th>Recommendation</th><th>Why</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Use BGP when multi-homed or owning prefixes</td><td>Control + resilience</td></tr>
+                        <tr><td>Keep NAT on firewall/security edge</td><td>Visibility + policy</td></tr>
+                        <tr><td>Filter advertised prefixes</td><td>Prevent route leaks</td></tr>
+                        <tr><td>Use private ASN where appropriate</td><td>Simpler deployments</td></tr>
+                        <tr><td>Document IP ownership and translations</td><td>Operations clarity</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Summary / Takeaways</h2>
+                <ul>
+                    <li>The internet is a federation of autonomous systems connected by BGP.</li>
+                    <li>BGP uses TCP 179 to exchange reachability between networks.</li>
+                    <li>ASN in BGP identifies routing domains; EIGRP AS is mainly local process grouping.</li>
+                    <li>Transit providers connect smaller networks to the wider internet.</li>
+                    <li>Public IP can be directly routed or delivered through NAT.</li>
+                    <li>NAT usually lives at firewall/edge, while BGP handles route advertisement.</li>
+                    <li>Private users can fully access the internet without owning public IP addresses individually.</li>
+                    <li>Understanding BGP + NAT boundaries is essential for enterprise WAN and internet edge design.</li>
+                </ul>
+
+                <div class="article-nav">
+                    <a href="vxlan-evolution-beyond-vlan.html">
+                        <i class="fas fa-arrow-left"></i> Previous: VXLAN Deep Dive
+                    </a>
+                    <a href="mikrotik-qos-deep-dive.html">
+                        Next: MikroTik QoS Deep Dive <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="../../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <app-footer></app-footer>
+    <script>AOS.init();</script>
+    <script src="../../script/components.js"></script>
+</body>
+</html>

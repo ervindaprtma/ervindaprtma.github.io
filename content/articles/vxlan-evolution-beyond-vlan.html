@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+        <meta name="description" content="VXLAN Deep Dive: The Evolution Beyond Traditional VLAN">
+        <meta name="author" content="Ervinda Pratama">
+        <link rel="stylesheet" href="../../styles/main.css">
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32">
+        <title>VXLAN Deep Dive: The Evolution Beyond Traditional VLAN — Ervinda Pratama</title>
+        <style>
+            .article-header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid #e0e0e0; margin-bottom: 2rem; }
+            body.dark-mode .article-header { border-bottom-color: #333; }
+            .article-back { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; margin-bottom:1.5rem; }
+            .article-back:hover { color:#005fa3; }
+            body.dark-mode .article-back { color:#00f2fe; }
+            .article-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:1rem; }
+            .article-tag { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; padding:2px 10px; border-radius:20px; background:rgba(0,119,204,0.1); color:#0077cc; border:1px solid rgba(0,119,204,0.25); }
+            body.dark-mode .article-tag { background:rgba(0,242,254,0.1); color:#00f2fe; border-color:rgba(0,242,254,0.25); }
+            .article-title { font-size:2rem; font-weight:800; line-height:1.25; margin-bottom:0.9rem; }
+            body.dark-mode .article-title { color:#f0f0f0; }
+            .article-meta { font-size:13px; color:#888; display:flex; flex-wrap:wrap; gap:1rem; align-items:center; }
+            body.dark-mode .article-meta { color:#666; }
+            .article-content { max-width:780px; margin:0 auto; font-size:1rem; line-height:1.8; color:#333; }
+            body.dark-mode .article-content { color:#d0d0d0; }
+            .article-content h2 { font-size:1.35rem; font-weight:700; margin-top:2.2rem; margin-bottom:0.7rem; border-left:4px solid #0077cc; padding-left:0.7rem; color:#003366; }
+            body.dark-mode .article-content h2 { border-left-color:#00f2fe; color:#00f2fe; }
+            .article-content h3 { font-size:1.1rem; font-weight:700; margin-top:1.5rem; margin-bottom:0.5rem; color:#0077cc; }
+            body.dark-mode .article-content h3 { color:#7fffff; }
+            .article-content pre, .article-content code { background:#1e1e2e; color:#a8d8a8; border-radius:6px; font-size:0.875rem; font-family:'Courier New',monospace; }
+            .article-content pre { padding:1rem 1.2rem; overflow-x:auto; margin:1.2rem 0; }
+            .article-content code { padding:2px 6px; }
+            .article-content blockquote { border-left:4px solid #0077cc; background:rgba(0, 119, 204, 0.06); margin:1.5rem 0; padding:0.8rem 1.2rem; border-radius:0 6px 6px 0; font-style:italic; color:#555; }
+            body.dark-mode .article-content blockquote { border-left-color:#00f2fe; background:rgba(0, 242, 254, 0.05); color:#aaa; }
+            .article-content table { width:100%; border-collapse:collapse; margin:1.2rem 0; }
+            .article-content table th, .article-content table td { border:1px solid #ddd; padding:8px 12px; font-size:0.9rem; }
+            .article-content table th { background:#f0f5ff; font-weight:700; }
+            body.dark-mode .article-content table th { background:#1a1a2e; color:#e0e0e0; }
+            body.dark-mode .article-content table td { border-color:#333; color:#d0d0d0; }
+            .article-nav { display:flex; justify-content:space-between; margin-top:3rem; padding-top:1.5rem; border-top:1px solid #e0e0e0; gap:1rem; }
+            body.dark-mode .article-nav { border-top-color:#333; }
+            .article-nav a { font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; display:flex; align-items:center; gap:6px; }
+            body.dark-mode .article-nav a { color:#00f2fe; }
+        </style>
+    </head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <app-navbar></app-navbar>
+    <section class="page-content">
+        <div class="container">
+            <div class="article-content" data-aos="fade-up">
+
+                <div class="article-header">
+                    <a href="../article_research.html" class="article-back">
+                        <i class="fas fa-arrow-left"></i> Back to Articles &amp; Research
+                    </a>
+                    <div class="article-tags">
+                        <span class="article-tag">Cisco</span>
+                        <span class="article-tag">Networking</span>
+                        <span class="article-tag">Data Center</span>
+                    </div>
+                    <h1 class="article-title">VXLAN Deep Dive: The Evolution Beyond Traditional VLAN</h1>
+                    <div class="article-meta">
+                        <span><i class="fas fa-user"></i>&nbsp; Ervinda Pratama</span>
+                        <span><i class="fas fa-calendar"></i>&nbsp; June 2026</span>
+                        <span><i class="fas fa-clock"></i>&nbsp; ~14 min read</span>
+                    </div>
+                </div>
+
+                <h2>Introduction</h2>
+                <p>
+                    VLAN has been one of the most successful Layer 2 technologies in enterprise networking. It logically separates networks, reduces broadcast domains, and enables structured segmentation across switches.
+                </p>
+                <p>
+                    However, modern infrastructure changed the game. Virtualization, cloud workloads, container platforms, and multi-site data centers introduced a scale problem that traditional VLAN design was never built to solve.
+                </p>
+                <p>
+                    This is where <strong>VXLAN (Virtual Extensible LAN)</strong> emerged — a technology designed to extend Layer 2 networks across Layer 3 underlay networks while massively increasing segmentation scale.
+                </p>
+                <p>
+                    VLAN solved campus segmentation. VXLAN solved data center mobility.
+                </p>
+
+                <hr>
+
+                <h2>Why VLAN Became Limited</h2>
+                <p>Traditional VLAN works well in campus and branch environments, but large-scale data centers exposed several limitations.</p>
+
+                <table>
+                    <thead>
+                        <tr><th>VLAN Limitation</th><th>Impact</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Maximum 4094 VLAN IDs</td><td>Limited tenant/application segmentation</td></tr>
+                        <tr><td>Layer 2 stretch complexity</td><td>Difficult multi-rack / multi-site extension</td></tr>
+                        <tr><td>Spanning Tree dependency</td><td>Convergence and blocked links</td></tr>
+                        <tr><td>MAC table scaling pressure</td><td>Large broadcast domains</td></tr>
+                        <tr><td>Poor workload mobility</td><td>VM migration challenges</td></tr>
+                    </tbody>
+                </table>
+                
+                <p>As server virtualization increased, workloads needed to move between racks or clusters without changing IP addressing. VLAN-based architecture became operationally rigid.</p>
+
+                <hr>
+
+                <h2>What is VXLAN?</h2>
+                <p>VXLAN stands for <strong>Virtual Extensible LAN</strong>.</p>
+                
+                <p>It is an overlay technology that encapsulates Layer 2 Ethernet frames inside Layer 3 UDP packets, allowing Layer 2 segments to traverse routed IP networks.</p>
+                
+                <p>Instead of relying on physical VLAN continuity, VXLAN creates logical segments across any IP fabric.</p>
+
+                <table>
+                    <thead>
+                        <tr><th>Concept</th><th>VLAN</th><th>VXLAN</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Segmentation ID</td><td>12-bit VLAN ID</td><td>24-bit VNI</td></tr>
+                        <tr><td>Maximum Segments</td><td>4094</td><td>~16 million</td></tr>
+                        <tr><td>Transport</td><td>Layer 2 trunks</td><td>Layer 3 IP network</td></tr>
+                        <tr><td>Typical Use</td><td>Campus / Access</td><td>Data Center / Cloud</td></tr>
+                        <tr><td>Multi-site Mobility</td><td>Limited</td><td>Excellent</td></tr>
+                    </tbody>
+                </table>
+
+                <hr>
+
+                <h2>Why VXLAN Was Created</h2>
+                <p>VXLAN was introduced to solve the rise of:</p>
+                <ul>
+                    <li>Large virtualized server farms</li>
+                    <li>East-west traffic growth between workloads</li>
+                    <li>Need for workload mobility between hosts/racks</li>
+                    <li>Multi-tenant cloud environments</li>
+                    <li>Massive segmentation requirements</li>
+                    <li>Modern leaf-spine routed fabrics</li>
+                </ul>
+                <p>Instead of stretching VLAN everywhere, networks moved to a routed underlay with overlay tunnels.</p>
+
+                <hr>
+
+                <h2>Core Components of VXLAN</h2>
+                <table>
+                    <thead>
+                        <tr><th>Component</th><th>Function</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>VTEP</td><td>VXLAN Tunnel Endpoint that encapsulates/decapsulates traffic</td></tr>
+                        <tr><td>VNI</td><td>VXLAN Network Identifier (logical segment ID)</td></tr>
+                        <tr><td>Underlay Network</td><td>IP transport fabric carrying VXLAN packets</td></tr>
+                        <tr><td>Overlay Network</td><td>Virtual Layer 2 segment over underlay</td></tr>
+                        <tr><td>EVPN (optional)</td><td>Modern control plane for MAC/IP learning</td></tr>
+                    </tbody>
+                </table>
+
+                <hr>
+
+                <h2>Basic VXLAN Traffic Flow</h2>
+                <p>Example: VM-A wants to reach VM-B in same VXLAN segment.</p>
+                <ol>
+                    <li>VM-A sends normal Ethernet frame.</li>
+                    <li>Leaf switch acting as VTEP receives frame.</li>
+                    <li>Switch maps VLAN to VNI.</li>
+                    <li>Original Ethernet frame is encapsulated into VXLAN/UDP/IP.</li>
+                    <li>Packet crosses routed underlay network.</li>
+                    <li>Remote VTEP decapsulates packet.</li>
+                    <li>Original Ethernet frame delivered to VM-B.</li>
+                </ol>
+                <p>To end devices, it still feels like one Layer 2 network.</p>
+
+                <hr>
+
+                <h2>VXLAN Packet Structure</h2>
+                <p>The original Ethernet frame remains intact as the inner payload while new transport headers are added for delivery across the routed underlay.</p>
+                <p>Original Ethernet frame is preserved and wrapped inside additional headers.</p>
+
+<pre><code>Outer Ethernet Header
+Outer IP Header
+UDP Header (Port 4789)
+VXLAN Header
+Inner Ethernet Frame
+Payload</code></pre>
+
+                <hr>
+
+                <h2>VXLAN Header Breakdown</h2>
+                <p>VXLAN header is 8 bytes.</p>
+
+                <table>
+                    <thead>
+                        <tr><th>Field</th><th>Size</th><th>Purpose</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Flags</td><td>8 bits</td><td>Indicates valid VNI</td></tr>
+                        <tr><td>Reserved</td><td>24 bits</td><td>Reserved</td></tr>
+                        <tr><td>VNI</td><td>24 bits</td><td>VXLAN Network Identifier</td></tr>
+                        <tr><td>Reserved</td><td>8 bits</td><td>Reserved</td></tr>
+                    </tbody>
+                </table>
+
+                <p>The <strong>VNI</strong> is the equivalent of VLAN ID, but far larger.</p>
+                <ul>
+                    <li>VLAN = 12-bit (4094 usable)</li>
+                    <li>VXLAN = 24-bit (~16,777,216 segments)</li>
+                </ul>
+
+                <hr>
+
+                <h2>Packet Size / MTU Impact</h2>
+                <p>Encapsulation increases packet size, so MTU planning is a critical design requirement.</p>
+                <p>VXLAN adds overhead because of encapsulation.</p>
+                <p>Approximate added headers:</p>
+
+                <table>
+                    <thead>
+                        <tr><th>Header</th><th>Size</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Outer Ethernet</td><td>14 bytes</td></tr>
+                        <tr><td>Outer IP</td><td>20 bytes (IPv4)</td></tr>
+                        <tr><td>UDP</td><td>8 bytes</td></tr>
+                        <tr><td>VXLAN</td><td>8 bytes</td></tr>
+                        <tr><td>Total Additional Overhead</td><td>~50 bytes</td></tr>
+                    </tbody>
+                </table>
+
+                <p>This is why data center fabrics commonly use jumbo MTU (e.g. 9000).</p>
+
+                <hr>
+
+                <h2>VLAN vs VXLAN in Real Design</h2>
+                <table>
+                    <thead>
+                        <tr><th>Scenario</th><th>VLAN</th><th>VXLAN</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Office access switching</td><td>Excellent</td><td>Unnecessary</td></tr>
+                        <tr><td>Large virtualized DC</td><td>Limited</td><td>Excellent</td></tr>
+                        <tr><td>Multi-tenant cloud</td><td>Weak</td><td>Strong</td></tr>
+                        <tr><td>Workload mobility</td><td>Difficult</td><td>Strong</td></tr>
+                        <tr><td>Leaf-spine routed fabric</td><td>Indirect</td><td>Native fit</td></tr>
+                    </tbody>
+                </table>
+
+                <hr>
+
+                <h2>Where VXLAN is Implemented</h2>
+                <p>VXLAN is commonly deployed in:</p>
+                <ul>
+                    <li>Enterprise data centers</li>
+                    <li>Private cloud platforms</li>
+                    <li>VMware / Hyper-V environments</li>
+                    <li>Kubernetes infrastructure networking</li>
+                    <li>Multi-tenant hosting providers</li>
+                    <li>Large campus cores migrating to fabric architecture</li>
+                    <li>Disaster recovery stretched workload designs</li>
+                </ul>
+
+                <hr>
+
+                <h2>Example Vendor Platforms</h2>
+                <ul>
+                    <li>Cisco Nexus / ACI / NX-OS EVPN VXLAN</li>
+                    <li>Arista EOS VXLAN EVPN</li>
+                    <li>Juniper EVPN VXLAN</li>
+                    <li>VMware NSX</li>
+                    <li>Fortinet secure data center designs (platform-dependent VXLAN integration capabilities)</li>
+                </ul>
+
+                <hr>
+
+                <h2>Operational Considerations</h2>
+                <table>
+                    <thead>
+                        <tr><th>Recommendation</th><th>Why</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Use routed underlay (OSPF/BGP/ISIS)</td><td>Stable transport</td></tr>
+                        <tr><td>Use EVPN control plane</td><td>Better MAC learning than flood-and-learn</td></tr>
+                        <tr><td>Increase MTU</td><td>Prevent fragmentation</td></tr>
+                        <tr><td>Design anycast gateway</td><td>Efficient first-hop routing</td></tr>
+                        <tr><td>Monitor tunnel health</td><td>Overlay depends on underlay</td></tr>
+                    </tbody>
+                </table>
+
+                <hr>
+
+                <h2>Common Misunderstandings</h2>
+                <p>VXLAN does <strong>not</strong> eliminate the need for VLAN in most enterprise designs.</p>
+                <p>In many deployments, VLANs still exist at the access layer and are mapped to VNIs inside the fabric.</p>
+                <p>VXLAN is an overlay transport model, while VLAN often remains the local access segmentation method.</p>
+                <p>VXLAN also does not automatically solve poor underlay routing design. If the IP fabric is unstable, overlay performance will also suffer.</p>
+                <p>Think of VLAN as local edge segmentation, and VXLAN as scalable segmentation across routed fabrics.</p>
+
+                <hr>
+
+                <h2>Summary / Takeaways</h2>
+                <ul>
+                    <li>VXLAN is the modern extension of VLAN concepts for scalable data center and cloud networking.</li>
+                    <li>It encapsulates Layer 2 Ethernet frames inside UDP/IP packets, commonly using UDP port 4789.</li>
+                    <li>VXLAN uses a 24-bit VNI, enabling approximately 16 million logical segments.</li>
+                    <li>It solves many traditional VLAN scale and mobility limitations.</li>
+                    <li>Best-fit environments include data centers, private cloud, multi-tenant hosting, and leaf-spine fabrics.</li>
+                    <li>VLAN commonly remains at the access edge, while VXLAN extends segmentation across routed networks.</li>
+                    <li>Successful VXLAN deployments depend on a stable underlay, proper MTU sizing, and a strong control plane such as EVPN.</li>
+                </ul>
+
+                <p>
+                    <em>Understanding VXLAN is the transition point from traditional switching to modern fabric engineering.</em>
+                </p>
+
+                <!-- ── Article navigation footer ───────────────── -->
+                <div class="article-nav">
+                    <a href="vlan-deep-dive-modern-switching.html">
+                        <i class="fas fa-arrow-left"></i> Previous: VLAN Deep Dive
+                    </a>
+                    <a href="understanding-internet-structure-bgp.html">
+                        Next: Internet Structure &amp; BGP <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="../../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <app-footer></app-footer>
+    <script>AOS.init();</script>
+    <script src="../../script/components.js"></script>
+</body>
+</html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+        <meta name="description" content="EIGRP Deep Dive: Metrics, Best Path Logic, K-Values & Multi-AS Design">
+        <meta name="author" content="Ervinda Pratama">
+        <link rel="stylesheet" href="../../styles/main.css">
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32">
+        <title>EIGRP Deep Dive: Metrics, Best Path Logic, K-Values &amp; Multi-AS Design — Ervinda Pratama</title>
+        <style>
+            .article-header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid #e0e0e0; margin-bottom: 2rem; }
+            body.dark-mode .article-header { border-bottom-color: #333; }
+            .article-back { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; margin-bottom:1.5rem; }
+            .article-back:hover { color:#005fa3; }
+            body.dark-mode .article-back { color:#00f2fe; }
+            .article-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:1rem; }
+            .article-tag { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; padding:2px 10px; border-radius:20px; background:rgba(0,119,204,0.1); color:#0077cc; border:1px solid rgba(0,119,204,0.25); }
+            body.dark-mode .article-tag { background:rgba(0,242,254,0.1); color:#00f2fe; border-color:rgba(0,242,254,0.25); }
+            .article-title { font-size:2rem; font-weight:800; line-height:1.25; margin-bottom:0.9rem; }
+            body.dark-mode .article-title { color:#f0f0f0; }
+            .article-meta { font-size:13px; color:#888; display:flex; flex-wrap:wrap; gap:1rem; align-items:center; }
+            body.dark-mode .article-meta { color:#666; }
+            .article-content { max-width:780px; margin:0 auto; font-size:1rem; line-height:1.8; color:#333; }
+            body.dark-mode .article-content { color:#d0d0d0; }
+            .article-content h2 { font-size:1.35rem; font-weight:700; margin-top:2.2rem; margin-bottom:0.7rem; border-left:4px solid #0077cc; padding-left:0.7rem; color:#003366; }
+            body.dark-mode .article-content h2 { border-left-color:#00f2fe; color:#00f2fe; }
+            .article-content h3 { font-size:1.1rem; font-weight:700; margin-top:1.5rem; margin-bottom:0.5rem; color:#0077cc; }
+            body.dark-mode .article-content h3 { color:#7fffff; }
+            .article-content pre, .article-content code { background:#1e1e2e; color:#a8d8a8; border-radius:6px; font-size:0.875rem; font-family:'Courier New',monospace; }
+            .article-content pre { padding:1rem 1.2rem; overflow-x:auto; margin:1.2rem 0; }
+            .article-content code { padding:2px 6px; }
+            .article-content blockquote { border-left:4px solid #0077cc; background:rgba(0, 119, 204, 0.06); margin:1.5rem 0; padding:0.8rem 1.2rem; border-radius:0 6px 6px 0; font-style:italic; color:#555; }
+            body.dark-mode .article-content blockquote { border-left-color:#00f2fe; background:rgba(0, 242, 254, 0.05); color:#aaa; }
+            .article-content table { width:100%; border-collapse:collapse; margin:1.2rem 0; }
+            .article-content table th, .article-content table td { border:1px solid #ddd; padding:8px 12px; font-size:0.9rem; }
+            .article-content table th { background:#f0f5ff; font-weight:700; }
+            body.dark-mode .article-content table th { background:#1a1a2e; color:#e0e0e0; }
+            body.dark-mode .article-content table td { border-color:#333; color:#d0d0d0; }
+            .article-nav { display:flex; justify-content:space-between; margin-top:3rem; padding-top:1.5rem; border-top:1px solid #e0e0e0; gap:1rem; }
+            body.dark-mode .article-nav { border-top-color:#333; }
+            .article-nav a { font-size:13px; font-weight:600; color:#0077cc; text-decoration:none; display:flex; align-items:center; gap:6px; }
+            body.dark-mode .article-nav a { color:#00f2fe; }
+        </style>
+    </head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <app-navbar></app-navbar>
+    <section class="page-content">
+        <div class="container">
+            <div class="article-content" data-aos="fade-up">
+
+                <div class="article-header">
+                    <a href="../article_research.html" class="article-back">
+                        <i class="fas fa-arrow-left"></i> Back to Articles &amp; Research
+                    </a>
+                    <div class="article-tags">
+                        <span class="article-tag">Cisco</span>
+                        <span class="article-tag">Networking</span>
+                        <span class="article-tag">Routing</span>
+                    </div>
+                    <h1 class="article-title">EIGRP Deep Dive: Metrics, Best Path Logic, K-Values &amp; Multi-AS Design</h1>
+                    <div class="article-meta">
+                        <span><i class="fas fa-user"></i>&nbsp; Ervinda Pratama</span>
+                        <span><i class="fas fa-calendar"></i>&nbsp; June 2026</span>
+                        <span><i class="fas fa-clock"></i>&nbsp; ~18 min read</span>
+                    </div>
+                </div>
+
+                <h2>Introduction</h2>
+                <p>Enhanced Interior Gateway Routing Protocol (EIGRP) is a high-performance dynamic routing protocol originally developed by Cisco. It combines characteristics of distance-vector and link-state approaches, which is why it is often described as an advanced distance-vector or hybrid routing protocol.</p>
+                <p>EIGRP became popular in enterprise networks because it offers fast convergence, efficient updates, unequal-cost load balancing, and simpler deployment compared to many traditional protocols.</p>
+                <p>Compared with earlier routing models, EIGRP gained strong adoption through fast convergence, operational simplicity, and efficient path calculation.</p>
+
+                <h2>What is EIGRP?</h2>
+                <p>EIGRP uses the DUAL (Diffusing Update Algorithm) to calculate loop-free paths and quickly react to topology changes.</p>
+                <table>
+                    <thead>
+                        <tr><th>Characteristic</th><th>Value</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Protocol Type</td><td>Advanced Distance Vector / Hybrid</td></tr>
+                        <tr><td>Algorithm</td><td>DUAL</td></tr>
+                        <tr><td>Metric Basis</td><td>Bandwidth + Delay (default)</td></tr>
+                        <tr><td>Supports VLSM/CIDR</td><td>Yes</td></tr>
+                        <tr><td>Unequal Load Balancing</td><td>Yes</td></tr>
+                        <tr><td>Administrative Distance</td><td>90 internal / 170 external</td></tr>
+                        <tr><td>Transport</td><td>IP Protocol 88</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>How EIGRP Communicates</h2>
+                <p>EIGRP does not use TCP or UDP ports. It runs directly over IP.</p>
+                <table>
+                    <thead>
+                        <tr><th>Item</th><th>Value</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>IP Protocol Number</td><td>88</td></tr>
+                        <tr><td>Multicast Address</td><td>224.0.0.10</td></tr>
+                        <tr><td>Reliable Updates</td><td>RTP (Reliable Transport Protocol)</td></tr>
+                    </tbody>
+                </table>
+                <p>RTP is EIGRP's own delivery mechanism for reliable/unreliable packet exchange.</p>
+
+                <h2>Core EIGRP Packets</h2>
+                <table>
+                    <thead>
+                        <tr><th>Packet Type</th><th>Purpose</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Hello</td><td>Discover and maintain neighbors</td></tr>
+                        <tr><td>Update</td><td>Send routing information</td></tr>
+                        <tr><td>Query</td><td>Ask neighbors for route alternatives</td></tr>
+                        <tr><td>Reply</td><td>Respond to query</td></tr>
+                        <tr><td>ACK</td><td>Confirm reliable packets</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Basic EIGRP Topology Concepts</h2>
+                <table>
+                    <thead>
+                        <tr><th>Term</th><th>Meaning</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Neighbor Table</td><td>Directly connected EIGRP peers</td></tr>
+                        <tr><td>Topology Table</td><td>All learned routes and candidates</td></tr>
+                        <tr><td>Routing Table</td><td>Best selected routes only</td></tr>
+                        <tr><td>Successor</td><td>Current best path</td></tr>
+                        <tr><td>Feasible Successor</td><td>Backup loop-free path</td></tr>
+                        <tr><td>Feasible Distance (FD)</td><td>Best total metric to destination</td></tr>
+                        <tr><td>Reported Distance (RD)</td><td>Neighbor's metric to destination</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Basic Topology Example</h2>
+<pre><code>      R2
+     /  \
+   R1    R4
+     \  /
+      R3</code></pre>
+                <p>R1 may have multiple paths to networks behind R4 through R2 or R3.</p>
+                <p>EIGRP evaluates metrics and selects best path while optionally load-balancing multiple paths.</p>
+
+                <h2>How EIGRP Calculates Metric</h2>
+                <p>By default, EIGRP uses:</p>
+                <ul>
+                    <li>Minimum bandwidth along path</li>
+                    <li>Total cumulative delay along path</li>
+                </ul>
+                <p>Classic metric formula (default K-values):</p>
+<pre><code>Metric = 256 * (Bandwidth + Delay)</code></pre>
+                <p>Where:</p>
+<pre><code>Bandwidth = 10^7 / minimum bandwidth in Kbps
+Delay = sum of delays in tens of microseconds</code></pre>
+                <p>The scaling factor increases metric granularity and improves route comparison precision.</p>
+
+                <h2>What Are K-Values?</h2>
+                <p>K-values are weighting constants that determine which variables are included in metric calculation.</p>
+                <table>
+                    <thead>
+                        <tr><th>K Value</th><th>Parameter</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>K1</td><td>Bandwidth</td></tr>
+                        <tr><td>K2</td><td>Load</td></tr>
+                        <tr><td>K3</td><td>Delay</td></tr>
+                        <tr><td>K4</td><td>Reliability</td></tr>
+                        <tr><td>K5</td><td>Reliability modifier</td></tr>
+                        <tr><td>K6</td><td>Jitter / Extended metric (named mode modern enhancements)</td></tr>
+                    </tbody>
+                </table>
+                <p>Historically, classic EIGRP primarily uses K1 and K3 by default.</p>
+                <p>Default values:</p>
+<pre><code>K1=1 K2=0 K3=1 K4=0 K5=0</code></pre>
+                <p>Meaning only bandwidth and delay affect route choice.</p>
+
+                <h2>Why K-Values Exist</h2>
+                <p>Different network environments may prioritize different path characteristics.</p>
+                <p>Examples:</p>
+                <ul>
+                    <li>WAN network may care about bandwidth.</li>
+                    <li>Congested network may care about load.</li>
+                    <li>Real-time network may care about delay/jitter.</li>
+                </ul>
+                <p>K-values provide customizable metric weighting.</p>
+                <p><strong>Important:</strong> All EIGRP neighbors in the same AS must use matching K-values or adjacency fails.</p>
+
+                <h2>Full Composite Metric Formula</h2>
+                <p>Classic formula:</p>
+<pre><code>Metric = 256 * [ (K1*Bandwidth) + (K2*Bandwidth)/(256-Load) + (K3*Delay) ] * [K5/(Reliability+K4)]</code></pre>
+                <p>If K5 = 0, the reliability multiplier becomes 1.</p>
+                <p>Because default K2, K4, K5 are zero, the practical default formula simplifies greatly.</p>
+
+                <h2>Feasible Distance vs Reported Distance</h2>
+                <h3>Feasible Distance (FD)</h3>
+                <p>Lowest total metric from local router to destination.</p>
+                <h3>Reported Distance (RD)</h3>
+                <p>Metric advertised by neighbor to reach destination.</p>
+                <h3>Feasibility Condition</h3>
+                <p>A backup route becomes feasible successor if:</p>
+<pre><code>RD &lt; current FD</code></pre>
+                <p>This guarantees loop-free backup path.</p>
+
+                <h2>Best Path Selection in Multi-Path Networks</h2>
+                <p>When multiple routes exist, EIGRP evaluates:</p>
+                <ol>
+                    <li>Lowest Feasible Distance</li>
+                    <li>Feasibility condition for backup paths</li>
+                    <li>Equal-cost path installation (if same metric)</li>
+                    <li>Unequal-cost load sharing with variance</li>
+                </ol>
+
+                <h3>Example</h3>
+                <p>R1 reaches 10.10.10.0/24:</p>
+                <ul>
+                    <li>via R2 metric 1000</li>
+                    <li>via R3 metric 1200</li>
+                </ul>
+                <p>Best path = R2 (successor)<br>R3 may become feasible successor if condition is met.</p>
+
+                <h2>Equal-Cost and Unequal-Cost Load Balancing</h2>
+                <h3>Equal Cost</h3>
+                <p>Multiple same-metric routes can be installed.</p>
+                <h3>Unequal Cost (Unique EIGRP Feature)</h3>
+                <p>Use variance.</p>
+<pre><code class="language-bash">router eigrp 100
+ variance 2</code></pre>
+                <p>This may include routes up to 2x successor metric if eligible.</p>
+                <p>This is particularly effective for branch WAN environments with mixed circuit capacities.</p>
+
+                <h2>Internal vs External Routes</h2>
+                <table>
+                    <thead>
+                        <tr><th>Route Type</th><th>Source</th><th>AD</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Internal</td><td>Learned inside same EIGRP AS</td><td>90</td></tr>
+                        <tr><td>External</td><td>Redistributed from other protocol/static</td><td>170</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Basic Configuration Example</h2>
+<pre><code class="language-bash">router eigrp 100
+ network 10.0.0.0 0.0.0.255
+ network 192.168.1.0 0.0.0.255
+ no auto-summary</code></pre>
+
+                <h2>EIGRP Autonomous System (AS)</h2>
+                <p>The EIGRP AS number identifies routers participating in the same EIGRP domain.</p>
+                <p>Routers must match AS number to become neighbors.</p>
+                <p>Example:</p>
+                <ul>
+                    <li>R1 AS100 ↔ R2 AS100 = forms adjacency</li>
+                    <li>R1 AS100 ↔ R3 AS200 = no adjacency directly</li>
+                </ul>
+
+                <h2>Multi-AS EIGRP Design</h2>
+                <p>Organizations may use multiple EIGRP AS values for administrative separation.</p>
+                <h3>Example Topology</h3>
+<pre><code>Branch Sites (AS100) --- Core Router --- Data Center (AS200)</code></pre>
+                <p>Core router runs both processes and redistributes routes.</p>
+                <h3>Example Config</h3>
+<pre><code class="language-bash">router eigrp 100
+ network 10.1.0.0 0.0.255.255
+ redistribute eigrp 200
+
+router eigrp 200
+ network 10.2.0.0 0.0.255.255
+ redistribute eigrp 100</code></pre>
+                <p>Route filtering and redistribution control are essential to prevent loops and route feedback.</p>
+
+                <h2>Common Deployment Models</h2>
+                <table>
+                    <thead>
+                        <tr><th>Scenario</th><th>Why EIGRP</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Campus Core</td><td>Fast convergence</td></tr>
+                        <tr><td>Branch WAN</td><td>Easy deployment</td></tr>
+                        <tr><td>MPLS Edge</td><td>Summarization + control</td></tr>
+                        <tr><td>Mixed-speed WAN</td><td>Variance load balancing</td></tr>
+                        <tr><td>Legacy Cisco enterprise</td><td>Operational familiarity</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Best Practices</h2>
+                <table>
+                    <thead>
+                        <tr><th>Recommendation</th><th>Why</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Keep default K-values unless justified</td><td>Predictability</td></tr>
+                        <tr><td>Use summaries at distribution/core</td><td>Stability</td></tr>
+                        <tr><td>Use stub routers at branches</td><td>Reduce query scope</td></tr>
+                        <tr><td>Filter during redistribution</td><td>Prevent loops</td></tr>
+                        <tr><td>Monitor SIA events</td><td>Detect query issues</td></tr>
+                        <tr><td>Document AS boundaries</td><td>Easier operations</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Common Troubleshooting Checks</h2>
+                <ul>
+                    <li>AS number mismatch</li>
+                    <li>K-value mismatch</li>
+                    <li>Authentication mismatch</li>
+                    <li>Passive interface enabled</li>
+                    <li>Incorrect network statement</li>
+                    <li>Stuck In Active (SIA) query events</li>
+                    <li>Missing feasible successor expectation</li>
+                </ul>
+
+                <h2>Summary / Takeaways</h2>
+                <ul>
+                    <li>EIGRP is a high-efficiency dynamic routing protocol using DUAL.</li>
+                    <li>It runs over IP Protocol 88, not TCP/UDP ports.</li>
+                    <li>Default metric uses bandwidth and delay.</li>
+                    <li>K-values are weighting constants controlling metric inputs.</li>
+                    <li>Successor is best path; feasible successor is instant backup path.</li>
+                    <li>Variance enables unequal-cost load balancing.</li>
+                    <li>Multi-AS deployments require redistribution and careful filtering.</li>
+                    <li>EIGRP remains a capable routing option for Cisco-centric enterprise environments that value rapid convergence and flexible traffic engineering.</li>
+                </ul>
+
+                <div class="article-nav">
+                    <a href="mikrotik-qos-deep-dive.html">
+                        <i class="fas fa-arrow-left"></i> Previous: MikroTik QoS Deep Dive
+                    </a>
+                    <a href="ospf-enterprise-routing-deep-dive.html">
+                        Next: OSPF Deep Dive <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="../../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <app-footer></app-footer>
+    <script>AOS.init();</script>
+    <script src="../../script/components.js"></script>
+</body>
+</html>

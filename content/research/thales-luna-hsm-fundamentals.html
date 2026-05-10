@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+        <meta name="description" content="Understanding Thales Luna HSM Fundamentals: Architecture, PED vs Password, and PKCS#11 Integration">
+        <meta name="author" content="Ervinda Pratama">
+        <link rel="stylesheet" href="../../styles/main.css">
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="icon" href="../../images_cert/profil.jpg" sizes="32x32">
+        <title>Thales Luna HSM Fundamentals — Ervinda Pratama</title>
+        <style>
+            .article-header{padding:2.5rem 0 1.5rem;border-bottom:1px solid #e0e0e0;margin-bottom:2rem}
+            body.dark-mode .article-header{border-bottom-color:#333}
+            .article-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#0077cc;text-decoration:none;margin-bottom:1.5rem}
+            .article-back:hover{color:#005fa3}
+            body.dark-mode .article-back{color:#00f2fe}
+            .article-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem}
+            .article-tag{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;padding:2px 10px;border-radius:20px;background:rgba(111,66,193,.1);color:#6f42c1;border:1px solid rgba(111,66,193,.25)}
+            body.dark-mode .article-tag{background:rgba(232,62,140,.1);color:#e83e8c;border-color:rgba(232,62,140,.25)}
+            .article-title{font-size:2rem;font-weight:800;line-height:1.25;margin-bottom:.9rem}
+            body.dark-mode .article-title{color:#f0f0f0}
+            .article-meta{font-size:13px;color:#888;display:flex;flex-wrap:wrap;gap:1rem;align-items:center}
+            body.dark-mode .article-meta{color:#666}
+            .article-content{max-width:800px;margin:0 auto;font-size:1rem;line-height:1.8;color:#333}
+            body.dark-mode .article-content{color:#d0d0d0}
+            .article-content h2{font-size:1.35rem;font-weight:700;margin-top:2.2rem;margin-bottom:.7rem;border-left:4px solid #6f42c1;padding-left:.7rem;color:#3b0068}
+            body.dark-mode .article-content h2{border-left-color:#e83e8c;color:#e83e8c}
+            .article-content h3{font-size:1.1rem;font-weight:700;margin-top:1.5rem;margin-bottom:.5rem;color:#6f42c1}
+            body.dark-mode .article-content h3{color:#d4a0ff}
+            .article-content pre,.article-content code{background:#1e1e2e;color:#a8d8a8;border-radius:6px;font-size:.875rem;font-family:'Courier New',monospace}
+            .article-content pre{padding:1rem 1.2rem;overflow-x:auto;margin:1.2rem 0}
+            .article-content code{padding:2px 6px}
+            .article-content blockquote{border-left:4px solid #6f42c1;background:rgba(111,66,193,.06);margin:1.5rem 0;padding:.8rem 1.2rem;border-radius:0 6px 6px 0;font-style:italic;color:#555}
+            body.dark-mode .article-content blockquote{border-left-color:#e83e8c;background:rgba(232,62,140,.05);color:#aaa}
+            .article-content table{width:100%; border-collapse:collapse; margin:1.2rem 0}
+            .article-content table th, .article-content table td{border:1px solid #ddd; padding:8px 12px; font-size:.9rem; vertical-align:top}
+            .article-content table th{background:#f5f0ff; font-weight:700}
+            body.dark-mode .article-content table th{background:#1a1030; color:#e0e0e0}
+            body.dark-mode .article-content table td{border-color:#333; color:#d0d0d0}
+            .article-nav{display:flex;justify-content:space-between;margin-top:3rem;padding-top:1.5rem;border-top:1px solid #e0e0e0;gap:1rem}
+            body.dark-mode .article-nav{border-top-color:#333}
+            .article-nav a{font-size:13px;font-weight:600;color:#6f42c1;text-decoration:none;display:flex;align-items:center;gap:6px}
+            body.dark-mode .article-nav a{color:#e83e8c}
+        </style>
+    </head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <app-navbar></app-navbar>
+    <section class="page-content">
+        <div class="container">
+            <div class="article-content" data-aos="fade-up">
+
+                <div class="article-header">
+                    <a href="../article_research.html" class="article-back">
+                        <i class="fas fa-arrow-left"></i> Back to Articles &amp; Research
+                    </a>
+                    <div class="article-tags">
+                        <span class="article-tag">Security</span>
+                        <span class="article-tag">PKI</span>
+                        <span class="article-tag">HSM</span>
+                    </div>
+                    <h1 class="article-title">Understanding Thales Luna HSM Fundamentals: Architecture, Operations, and Integration</h1>
+                    <div class="article-meta">
+                        <span><i class="fas fa-user"></i>&nbsp; Ervinda Pratama</span>
+                        <span><i class="fas fa-calendar"></i>&nbsp; July 2026</span>
+                        <span><i class="fas fa-clock"></i>&nbsp; ~20 min read</span>
+                        <span><i class="fas fa-tag"></i>&nbsp; Research Note</span>
+                    </div>
+                </div>
+
+                <h2>Overview</h2>
+                <p>Thales Luna HSM is an enterprise-grade Hardware Security Module (HSM) platform designed to securely generate, store, protect, and process cryptographic keys inside tamper-resistant hardware.</p>
+                <p>Unlike software-based keystores or SoftHSM implementations, Luna HSM provides dedicated cryptographic hardware isolation, secure key custody, hardware-backed cryptographic acceleration, audit capabilities, partition isolation, and compliance certifications such as FIPS 140-2 / 140-3.</p>
+                <p>Luna HSM is widely used in environments requiring strong cryptographic assurance, including PKI, banking, digital signing, and enterprise VPN security.</p>
+                
+                <p>This research note focuses on understanding the operational fundamentals of Thales Luna HSM, including initialization, partition management, PED vs non-PED authentication models, and PKCS#11 integration.</p>
+
+                <hr>
+
+                <h2>Section 1 — Understanding Luna HSM Architecture</h2>
+                <h3>What is an HSM?</h3>
+                <p>A Hardware Security Module (HSM) is a dedicated cryptographic device designed to:</p>
+                <ul>
+                    <li>Generate cryptographic keys securely</li>
+                    <li>Prevent private key extraction</li>
+                    <li>Execute cryptographic operations inside hardware boundaries</li>
+                    <li>Protect against tampering and unauthorized access</li>
+                    <li>Enforce access control and audit mechanisms</li>
+                </ul>
+                <p>In Luna HSM, private keys remain inside secure hardware while applications communicate through standardized APIs such as PKCS#11. Key material is isolated from the operating system memory.</p>
+
+                <h3>Luna Appliance vs PCIe HSM</h3>
+                <table>
+                    <thead>
+                        <tr><th>Feature</th><th>Luna Network HSM Appliance</th><th>Luna PCIe HSM</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Form Factor</td><td>Rack appliance</td><td>PCIe card</td></tr>
+                        <tr><td>Connectivity</td><td>Ethernet</td><td>Direct server bus</td></tr>
+                        <tr><td>Management</td><td>LunaSH CLI</td><td>LunaCM</td></tr>
+                        <tr><td>Usage</td><td>Centralized enterprise HSM</td><td>Local cryptographic acceleration</td></tr>
+                        <tr><td>Latency</td><td>Medium</td><td>Very low</td></tr>
+                        <tr><td>Multi-client support</td><td>Yes</td><td>Limited</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Security Advantages of Thales Luna HSM</h3>
+                <ul>
+                    <li><strong>Tamper resistance:</strong> Hardware designed to detect physical tampering.</li>
+                    <li><strong>Key isolation:</strong> Private keys never leave HSM boundary.</li>
+                    <li><strong>Hardware entropy:</strong> Dedicated hardware RNG.</li>
+                    <li><strong>Role separation:</strong> Security Officer vs Crypto Officer.</li>
+                    <li><strong>Secure authentication:</strong> PED and challenge-response support.</li>
+                    <li><strong>Partition isolation:</strong> Multi-tenant cryptographic isolation.</li>
+                </ul>
+
+                <hr>
+
+                <h2>Section 2 — LunaCM and LunaSH</h2>
+                <h3>LunaCM</h3>
+                <p>LunaCM is the client-side command line management tool used for managing client connections, partition login, key generation, and PKCS#11 operations.</p>
+<pre><code class="language-bash"># Launch LunaCM
+lunacm
+
+# List available slots
+lunacm:> slot list</code></pre>
+
+                <h3>LunaSH</h3>
+                <p>LunaSH is the appliance-side shell used for appliance configuration, network setup, user management, and partition creation. It is accessed via SSH or Console.</p>
+<pre><code class="language-bash"># Access via SSH
+ssh admin@192.168.10.10
+
+# Set hostname
+lunash:> network hostname set hsm-core-01</code></pre>
+
+                <hr>
+
+                <h2>Section 3 — Initial Configuration Basics</h2>
+                <h3>Network Configuration</h3>
+<pre><code class="language-bash"># Example static IP configuration
+lunash:> network interface config eth0 \
+ip=192.168.10.10 \
+netmask=255.255.255.0 \
+gateway=192.168.10.1</code></pre>
+
+                <h3>Understanding PED vs Non-PED Mode</h3>
+                <p><strong>PED (PIN Entry Device)</strong> is an external authentication device used to provide hardware-backed multi-factor authentication. Secrets are stored in physical PED keys instead of typed passwords.</p>
+                <table>
+                    <thead>
+                        <tr><th>Mode</th><th>Advantages</th><th>Disadvantages</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>PED</td><td>Hardware-backed MFA, high assurance</td><td>Operational complexity, physical key management</td></tr>
+                        <tr><td>Non-PED</td><td>Easy automation, remote management</td><td>Reduced physical authentication assurance</td></tr>
+                    </tbody>
+                </table>
+
+                <hr>
+
+                <h2>Section 4 — PKCS#11 / Cryptoki Integration</h2>
+                <p>Applications use PKCS#11 to generate keys, encrypt/decrypt data, and manage cryptographic objects inside HSM partitions.</p>
+<pre><code>[Application]
+     |
+     v
+PKCS#11 Library (libCryptoki2.so)
+     |
+     v
+Luna Client
+     |
+     v
+Luna HSM Appliance</code></pre>
+
+                <h3>Simple Python PKCS#11 Example</h3>
+<pre><code class="language-python">import pkcs11
+
+LIB = '/usr/safenet/lunaclient/lib/libCryptoki2.so'
+TOKEN_LABEL = 'PKI_PARTITION'
+PIN = 'MySecurePassword'
+
+lib = pkcs11.lib(LIB)
+token = lib.get_token(token_label=TOKEN_LABEL)
+
+with token.open(user_pin=PIN) as session:
+    print('[+] Connected to Luna HSM')
+    for obj in session.get_objects():
+        print(obj)</code></pre>
+
+                <hr>
+
+                <h2>Section 5 — Operational Best Practices</h2>
+                <ul>
+                    <li><strong>Partitioning:</strong> Separate workloads by application for multi-tenant isolation.</li>
+                    <li><strong>Authentication:</strong> Use PED for high-security environments (Banking, Gov).</li>
+                    <li><strong>High Availability (HA):</strong> Deploy redundant appliances in HA groups for failover and load balancing.</li>
+                    <li><strong>Backup:</strong> Implement secure cloning procedures to backup key material.</li>
+                    <li><strong>Monitoring:</strong> Integrate appliance logs with SIEM for audit compliance.</li>
+                </ul>
+
+                <hr>
+
+                <h2>Summary / Takeaways</h2>
+                <ul>
+                    <li>Thales Luna HSM provides enterprise-grade hardware-backed cryptographic protection for high-trust workloads.</li>
+                    <li>Luna Appliance deployments prioritize centralized security, while PCIe HSMs prioritize local performance.</li>
+                    <li>PED mode introduces physical authentication keys, improving security at the cost of operational overhead.</li>
+                    <li>PKCS#11 (Cryptoki) is the standard interface for application integration.</li>
+                    <li>Physical HSM deployment significantly improves key custody assurance compared to software-only solutions.</li>
+                </ul>
+                
+                <p><em>Proper operational processes, access control, and monitoring are essential to fully benefit from enterprise HSM security.</em></p>
+
+                <div class="article-nav">
+                    <a href="softhsm-pkcs11-encrypt-files.html" class="research">
+                        <i class="fas fa-arrow-left"></i> Previous: KMS Secure File Archive
+                    </a>
+                    <span></span>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="../../vendor/jquery/jquery.slim.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <app-footer></app-footer>
+    <script>AOS.init();</script>
+    <script src="../../script/components.js"></script>
+</body>
+</html>
